@@ -3,41 +3,6 @@
 Discord bot for the Heroes of Mirren Discord server.
 
 
-## Setup app
-
-Install dependencies:
-
-```
-npm ci
-```
-
-```
-sudo apt-get install libtool autoconf automake
-```
-
-Add `config.json` with credentials:
-
-```json
-{
-  "token": "<app token>",
-  "clientId": "<application id>",
-  "guildId": "<server id>"
-}
-```
-
-Register slash commands with Discord:
-
-```
-node scripts/deploy-slash-commands.js
-```
-
-Start the app:
-
-```
-npm start
-```
-
-
 ## Setup bot
 
 Create an application and bot in the Discord portal, as per guides.
@@ -63,6 +28,43 @@ And the following permissions:
 * `Read Messages/View Channels` general permissions.
 * `Send Messages` text permissions.
 * `Connect` and `Speak` voice permissions.
+
+
+## Setup app
+
+1. Install dependencies:
+
+```
+npm ci
+```
+
+```
+sudo apt-get install libtool autoconf automake
+```
+
+2. Add `config.json` with credentials:
+
+```json
+{
+  "token": "<app token>",
+  "clientId": "<application id>",
+  "guildId": "<server id>"
+}
+```
+
+3. Register slash commands with Discord:
+
+```
+node scripts/deploy-slash-commands.js
+```
+
+4. Pre-load the `sounds` directory with sounds to be matched by the `query`.
+
+5. Start the app:
+
+```
+npm start
+```
 
 
 ## Commands

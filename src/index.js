@@ -3,6 +3,7 @@ const handlePing = require('./commands/ping');
 const handleHelp = require('./commands/help');
 const handleRoll = require('./commands/roll');
 const handleSound = require('./commands/sound');
+const { cacheSoundNames } = require('./modules/cache');
 
 // Corresponds to all those registered with deploy-slash-commands.js
 const commandMap = {
@@ -20,7 +21,7 @@ const commandMap = {
  * @param {object} interaction - Discord.js interaction object.
  * @returns {Function|AsyncFunction} Handler that returns reply text.
  */
-const onCommand = (name, interaction) => {
+const onCommand = async (name, interaction) => {
   if (!commandMap[name]) {
     const err = `Unknown command name ${name}`;
     console.log(err);
@@ -28,7 +29,7 @@ const onCommand = (name, interaction) => {
   }
 
   try {
-    return commandMap[name](interaction);
+    return await commandMap[name](interaction);
   } catch (e) {
     const err = `Error: ${e.message}`;
     console.log(err);
@@ -75,6 +76,9 @@ const main = async () => {
   // Set status
   const client = getClient();
   client.user.setStatus('online');
+
+  // Cache sound names
+  await cacheSoundNames();
 };
 
 main();
