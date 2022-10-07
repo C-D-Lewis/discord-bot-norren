@@ -20,7 +20,8 @@ const getClosestSoundName = (query) => {
   const found = sounds.find((p) => p.includes(query));
   if (found) return found;
 
-  throw new Error('Query did not match a sound');
+  // Partial or closest match?
+  return undefined;
 };
 
 module.exports = {

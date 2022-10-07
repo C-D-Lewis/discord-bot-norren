@@ -12,7 +12,11 @@ const { getClosestSoundName } = require('../modules/cache');
 module.exports = async (interaction) => {
   const { options, member: { voice } } = interaction;
   const query = options.getString('query');
-  console.log({ query });
+
+  const foundSound = getClosestSoundName(query);
+  console.log({ query, foundSound });
+
+  if (!foundSound) throw new Error(`No sound found for "${query}"`);
 
   // If user in voice channel, join it
   if (voice.channel) {
@@ -31,17 +35,21 @@ module.exports = async (interaction) => {
     connection.subscribe(player);
 
     // Play selected sound
-    const soundName = `sounds/${getClosestSoundName(query)}`;
+    const soundName = `sounds/${foundSound}`;
     player.play(createAudioResource(soundName));
-    player.on('stateChange', (old, _new) => {
+    player.on('stateChange', async (old, _new) => {
       console.log(`Audio player transitioned from ${old.status} to ${_new.status}`);
 
       // Finished
-      if (_new.status === 'idle') connection.disconnect();
+      if (_new.status === 'idle') {
+        await connection.disconnect();
+        connection.destroy();
+      }
     });
-    player.on('error', (error) => {
+    player.on('error', async (error) => {
       console.error('Error:', error.message, 'with track', error.resource.metadata.title);
-      connection.disconnect();
+      await connection.disconnect();
+      connection.destroy();
     });
     await entersState(player, AudioPlayerStatus.Playing, 5000);
 
