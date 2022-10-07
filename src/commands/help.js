@@ -6,9 +6,11 @@
  */
 module.exports = (interaction) => interaction.reply(`
 Here are the available commands:
+  - \`roll <max>\` - Roll a die
+  - \`sound <query>\` - Query and play a sound file
   - \`help\` - Show all commands
   - \`ping\` - Ping the bot server
-  - \`roll n\` - Roll a d<n> dice
 
-Check out my source code on GitHub: C-D-Lewis/discord-bot-hom
+Check out the source code on GitHub:
+  C-D-Lewis/discord-bot-hom
 `);

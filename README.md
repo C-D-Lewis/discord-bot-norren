@@ -35,11 +35,11 @@ And the following permissions:
 1. Install dependencies:
 
 ```
-npm ci
+sudo apt-get install libtool autoconf automake
 ```
 
 ```
-sudo apt-get install libtool autoconf automake
+npm ci
 ```
 
 2. Add `config.json` with credentials:
@@ -64,6 +64,13 @@ node scripts/deploy-slash-commands.js
 
 ```
 npm start
+```
+
+6. If you need to update the slash commands, delete them and re-create them:
+
+```
+node scripts/undeploy-all-commands.js
+node scripts/deploy-slash-commands.js
 ```
 
 

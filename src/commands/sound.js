@@ -4,6 +4,36 @@ const {
 const { getClosestSoundName } = require('../modules/cache');
 
 /**
+ * Play a given sound.
+ *
+ * @param {object} connection - Voice connection from discordjs/voice.
+ * @param {string} soundName - Name of the sound file.
+ * @returns {Promise}
+ */
+const playSound = async (connection, soundName) => {
+  const player = createAudioPlayer();
+  connection.subscribe(player);
+
+  // Play selected sound
+  player.play(createAudioResource(soundName));
+  player.on('stateChange', async (playerOld, playerNew) => {
+    console.log(`Audio player transitioned from ${playerOld.status} to ${playerNew.status}`);
+
+    // Finished
+    if (playerNew.status === 'idle') {
+      await connection.disconnect();
+      connection.destroy();
+    }
+  });
+  player.on('error', async (error) => {
+    console.error('Error:', error.message, 'with track', error.resource.metadata.title);
+    await connection.disconnect();
+    connection.destroy();
+  });
+  await entersState(player, AudioPlayerStatus.Playing, 5000);
+};
+
+/**
  * Handle 'sound' command.
  *
  * @param {object} interaction - discord.js interaction object.
@@ -14,7 +44,8 @@ module.exports = async (interaction) => {
   const query = options.getString('query');
 
   const foundSound = getClosestSoundName(query);
-  console.log({ query, foundSound });
+  const soundName = `sounds/${foundSound}`;
+  console.log({ query, foundSound, soundName });
 
   if (!foundSound) throw new Error(`No sound found for "${query}"`);
 
@@ -27,31 +58,14 @@ module.exports = async (interaction) => {
       adapterCreator: voice.guild.voiceAdapterCreator,
       selfDeaf: false,
     });
-    connection.on('stateChange', (old, _new) => {
+    connection.on('stateChange', async (old, _new) => {
       console.log(`Connection transitioned from ${old.status} to ${_new.status}`);
-    });
 
-    const player = createAudioPlayer();
-    connection.subscribe(player);
-
-    // Play selected sound
-    const soundName = `sounds/${foundSound}`;
-    player.play(createAudioResource(soundName));
-    player.on('stateChange', async (old, _new) => {
-      console.log(`Audio player transitioned from ${old.status} to ${_new.status}`);
-
-      // Finished
-      if (_new.status === 'idle') {
-        await connection.disconnect();
-        connection.destroy();
+      // When ready
+      if (_new.status === 'ready' && _new.status !== old.status) {
+        playSound(connection, soundName);
       }
     });
-    player.on('error', async (error) => {
-      console.error('Error:', error.message, 'with track', error.resource.metadata.title);
-      await connection.disconnect();
-      connection.destroy();
-    });
-    await entersState(player, AudioPlayerStatus.Playing, 5000);
 
     // Reply to client
     return interaction.reply(`Playing ${soundName.split('/').pop()} (query: "${query}")`);
