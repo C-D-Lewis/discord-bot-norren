@@ -1,3 +1,4 @@
+const { hostname } = require('os');
 const { getClient } = require('../modules/client');
 
 /**
@@ -6,4 +7,4 @@ const { getClient } = require('../modules/client');
  * @param {object} interaction - discord.js interaction object.
  * @returns {Promise}
  */
-module.exports = (interaction) => interaction.reply(`Ping is currently ${getClient().ws.ping}ms`);
+module.exports = (interaction) => interaction.reply(`\`${getClient().ws.ping}ms\` via \`${hostname()}\``);

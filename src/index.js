@@ -2,14 +2,15 @@ const { initClient, getClient } = require('./modules/client');
 const handlePing = require('./commands/ping');
 const handleHelp = require('./commands/help');
 const handleRoll = require('./commands/roll');
+const handleSound = require('./commands/sound');
 
 // Corresponds to all those registered with deploy-slash-commands.js
 const commandMap = {
   help: handleHelp,
   ping: handlePing,
   roll: handleRoll,
+  sound: handleSound,
   // rollToHit $d20 -> that'll do it / Uh go fuck yerself
-  // sound $name -> Join channel and play sound
 };
 
 /**
@@ -26,7 +27,13 @@ const onCommand = (name, interaction) => {
     return interaction.reply(err);
   }
 
-  return commandMap[name](interaction);
+  try {
+    return commandMap[name](interaction);
+  } catch (e) {
+    const err = `Error: ${e.message}`;
+    console.log(err);
+    return interaction.reply(err);
+  }
 };
 
 /**

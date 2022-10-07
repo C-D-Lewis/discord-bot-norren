@@ -14,6 +14,12 @@ const commands = [
     .addStringOption((option) => option.setName('n')
       .setDescription('The die maximum value, such as d20')
       .setRequired(true)),
+  new SlashCommandBuilder()
+    .setName('sound')
+    .setDescription('Play a sound')
+    .addStringOption((option) => option.setName('query')
+      .setDescription('The sound name, or closest match')
+      .setRequired(true)),
 ]
   .map((command) => command.toJSON());
 

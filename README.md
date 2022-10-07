@@ -11,6 +11,10 @@ Install dependencies:
 npm ci
 ```
 
+```
+sudo apt-get install libtool autoconf automake
+```
+
 Add `config.json` with credentials:
 
 ```json
