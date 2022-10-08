@@ -1,4 +1,4 @@
-# discord-hom-bot
+# discord-bot-hom
 
 Discord bot for the Heroes of Mirren Discord server.
 
@@ -55,10 +55,12 @@ npm ci
 3. Register slash commands with Discord:
 
 ```
-node scripts/deploy-slash-commands.js
+node scripts/deploy-slash-commands.js $SERVER_ID
 ```
 
 4. Pre-load the `sounds` directory with sounds to be matched by the `query`.
+
+> Sounds must be in the Opus sound format
 
 5. Start the app:
 
@@ -69,8 +71,8 @@ npm start
 6. If you need to update the slash commands, delete them and re-create them:
 
 ```
-node scripts/undeploy-all-commands.js
-node scripts/deploy-slash-commands.js
+node scripts/undeploy-all-commands.js $SERVER_ID
+node scripts/deploy-slash-commands.js $SERVER_ID
 ```
 
 

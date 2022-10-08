@@ -1,21 +1,13 @@
-const { createAudioResource } = require('@discordjs/voice');
+const { createAudioResource, StreamType } = require('@discordjs/voice');
 const fs = require('fs');
-const { log } = require('./logger');
 
 const soundsDir = `${__dirname}/../../sounds`;
 const soundNames = [];
-const audioCache = {};
 
 /**
  * Read sounds in /sounds and cache the names.
  */
-const cacheSoundNames = () => {
-  fs.readdirSync(soundsDir).forEach((file) => {
-    soundNames.push(file);
-    audioCache[file] = createAudioResource(`${soundsDir}/${file}`);
-    log(`Cached ${file}`);
-  });
-};
+const cacheSoundNames = () => fs.readdirSync(soundsDir).forEach((file) => soundNames.push(file));
 
 /**
  * Use the user query to find the closest sound.
@@ -33,27 +25,22 @@ const getClosestSoundName = (query) => {
 };
 
 /**
- * Get a pre-loaded sound from cache, then replace it.
+ * Get a pre-loaded sound from cache, then replace it. Ogg preferred for performance.
  *
  * @param {string} soundName - Sound to get.
  * @returns {object} discord.js audio object.
  */
-const getAudioResource = (soundName) => {
-  setTimeout(() => {
-    // Load another copy ready since these can't be restarted
-    audioCache[soundName] = createAudioResource(`${soundsDir}/${soundName}`);
-    log(`Cached ${soundName}`);
-  }, 1000);
-
-  return audioCache[soundName];
-};
+const getAudioResource = (soundName) => createAudioResource(
+  fs.createReadStream(`${soundsDir}/${soundName}`),
+  { inputType: StreamType.OggOpus },
+);
 
 /**
  * Build a readable list of sound options.
  *
  * @returns {string} Readable list of sounds.
  */
-const buildSoundList = () => soundNames.map((p) => `\`${p}\``).join(', ');
+const buildSoundList = () => soundNames.map((p) => p.split('.')[0]).map((p) => `\`${p}\``).join(', ');
 
 module.exports = {
   cacheSoundNames,

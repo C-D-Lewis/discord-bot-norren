@@ -39,10 +39,10 @@ const playSound = async (soundName) => {
 
   // Some error encountered
   player.on('error', async (error) => {
-    log('Error:', error.message, 'with track', error.resource.metadata.title);
+    log('Player error:', error.message);
     await stopAndDisconnect();
   });
-  await entersState(player, AudioPlayerStatus.Playing, 5000);
+  await entersState(player, AudioPlayerStatus.Playing, 1000);
 };
 
 /**

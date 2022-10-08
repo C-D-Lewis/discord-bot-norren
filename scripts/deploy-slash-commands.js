@@ -1,5 +1,8 @@
 const { REST, SlashCommandBuilder, Routes } = require('discord.js');
-const { clientId, guildId, token } = require('../config.json');
+const { clientId, token } = require('../config.json');
+
+const [SERVER_ID] = process.argv.slice(2);
+if (!SERVER_ID) throw new Error('Please specify SERVER_ID');
 
 const commands = [
   new SlashCommandBuilder()
@@ -31,6 +34,6 @@ const commands = [
 
 const rest = new REST({ version: '10' }).setToken(token);
 
-rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+rest.put(Routes.applicationGuildCommands(clientId, SERVER_ID), { body: commands })
   .then((data) => console.log(`Successfully registered ${data.length} application commands.`))
   .catch(console.error);
