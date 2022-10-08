@@ -1,5 +1,5 @@
 const {
-  joinVoiceChannel, createAudioPlayer, AudioPlayerStatus, entersState,
+  joinVoiceChannel, createAudioPlayer, AudioPlayerStatus, entersState, NoSubscriberBehavior,
 } = require('@discordjs/voice');
 const { getAudioResource } = require('./cache');
 const { log } = require('./logger');
@@ -30,7 +30,11 @@ const stopAndDisconnect = async () => {
  * @returns {Promise}
  */
 const playSound = async (soundName) => {
-  const player = createAudioPlayer();
+  const player = createAudioPlayer({
+    behaviors: {
+      noSubscriber: NoSubscriberBehavior.Play,
+    },
+  });
   connection.subscribe(player);
 
   // Play selected sound

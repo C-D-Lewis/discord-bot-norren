@@ -7,9 +7,8 @@
 module.exports = (interaction) => interaction.reply(`
 Here are the available commands:
   🎲 \`/roll <max>\` - Roll a die
-  🔊 \`/sound <query>\` - Query and play a sound file
-  🔊 \`/sound list\` - List all known sound files
-  🔇 \`/sound stop\` - Stop any currently playing sound
+  🔊 \`/sound <query>/list/stop\` - Play/stop a sound file, or list all available.
+  🎶 \`/music <query>/list/stop\` - Play/stop a music file, or list all available.
   ❓ \`/help\` - Show all commands
   🤖 \`/ping\` - Ping the bot server
 

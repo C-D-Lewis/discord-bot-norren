@@ -2,17 +2,19 @@ const { initClient, getClient } = require('./modules/client');
 const handlePing = require('./commands/ping');
 const handleHelp = require('./commands/help');
 const handleRoll = require('./commands/roll');
-const handleSound = require('./commands/sound');
+const handleAudio = require('./commands/audio');
 const handleRollToHit = require('./commands/rollToHit');
-const { cacheSoundNames } = require('./modules/cache');
+const { cacheFileNames } = require('./modules/cache');
 const { log } = require('./modules/logger');
+const { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC } = require('./modules/constants');
 
 // Corresponds to all those registered with deploy-slash-commands.js
 const commandMap = {
   help: handleHelp,
   ping: handlePing,
   roll: handleRoll,
-  sound: handleSound,
+  sound: (interaction) => handleAudio(interaction, AUDIO_TYPE_SOUND),
+  music: (interaction) => handleAudio(interaction, AUDIO_TYPE_MUSIC),
   rolltohit: handleRollToHit,
 };
 
@@ -52,7 +54,7 @@ const onMessageCommand = (interaction) => {
   // Implement any message commands here
 
   // Else not sure
-  return interaction.reply(`Sorry ${username}, I don't know what you want`);
+  return interaction.reply(`Sorry ${username}, I don't know what you want. Try using \`/help\`.`);
 };
 
 /**
@@ -86,7 +88,7 @@ const main = async () => {
   client.user.setStatus('online');
 
   // Cache sound names
-  await cacheSoundNames();
+  await cacheFileNames();
 };
 
 main();

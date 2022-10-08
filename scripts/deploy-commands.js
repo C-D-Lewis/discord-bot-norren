@@ -19,9 +19,15 @@ const commands = [
       .setRequired(true)),
   new SlashCommandBuilder()
     .setName('sound')
-    .setDescription('Play a sound')
+    .setDescription('Play a sound file')
     .addStringOption((option) => option.setName('query')
       .setDescription('The sound name, or closest match')
+      .setRequired(true)),
+  new SlashCommandBuilder()
+    .setName('music')
+    .setDescription('Play a music file')
+    .addStringOption((option) => option.setName('query')
+      .setDescription('The music file name, or closest match')
       .setRequired(true)),
   new SlashCommandBuilder()
     .setName('rolltohit')
