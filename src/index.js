@@ -42,29 +42,35 @@ const onCommand = async (name, interaction) => {
 /**
  * On command via mention.
  *
- * @param {string} content - Message content that mentioned the bot.
+ * @param {object} interaction - Message interaction object.
  */
-const onMessageCommand = (content) => {
-  const [keyword, ...args] = content.split(' ');
-
-  // TODO Implement any message commands here
+const onMessageCommand = (interaction) => {
+  const { author: { username }, content } = interaction;
+  const [, keyword, ...args] = content.split(' ');
   log({ keyword, args });
+
+  // Implement any message commands here
+
+  // Else not sure
+  return interaction.reply(`Sorry ${username}, I don't know what you want`);
 };
 
 /**
  * When someone posts a message.
  *
- * @param {object} event - Message event object.
+ * @param {object} interaction - Message interaction object.
  * @returns {Promise}
  */
-const onMessage = (event) => {
-  const { /* author: { name }, */ content, mentions } = event;
+const onMessage = (interaction) => {
+  const { author: { id: callerId }, mentions } = interaction;
+  const botId = getClient().user.id;
 
-  // If mentioning me
-  const mentionedMe = mentions.users.get(getClient().user.id);
-  if (mentionedMe) return onMessageCommand(content);
+  // If mentioning me, and it wasn't me
+  const mentionedMe = mentions.users.get(botId);
+  const mentionedSelf = callerId === botId;
+  if (mentionedMe && !mentionedSelf) return onMessageCommand(interaction);
 
-  // TODO Some special passive reactions?
+  // Some other chat going by
   return undefined;
 };
 

@@ -76,8 +76,3 @@ npm start
 node scripts/undeploy-commands.js $SERVER_ID
 node scripts/deploy-commands.js $SERVER_ID
 ```
-
-
-## Commands
-
-TODO
