@@ -21,9 +21,6 @@ const commands = [
       .setDescription('The sound name, or closest match')
       .setRequired(true)),
   new SlashCommandBuilder()
-    .setName('shh')
-    .setDescription('Stop any sound playing currently'),
-  new SlashCommandBuilder()
     .setName('rolltohit')
     .setDescription('See if you can land a hit')
     .addNumberOption((option) => option.setName('result')

@@ -29,13 +29,13 @@ const playSound = async (soundName) => {
   connection.subscribe(player);
 
   // Play selected sound
-  player.play(getAudioResource(soundName));
   player.on('stateChange', async (old, _new) => {
     log(`Audio player transitioned from ${old.status} to ${_new.status}`);
 
     // Finished
     if (_new.status === 'idle') await stopAndDisconnect();
   });
+  player.play(getAudioResource(soundName));
 
   // Some error encountered
   player.on('error', async (error) => {

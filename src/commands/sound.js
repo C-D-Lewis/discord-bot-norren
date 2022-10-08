@@ -1,6 +1,6 @@
 const { getClosestSoundName, buildSoundList } = require('../modules/cache');
 const { log } = require('../modules/logger');
-const { joinVoiceChannelAndPlay } = require('../modules/voice');
+const { joinVoiceChannelAndPlay, stopAndDisconnect } = require('../modules/voice');
 
 /**
  * Handle 'sound' command.
@@ -15,6 +15,12 @@ module.exports = async (interaction) => {
   // Reply with list
   if (['help', 'list'].includes(query)) return interaction.reply(buildSoundList());
 
+  // Stop request
+  if (query === 'stop') {
+    await stopAndDisconnect();
+    return interaction.reply('Stopped playing');
+  }
+
   const foundSound = getClosestSoundName(query);
   log({ query, foundSound });
   if (!foundSound) throw new Error(`No sound found for "${query}"`);
@@ -24,7 +30,7 @@ module.exports = async (interaction) => {
     await joinVoiceChannelAndPlay(voice, foundSound);
 
     // Reply to client
-    return interaction.reply(`Playing \`${foundSound.split('/').pop()}\` (query: \`"${query}"\`)`);
+    return interaction.reply(`Playing \`${foundSound.split('/').pop()}\` (query: "${query}")`);
   }
 
   throw new Error(`Failed to match or play sound ${query}`);

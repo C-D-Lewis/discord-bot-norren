@@ -21,5 +21,5 @@ module.exports = (interaction) => {
   if (uptime > 1000 * 60 * 60 * 24) {
     uptimeStr = `${Math.round(uptime / (1000 * 60 * 60 * 24))} days`;
   }
-  return interaction.reply(`ping: \`${getClient().ws.ping}ms\` | host: \`${hostname()}\` | up: ${uptimeStr}`);
+  return interaction.reply(`ping: ${getClient().ws.ping}ms | host: \`${hostname()}\` | up: ${uptimeStr}`);
 };
