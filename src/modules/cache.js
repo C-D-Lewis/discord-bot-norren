@@ -1,12 +1,13 @@
 const fs = require('fs');
 
-const sounds = [];
+const soundNames = [];
+// TODO Cache sound audio?
 
 /**
  * Read sounds in /sounds and cache the names.
  */
 const cacheSoundNames = () => {
-  fs.readdirSync(`${__dirname}/../../sounds`).forEach((file) => sounds.push(file));
+  fs.readdirSync(`${__dirname}/../../sounds`).forEach((file) => soundNames.push(file));
 };
 
 /**
@@ -17,14 +18,22 @@ const cacheSoundNames = () => {
  */
 const getClosestSoundName = (query) => {
   // Exact partial match
-  const found = sounds.find((p) => p.includes(query));
+  const found = soundNames.find((p) => p.includes(query));
   if (found) return found;
 
   // Partial or closest match?
   return undefined;
 };
 
+/**
+ * Build a readable list of sound options.
+ *
+ * @returns {string} Readable list of sounds.
+ */
+const buildSoundList = () => soundNames.map((p) => `\`${p}\``).join(', ');
+
 module.exports = {
   cacheSoundNames,
   getClosestSoundName,
+  buildSoundList,
 };

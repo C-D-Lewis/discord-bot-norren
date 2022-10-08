@@ -4,6 +4,7 @@ const handleHelp = require('./commands/help');
 const handleRoll = require('./commands/roll');
 const handleSound = require('./commands/sound');
 const { cacheSoundNames } = require('./modules/cache');
+const { log } = require('./modules/logger');
 
 // Corresponds to all those registered with deploy-slash-commands.js
 const commandMap = {
@@ -11,6 +12,7 @@ const commandMap = {
   ping: handlePing,
   roll: handleRoll,
   sound: handleSound,
+  // sound list
   // rollToHit $d20 -> that'll do it / Uh go fuck yerself
 };
 
@@ -24,7 +26,7 @@ const commandMap = {
 const onCommand = async (name, interaction) => {
   if (!commandMap[name]) {
     const err = `Unknown command name ${name}`;
-    console.log(err);
+    log(err);
     return interaction.reply(err);
   }
 
@@ -32,7 +34,7 @@ const onCommand = async (name, interaction) => {
     return await commandMap[name](interaction);
   } catch (e) {
     const err = `Error: ${e.message}`;
-    console.log(err);
+    log(err);
     return interaction.reply(err);
   }
 };
@@ -46,24 +48,24 @@ const onMessageCommand = (content) => {
   const [keyword, ...args] = content.split(' ');
 
   // TODO Implement any message commands here
-  console.log({ keyword, args });
+  log({ keyword, args });
 };
 
 /**
  * When someone posts a message.
  *
  * @param {object} event - Message event object.
+ * @returns {Promise}
  */
 const onMessage = (event) => {
   const { /* author: { name }, */ content, mentions } = event;
 
   // If mentioning me
   const mentionedMe = mentions.users.get(getClient().user.id);
-  if (mentionedMe) {
-    onMessageCommand(content);
-  }
+  if (mentionedMe) return onMessageCommand(content);
 
   // TODO Some special passive reactions?
+  return undefined;
 };
 
 /**

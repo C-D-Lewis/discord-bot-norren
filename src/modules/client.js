@@ -1,6 +1,7 @@
 // Require the necessary discord.js classes
 const { Client, GatewayIntentBits } = require('discord.js');
 const { token } = require('../../config.json');
+const { log } = require('./logger');
 
 let client;
 
@@ -26,7 +27,7 @@ const initClient = async ({ onCommand, onMessage }) => new Promise((resolve) => 
   // When ready
   newClient.once('ready', () => {
     client = newClient;
-    console.log('Client ready');
+    log('Client ready');
     resolve();
   });
 
@@ -35,13 +36,13 @@ const initClient = async ({ onCommand, onMessage }) => new Promise((resolve) => 
     if (!interaction.isChatInputCommand()) return;
 
     const { commandName } = interaction;
-    console.log(`onCommand (${commandName})`);
+    log(`onCommand (${commandName})`);
     await onCommand(commandName, interaction);
   });
 
   // Server general message
   newClient.on('messageCreate', async (event) => {
-    console.log(`onMessage (${event.author.username}) (${event.content})`);
+    log(`onMessage (${event.author.username}) (${event.content})`);
     await onMessage(event);
   });
 
