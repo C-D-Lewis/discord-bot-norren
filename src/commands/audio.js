@@ -25,14 +25,11 @@ module.exports = async (interaction, type) => {
   const foundAudio = getClosestFileName(type, query);
   log({ query, foundAudio });
   if (!foundAudio) throw new Error(`No ${type} found for "${query}"`);
+  if (!voice.channel) throw new Error('User was not in voice channel');
 
   // If user in voice channel, join it
-  if (voice.channel) {
-    await joinVoiceChannelAndPlay(voice, foundAudio);
+  await joinVoiceChannelAndPlay(voice, foundAudio);
 
-    // Reply to client
-    return interaction.reply(`Playing \`${foundAudio.split('/').pop()}\` (query: "${query}")`);
-  }
-
-  throw new Error(`Failed to match or play ${type} ${query}`);
+  // Reply to client
+  return interaction.reply(`Playing \`${foundAudio.split('/').pop()}\` (query: "${query}")`);
 };

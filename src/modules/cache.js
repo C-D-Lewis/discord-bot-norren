@@ -25,11 +25,11 @@ const cacheFileNames = () => {
 const getClosestFileName = (type, query) => {
   const list = type === AUDIO_TYPE_SOUND ? soundNames : musicNames;
 
-  // Exact partial match
+  // Exact or partial match
   const found = list.find((p) => p.includes(query));
   if (found) return found;
 
-  // Partial or closest match?
+  // TODO: Random when multiple? Good for xyz_N.opus scheme
   return undefined;
 };
 
