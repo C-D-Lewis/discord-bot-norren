@@ -12,10 +12,15 @@ let connection;
 const stopAndDisconnect = async () => {
   if (!connection) throw new Error('Was not connected to voice');
 
-  await connection.disconnect();
-  await connection.destroy();
+  try {
+    await connection.disconnect();
+    await connection.destroy();
+    log('Stopped and disconnected');
+  } catch (e) {
+    log(`Error disconnecting: ${e.message}`);
+  }
+
   connection = null;
-  log('Stopped and disconnected');
 };
 
 /**
@@ -52,6 +57,8 @@ const playSound = async (soundName) => {
  * @param {string} soundName - Name of the sound to play.
  */
 const joinVoiceChannelAndPlay = async (voice, soundName) => {
+  if (connection) throw new Error('A sound is already playing');
+
   // Connect
   connection = joinVoiceChannel({
     channelId: voice.channel.id,

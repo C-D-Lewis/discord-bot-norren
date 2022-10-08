@@ -57,7 +57,7 @@ npm ci
 3. Register slash commands with Discord:
 
 ```
-node scripts/deploy-slash-commands.js $SERVER_ID
+node scripts/deploy-commands.js $SERVER_ID
 ```
 
 4. Pre-load the `sounds` directory with sounds to be matched by the `query`.
@@ -73,8 +73,8 @@ npm start
 6. If you need to update the slash commands, delete them and re-create them:
 
 ```
-node scripts/undeploy-all-commands.js $SERVER_ID
-node scripts/deploy-slash-commands.js $SERVER_ID
+node scripts/undeploy-commands.js $SERVER_ID
+node scripts/deploy-commands.js $SERVER_ID
 ```
 
 

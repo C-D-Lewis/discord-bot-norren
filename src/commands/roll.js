@@ -5,7 +5,7 @@
  * @returns {Promise}
  */
 module.exports = (interaction) => {
-  const param = interaction.options.getString('n');
+  const param = interaction.options.getNumber('n');
 
   const max = parseInt(param, 10);
   const result = Math.round(Math.random() * max) + 1;
