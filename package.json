@@ -5,6 +5,9 @@
   "scripts": {
     "start": "nodemon src/index.js"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "author": "Chris Lewis",
   "dependencies": {
     "@discordjs/voice": "^0.11.0",

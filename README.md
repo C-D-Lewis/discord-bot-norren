@@ -42,6 +42,8 @@ sudo apt-get install libtool autoconf automake
 npm ci
 ```
 
+> Installing `sodium` may take several minutes.
+
 2. Add `config.json` with credentials:
 
 ```json
