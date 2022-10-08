@@ -11,7 +11,7 @@ const commands = [
   new SlashCommandBuilder()
     .setName('roll')
     .setDescription('Roll a d<n> die')
-    .addStringOption((option) => option.setName('n')
+    .addNumberOption((option) => option.setName('n')
       .setDescription('The die maximum value, such as d20')
       .setRequired(true)),
   new SlashCommandBuilder()
@@ -19,6 +19,15 @@ const commands = [
     .setDescription('Play a sound')
     .addStringOption((option) => option.setName('query')
       .setDescription('The sound name, or closest match')
+      .setRequired(true)),
+  new SlashCommandBuilder()
+    .setName('shh')
+    .setDescription('Stop any sound playing currently'),
+  new SlashCommandBuilder()
+    .setName('rolltohit')
+    .setDescription('See if you can land a hit')
+    .addNumberOption((option) => option.setName('result')
+      .setDescription('Roll to hit result')
       .setRequired(true)),
 ]
   .map((command) => command.toJSON());

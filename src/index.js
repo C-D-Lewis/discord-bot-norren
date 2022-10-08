@@ -3,6 +3,8 @@ const handlePing = require('./commands/ping');
 const handleHelp = require('./commands/help');
 const handleRoll = require('./commands/roll');
 const handleSound = require('./commands/sound');
+const handleShh = require('./commands/shh');
+const handleRollToHit = require('./commands/rollToHit');
 const { cacheSoundNames } = require('./modules/cache');
 const { log } = require('./modules/logger');
 
@@ -12,8 +14,8 @@ const commandMap = {
   ping: handlePing,
   roll: handleRoll,
   sound: handleSound,
-  // sound list
-  // rollToHit $d20 -> that'll do it / Uh go fuck yerself
+  shh: handleShh,
+  rolltohit: handleRollToHit,
 };
 
 /**

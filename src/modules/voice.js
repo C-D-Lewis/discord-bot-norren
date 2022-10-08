@@ -1,6 +1,7 @@
 const {
-  joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, entersState,
+  joinVoiceChannel, createAudioPlayer, AudioPlayerStatus, entersState,
 } = require('@discordjs/voice');
+const { getAudioResource } = require('./cache');
 const { log } = require('./logger');
 
 let connection;
@@ -28,7 +29,7 @@ const playSound = async (soundName) => {
   connection.subscribe(player);
 
   // Play selected sound
-  player.play(createAudioResource(soundName));
+  player.play(getAudioResource(soundName));
   player.on('stateChange', async (old, _new) => {
     log(`Audio player transitioned from ${old.status} to ${_new.status}`);
 

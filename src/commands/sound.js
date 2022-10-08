@@ -16,16 +16,15 @@ module.exports = async (interaction) => {
   if (['help', 'list'].includes(query)) return interaction.reply(buildSoundList());
 
   const foundSound = getClosestSoundName(query);
-  const soundName = `sounds/${foundSound}`;
-  log({ query, foundSound, soundName });
+  log({ query, foundSound });
   if (!foundSound) throw new Error(`No sound found for "${query}"`);
 
   // If user in voice channel, join it
   if (voice.channel) {
-    await joinVoiceChannelAndPlay(voice, soundName);
+    await joinVoiceChannelAndPlay(voice, foundSound);
 
     // Reply to client
-    return interaction.reply(`Playing ${soundName.split('/').pop()} (query: "${query}")`);
+    return interaction.reply(`Playing \`${foundSound.split('/').pop()}\` (query: \`"${query}"\`)`);
   }
 
   throw new Error(`Failed to match or play sound ${query}`);

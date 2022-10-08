@@ -1,13 +1,20 @@
+const { createAudioResource } = require('@discordjs/voice');
 const fs = require('fs');
+const { log } = require('./logger');
 
+const soundsDir = `${__dirname}/../../sounds`;
 const soundNames = [];
-// TODO Cache sound audio?
+const audioCache = {};
 
 /**
  * Read sounds in /sounds and cache the names.
  */
 const cacheSoundNames = () => {
-  fs.readdirSync(`${__dirname}/../../sounds`).forEach((file) => soundNames.push(file));
+  fs.readdirSync(soundsDir).forEach((file) => {
+    soundNames.push(file);
+    audioCache[file] = createAudioResource(`${soundsDir}/${file}`);
+    log(`Cached ${file}`);
+  });
 };
 
 /**
@@ -26,6 +33,22 @@ const getClosestSoundName = (query) => {
 };
 
 /**
+ * Get a pre-loaded sound from cache, then replace it.
+ *
+ * @param {string} soundName - Sound to get.
+ * @returns {object} discord.js audio object.
+ */
+const getAudioResource = (soundName) => {
+  setTimeout(() => {
+    // Load another copy ready since these can't be restarted
+    audioCache[soundName] = createAudioResource(`${soundsDir}/${soundName}`);
+    log(`Cached ${soundName}`);
+  }, 1000);
+
+  return audioCache[soundName];
+};
+
+/**
  * Build a readable list of sound options.
  *
  * @returns {string} Readable list of sounds.
@@ -36,4 +59,5 @@ module.exports = {
   cacheSoundNames,
   getClosestSoundName,
   buildSoundList,
+  getAudioResource,
 };
