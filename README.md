@@ -60,9 +60,9 @@ npm ci
 node scripts/deploy-commands.js $SERVER_ID
 ```
 
-4. Pre-load the `sounds` directory with sounds to be matched by the `query`.
+4. Pre-load the `sounds` and `music` directories with files to be matched by the `query`.
 
-> Sounds must be in the Opus sound format
+> Audio files must be in the Opus sound format
 
 5. Start the app:
 
