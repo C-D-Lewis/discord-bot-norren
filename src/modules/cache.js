@@ -1,5 +1,6 @@
 const { createAudioResource, StreamType } = require('@discordjs/voice');
 const fs = require('fs');
+const { log } = require('./logger');
 const { AUDIO_TYPE_SOUND } = require('./constants');
 
 const soundsDir = `${__dirname}/../../sounds`;
@@ -20,17 +21,28 @@ const cacheFileNames = () => {
  *
  * @param {string} type - Audio type (sound|music).
  * @param {string} query - Query to use.
- * @returns {string} Name of the file that matched closest.
+ * @returns {string|Array<string>} Name of the file(s) that matched query.
  */
 const getClosestFileName = (type, query) => {
   const list = type === AUDIO_TYPE_SOUND ? soundNames : musicNames;
 
-  // Exact or partial match
-  const found = list.find((p) => p.includes(query));
-  if (found) return found;
+  // Exact match
+  let found = list.find((p) => p === query);
+  if (found) {
+    log(`Exact match ${query} -> ${found}`);
+    return found;
+  }
 
-  // TODO: Random when multiple? Good for xyz_N.opus scheme
-  return undefined;
+  // Partial match
+  found = list.filter((p) => p.includes(query));
+  if (found.length === 1) {
+    const [result] = found;
+    log(`Partial single match ${query} -> ${result}`);
+    return result;
+  }
+
+  // Multiple
+  return found;
 };
 
 /**

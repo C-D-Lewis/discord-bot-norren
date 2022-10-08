@@ -22,14 +22,23 @@ module.exports = async (interaction, type) => {
     return interaction.reply('Stopped playing');
   }
 
-  const foundAudio = getClosestFileName(type, query);
-  log({ query, foundAudio });
-  if (!foundAudio) throw new Error(`No ${type} found for "${query}"`);
+  const result = getClosestFileName(type, query);
+  log({ query, result });
+  if (!result) throw new Error(`No ${type} found for "${query}"`);
   if (!voice.channel) throw new Error('User was not in voice channel');
+
+  // Multiple results?
+  let foundAudio = result;
+  if (Array.isArray(result) && result.length > 1) {
+    const index = Math.floor(Math.random() * result.length);
+    log(`Multiple matches: ${query} -> ${result[index]} ${index}/${result.length} (${result.join(', ')})`);
+    foundAudio = result[index];
+  }
 
   // If user in voice channel, join it
   await joinVoiceChannelAndPlay(voice, foundAudio);
 
   // Reply to client
-  return interaction.reply(`Playing \`${foundAudio.split('/').pop()}\` (query: "${query}")`);
+  const names = Array.isArray(result) ? result.map((p) => p.split('.')[0]).map((p) => `\`${p}\``).join(', ') : result.split('.')[0];
+  return interaction.reply(`Playing \`${foundAudio.split('/').pop()}\` (query: "${query}", matches: ${names})`);
 };
