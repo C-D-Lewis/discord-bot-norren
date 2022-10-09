@@ -65,8 +65,34 @@ const getAudioResource = (name) => {
  * @returns {string} Readable list of sounds.
  */
 const buildFileList = (type) => {
-  const list = type === AUDIO_TYPE_SOUND ? soundNames : musicNames;
-  return list.map((p) => p.split('.')[0]).map((p) => `\`${p}\``).join(', ');
+  let list = type === AUDIO_TYPE_SOUND ? soundNames : musicNames;
+  list = list.map((p) => p.split('.')[0]);
+
+  // Bucket if many variants
+  const buckets = { singleItems: [] };
+  list.forEach((p) => {
+    // Single
+    if (!p.includes('_')) {
+      buckets.singleItems.push(p);
+      return;
+    }
+
+    // One of a set
+    const [prefix] = p.split('_');
+    if (!buckets[prefix]) buckets[prefix] = [];
+    buckets[prefix].push(p);
+  });
+
+  // Format
+  const { singleItems, ...rest } = buckets;
+  let reply = `*Single:*
+  ${singleItems.map((p) => `\`${p}\``).join(', ')}
+`;
+  if (Object.keys(rest).length > 0) {
+    reply += `*Sets:*
+    ${Object.entries(rest).map(([prefix, items]) => `\`${prefix}\` (🔀 ${items.length})`).join(', ')}`;
+  }
+  return reply;
 };
 
 module.exports = {

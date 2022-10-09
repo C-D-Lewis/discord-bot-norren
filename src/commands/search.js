@@ -15,7 +15,7 @@ module.exports = async (interaction) => {
   const html = await fetch(url).then((r) => r.text());
   const start = html.indexOf('<p>We found more than one');
   const end = html.indexOf('</div>\n</div>\n</div>', start);
-  const lines = html.slice(start, end).split('\n').filter(p => p.includes('a href'));
+  const lines = html.slice(start, end).split('\n').filter((p) => p.includes('a href'));
 
   // No lines found
   if (lines.length === 0) throw new Error(`No results found for ${query}`);
