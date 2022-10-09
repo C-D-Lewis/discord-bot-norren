@@ -5,11 +5,12 @@
  * @returns {Promise}
  */
 module.exports = (interaction) => interaction.reply(`
-🎲 \`/roll <d>\` - Roll a <d> die (using CSPRNG)
+🎲 \`/roll <d>\` - Roll a <d> die (using CRNG)
 🔊 \`/sound <name>/list/stop\` - Play/stop/list sound files
 🎶 \`/music <name>/list/stop\` - Play/stop/list music files
-📖 \`/search <query>\` - Search Roll20.net compendium.
+📖 \`/search <query>\` - Search Roll20.net compendium
 🎲 \`/rolltohit <result>\` - See if your hit will land...
+❔ \`/ask <question>\` - Ask me a yes/no question
 ❓ \`/help\` - Show this information
 🤖 \`/ping\` - Ping the bot server
 

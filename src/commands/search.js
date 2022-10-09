@@ -29,8 +29,8 @@ module.exports = async (interaction) => {
   });
 
   // Return link list
-  const replyText = `📖 Found these results frmm roll20.net:
-${links.map(({ label, href }) => `- ${label}:\n    <https://roll20.net${href.split(' ').join('%20')}>`).join('\n')}
+  const replyText = `📖 _Found these results from roll20.net:_
+${links.map(({ label, href }, i) => `${i + 1}: **${label}**\n<https://roll20.net${href.split(' ').join('%20')}>`).join('\n')}
 `;
   if (replyText.length > 2000) throw new Error('Too many results');
   return interaction.reply(replyText);
