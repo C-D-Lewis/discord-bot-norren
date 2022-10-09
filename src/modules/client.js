@@ -27,7 +27,6 @@ const initClient = async ({ onCommand, onMessage }) => new Promise((resolve) => 
   // When ready
   newClient.once('ready', () => {
     client = newClient;
-    log('Client ready');
     resolve();
   });
 

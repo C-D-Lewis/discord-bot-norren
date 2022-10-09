@@ -21,17 +21,23 @@ module.exports = async (interaction) => {
   if (lines.length === 0) throw new Error(`No results found for ${query}`);
 
   // Extract links
+  const max = 10;
   const links = [];
-  lines.forEach((l) => {
-    const [, href, text] = l.split('\'');
-    const label = text.slice(text.indexOf('>') + 1, text.indexOf('<')).trim();
-    links.push({ label, href });
-  });
+  lines
+    .slice(0, max)
+    .forEach((l) => {
+      const [, href, text] = l.split('\'');
+      const label = text.slice(text.indexOf('>') + 1, text.indexOf('<')).trim();
+      links.push({ label, href });
+    });
 
   // Return link list
-  const replyText = `📖 _Found these results from roll20.net:_
+  let replyText = `📖 _Found these results from roll20.net:_
 ${links.map(({ label, href }, i) => `${i + 1}: **${label}**\n<https://roll20.net${href.split(' ').join('%20')}>`).join('\n')}
 `;
-  if (replyText.length > 2000) throw new Error('Too many results');
+  if (lines.length > max) {
+    replyText += `
+⚠️ _There were more than ${max} results_`;
+  }
   return interaction.reply(replyText);
 };

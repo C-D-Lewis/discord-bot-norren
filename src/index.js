@@ -85,14 +85,18 @@ const onMessage = (interaction) => {
  */
 const main = async () => {
   // Connect
+  log('Connecting to Discord...');
   await initClient({ onCommand, onMessage });
+  log('Connected');
 
   // Set status
   const client = getClient();
   client.user.setStatus('online');
+  log('Client is ready');
 
   // Cache sound names
   await cacheFileNames();
+  log('File names cached');
 };
 
 main();
