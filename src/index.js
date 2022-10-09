@@ -2,8 +2,9 @@ const { initClient, getClient } = require('./modules/client');
 const handlePing = require('./commands/ping');
 const handleHelp = require('./commands/help');
 const handleRoll = require('./commands/roll');
+const handleSearch = require('./commands/search');
 const handleAudio = require('./commands/audio');
-const handleRollToHit = require('./commands/rollToHit');
+const handleRollToHit = require('./commands/rolltohit');
 const { cacheFileNames } = require('./modules/cache');
 const { log } = require('./modules/logger');
 const { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC } = require('./modules/constants');
@@ -13,6 +14,7 @@ const commandMap = {
   help: handleHelp,
   ping: handlePing,
   roll: handleRoll,
+  search: handleSearch,
   sound: (interaction) => handleAudio(interaction, AUDIO_TYPE_SOUND),
   music: (interaction) => handleAudio(interaction, AUDIO_TYPE_MUSIC),
   rolltohit: handleRollToHit,

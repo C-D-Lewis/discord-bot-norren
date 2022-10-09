@@ -18,6 +18,12 @@ const commands = [
       .setDescription('The die maximum value, such as d20')
       .setRequired(true)),
   new SlashCommandBuilder()
+    .setName('search')
+    .setDescription('Search roll20.net DnD compendium')
+    .addStringOption((option) => option.setName('query')
+      .setDescription('Search query')
+      .setRequired(true)),
+  new SlashCommandBuilder()
     .setName('sound')
     .setDescription('Play a sound file')
     .addStringOption((option) => option.setName('name')
