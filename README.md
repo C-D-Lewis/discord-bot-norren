@@ -64,6 +64,8 @@ node scripts/deploy-commands.js $SERVER_ID
 
 > Audio files must be in the Opus sound format
 
+> Sets of files to be used randomly must have underscore, e.g: `guard_5.opus`.
+
 5. Start the app:
 
 ```

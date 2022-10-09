@@ -5,6 +5,7 @@ const handleRoll = require('./commands/roll');
 const handleSearch = require('./commands/search');
 const handleAudio = require('./commands/audio');
 const handleRollToHit = require('./commands/rolltohit');
+const handleAsk = require('./commands/ask');
 const { cacheFileNames } = require('./modules/cache');
 const { log } = require('./modules/logger');
 const { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC } = require('./modules/constants');
@@ -18,6 +19,7 @@ const commandMap = {
   sound: (interaction) => handleAudio(interaction, AUDIO_TYPE_SOUND),
   music: (interaction) => handleAudio(interaction, AUDIO_TYPE_MUSIC),
   rolltohit: handleRollToHit,
+  ask: handleAsk,
 };
 
 /**

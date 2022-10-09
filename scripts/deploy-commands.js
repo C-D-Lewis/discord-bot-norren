@@ -41,6 +41,12 @@ const commands = [
     .addNumberOption((option) => option.setName('result')
       .setDescription('Roll to hit result')
       .setRequired(true)),
+  new SlashCommandBuilder()
+    .setName('ask')
+    .setDescription('Ask me a yes/no for advice')
+    .addStringOption((option) => option.setName('question')
+      .setDescription('Question to ask')
+      .setRequired(true)),
 ]
   .map((command) => command.toJSON());
 
