@@ -9,7 +9,7 @@ const { log } = require('../modules/logger');
 module.exports = (interaction) => {
   const result = interaction.options.getNumber('result');
 
-  const ac = Math.round(Math.random() * 20) + 1;
+  const ac = Math.round(Math.random() * 15) + 5;
   log(`ac: ${ac} vs result: ${result}`);
   const reply = result >= ac ? '😒 That\'ll do it' : '😎 Go fuck yerself';
   return interaction.reply(reply);

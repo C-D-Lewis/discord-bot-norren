@@ -1,3 +1,5 @@
+const { getCsprngInt } = require('../modules/util');
+
 /**
  * Handle 'roll' command.
  *
@@ -5,9 +7,8 @@
  * @returns {Promise}
  */
 module.exports = (interaction) => {
-  const param = interaction.options.getNumber('n');
-
+  const param = interaction.options.getNumber('d');
   const max = parseInt(param, 10);
-  const result = Math.round(Math.random() * max) + 1;
-  return interaction.reply(`🎲 ${result}`);
+  const result = getCsprngInt(1, max);
+  return interaction.reply(`🎲 I rolled a d${max} and got \`${result}\``);
 };

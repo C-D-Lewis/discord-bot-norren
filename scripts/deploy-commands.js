@@ -14,19 +14,19 @@ const commands = [
   new SlashCommandBuilder()
     .setName('roll')
     .setDescription('Roll a d<n> die')
-    .addNumberOption((option) => option.setName('n')
+    .addNumberOption((option) => option.setName('d')
       .setDescription('The die maximum value, such as d20')
       .setRequired(true)),
   new SlashCommandBuilder()
     .setName('sound')
     .setDescription('Play a sound file')
-    .addStringOption((option) => option.setName('query')
+    .addStringOption((option) => option.setName('name')
       .setDescription('The sound name, or closest match')
       .setRequired(true)),
   new SlashCommandBuilder()
     .setName('music')
     .setDescription('Play a music file')
-    .addStringOption((option) => option.setName('query')
+    .addStringOption((option) => option.setName('name')
       .setDescription('The music file name, or closest match')
       .setRequired(true)),
   new SlashCommandBuilder()

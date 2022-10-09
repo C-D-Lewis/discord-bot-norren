@@ -27,7 +27,7 @@ const commandMap = {
  */
 const onCommand = async (name, interaction) => {
   if (!commandMap[name]) {
-    const err = `Unknown command name ${name}`;
+    const err = 'I don\'t know that command, but I should';
     log(err);
     return interaction.reply(err);
   }
@@ -35,7 +35,7 @@ const onCommand = async (name, interaction) => {
   try {
     return await commandMap[name](interaction);
   } catch (e) {
-    const err = `Error: ${e.message}`;
+    const err = `⚠️ ${e.message}`;
     log(err);
     return interaction.reply(err);
   }

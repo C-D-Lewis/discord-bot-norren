@@ -1,5 +1,6 @@
 const { getClosestFileName, buildFileList } = require('../modules/cache');
 const { log } = require('../modules/logger');
+const { getCsprngInt } = require('../modules/util');
 const { joinVoiceChannelAndPlay, stopAndDisconnect } = require('../modules/voice');
 
 /**
@@ -11,7 +12,7 @@ const { joinVoiceChannelAndPlay, stopAndDisconnect } = require('../modules/voice
  */
 module.exports = async (interaction, type) => {
   const { options, member: { voice } } = interaction;
-  const query = options.getString('query');
+  const query = options.getString('name');
 
   // Reply with list
   if (query === 'list') return interaction.reply(buildFileList(type));
@@ -19,26 +20,28 @@ module.exports = async (interaction, type) => {
   // Stop request
   if (query === 'stop') {
     await stopAndDisconnect();
-    return interaction.reply('Stopped playing');
+    return interaction.reply('I have stopped playing that');
   }
 
-  const result = getClosestFileName(type, query);
-  log({ query, result });
-  if (!result) throw new Error(`No ${type} found for "${query}"`);
-  if (!voice.channel) throw new Error('User was not in voice channel');
+  const results = getClosestFileName(type, query);
+  log({ query, results });
+  if (!results.length) throw new Error(`I don't know a ${type} for "${query}"`);
+  if (!voice.channel) throw new Error('I don\'t see you in a voice channel');
 
   // Multiple results?
-  let foundAudio = result;
-  if (Array.isArray(result) && result.length > 1) {
-    const index = Math.floor(Math.random() * result.length);
-    log(`Multiple matches: ${query} -> ${result[index]} ${index}/${result.length} (${result.join(', ')})`);
-    foundAudio = result[index];
+  let foundAudio = results;
+  if (Array.isArray(results) && results.length > 1) {
+    const index = getCsprngInt(0, results.length);
+    log(`Multiple matches: ${query} -> ${results[index]} ${index}/${results.length} (${results.join(', ')})`);
+    foundAudio = results[index];
   }
 
   // If user in voice channel, join it
   await joinVoiceChannelAndPlay(voice, foundAudio);
 
   // Reply to client
-  const names = Array.isArray(result) ? result.map((p) => p.split('.')[0]).map((p) => `\`${p}\``).join(', ') : result.split('.')[0];
-  return interaction.reply(`Playing \`${foundAudio.split('/').pop()}\` (query: "${query}", matches: ${names})`);
+  // const names = Array.isArray(results)
+  //   ? results.map((p) => p.split('.')[0]).map((p) => `\`${p}\``).join(', ')
+  //   : `\`${results.split('.')[0]}\``;
+  return interaction.reply(`I will play \`${foundAudio.split('/').pop()}\` (query: "${query}", matches: ${results.length})`);
 };
