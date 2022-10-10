@@ -2,6 +2,11 @@
 
 Discord bot for the Heroes of Mirren Discord server.
 
+* [Setup bot](#setup-bot)
+* [Invite to server](#invite-to-server)
+* [Setup app](#setup-app)
+* [Scripts](#scripts)
+
 
 ## Setup bot
 
@@ -50,31 +55,49 @@ npm ci
 {
   "token": "<app token>",
   "clientId": "<application id>",
-  "guildId": "<server id>"
+  "guildId": "<server id>",
+  "reactions": [
+    { "trigger": "hello", "emoji": "👋"}
+  ]
 }
 ```
 
-3. Register slash commands with Discord:
-
-```
-node scripts/deploy-commands.js $SERVER_ID
-```
-
-4. Pre-load the `sounds` and `music` directories with files to be matched by the `query`.
+3. Pre-load the `sounds` and `music` directories with files to be matched by the `query`.
 
 > Audio files must be in the Opus sound format
 
 > Sets of files to be used randomly must have underscore, e.g: `guard_5.opus`.
 
-5. Start the app:
+4. Start the app:
 
 ```
 npm start
 ```
 
-6. If you need to update the slash commands, delete them and re-create them:
+
+## Scripts
+
+Register slash commands with Discord API:
+
+```
+node scripts/deploy-commands.js $SERVER_ID
+```
+
+If you need to update the slash commands, delete them and re-create them:
 
 ```
 node scripts/undeploy-commands.js $SERVER_ID
 node scripts/deploy-commands.js $SERVER_ID
+```
+
+Make the bot say something:
+
+```
+node scripts/say.js $CHANNEL_ID $MESSAGE
+```
+
+Make the bot react to a message:
+
+```
+node scripts/react.js $CHANNEL_ID $MESSAGE_ID $EMOJI
 ```

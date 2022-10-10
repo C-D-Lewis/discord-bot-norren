@@ -9,6 +9,7 @@ const { cacheFileNames } = require('./modules/cache');
 const { log } = require('./modules/logger');
 const { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC, EMOJI_HAPPY_PETER } = require('./modules/constants');
 const { replyHidden } = require('./modules/discord');
+const { reactions } = require('../config.json');
 
 // Corresponds to all those registered with deploy-slash-commands.js
 const commandMap = {
@@ -65,14 +66,14 @@ const onMessageCommand = (interaction) => {
  * @param {object} interaction - Message interaction object.
  * @returns {Promise}
  */
-const onMessage = (interaction) => {
+const onMessage = async (interaction) => {
   const { author: { id: callerId }, mentions, content } = interaction;
   const botId = getClient().user.id;
 
-  // Auto reactions?
-  // TODO config.json mapping ['trigger', 'emoji']
-  const normal = content.toLowerCase();
-  if (normal.includes('golden boi')) interaction.react(EMOJI_HAPPY_PETER);
+  // Auto reactions
+  const lower = content.toLowerCase();
+  const toReact = reactions.filter(({ trigger }) => lower.includes(trigger));
+  await Promise.all(toReact.map(p => interaction.react(p.emoji)));
 
   // If mentioning me, and it wasn't me
   if (mentions.users.get(botId) && callerId !== botId) return onMessageCommand(interaction);
