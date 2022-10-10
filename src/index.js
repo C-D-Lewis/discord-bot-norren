@@ -70,6 +70,7 @@ const onMessage = (interaction) => {
   const botId = getClient().user.id;
 
   // Auto reactions?
+  // TODO config.json mapping ['trigger', 'emoji']
   const normal = content.toLowerCase();
   if (normal.includes('golden boi')) interaction.react(EMOJI_HAPPY_PETER);
 
