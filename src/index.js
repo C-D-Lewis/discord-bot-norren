@@ -73,7 +73,7 @@ const onMessage = async (interaction) => {
   // Auto reactions
   const lower = content.toLowerCase();
   const toReact = reactions.filter(({ trigger }) => lower.includes(trigger));
-  await Promise.all(toReact.map(p => interaction.react(p.emoji)));
+  await Promise.all(toReact.map((p) => interaction.react(p.emoji)));
 
   // If mentioning me, and it wasn't me
   if (mentions.users.get(botId) && callerId !== botId) return onMessageCommand(interaction);
