@@ -42,13 +42,11 @@ const playSound = async (soundName) => {
     // Finished
     if (_new.status === 'idle') await stopAndDisconnect();
   });
-  player.play(getAudioResource(soundName));
-
-  // Some error encountered
   player.on('error', async (error) => {
     log('Player error:', error.message);
     await stopAndDisconnect();
   });
+  player.play(getAudioResource(soundName));
   await entersState(player, AudioPlayerStatus.Playing, 1000);
 };
 

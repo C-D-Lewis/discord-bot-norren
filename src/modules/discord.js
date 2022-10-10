@@ -40,9 +40,9 @@ const initClient = async ({ onCommand, onMessage }) => new Promise((resolve) => 
   });
 
   // Server general message
-  newClient.on('messageCreate', async (event) => {
-    log(`onMessage (${event.author.username}) (${event.content})`);
-    await onMessage(event);
+  newClient.on('messageCreate', async (interaction) => {
+    log(`onMessage (${interaction.author.username}) (${interaction.content})`);
+    await onMessage(interaction);
   });
 
   // Log in
