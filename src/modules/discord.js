@@ -21,6 +21,7 @@ const initClient = async ({ onCommand, onMessage }) => new Promise((resolve) => 
       GatewayIntentBits.GuildMessages,
       GatewayIntentBits.MessageContent,
       GatewayIntentBits.GuildVoiceStates,
+      GatewayIntentBits.GuildMessageReactions,
     ],
   });
 
