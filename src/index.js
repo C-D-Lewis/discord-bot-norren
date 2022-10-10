@@ -7,7 +7,7 @@ const handleAudio = require('./commands/audio');
 const handleAsk = require('./commands/ask');
 const { cacheFileNames } = require('./modules/cache');
 const { log } = require('./modules/logger');
-const { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC } = require('./modules/constants');
+const { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC, EMOJI_HAPPY_PETER } = require('./modules/constants');
 const { replyHidden } = require('./modules/discord');
 
 // Corresponds to all those registered with deploy-slash-commands.js
@@ -66,8 +66,12 @@ const onMessageCommand = (interaction) => {
  * @returns {Promise}
  */
 const onMessage = (interaction) => {
-  const { author: { id: callerId }, mentions } = interaction;
+  const { author: { id: callerId }, mentions, content } = interaction;
   const botId = getClient().user.id;
+
+  // Auto reactions?
+  const normal = content.toLowerCase();
+  if (normal.includes('golden boi')) interaction.react(EMOJI_HAPPY_PETER);
 
   // If mentioning me, and it wasn't me
   if (mentions.users.get(botId) && callerId !== botId) return onMessageCommand(interaction);
