@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const { replyHidden } = require('../modules/discord');
 
 /**
  * Handle 'search' command to find links to roll20.net
@@ -39,5 +40,5 @@ ${links.map(({ label, href }, i) => `${i + 1}: **${label}**\n<https://roll20.net
     replyText += `
 ⚠️ _There were more than ${max} results_`;
   }
-  return interaction.reply(replyText);
+  return replyHidden(interaction, replyText);
 };

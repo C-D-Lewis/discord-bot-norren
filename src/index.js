@@ -1,25 +1,24 @@
-const { initClient, getClient } = require('./modules/client');
+const { initClient, getClient } = require('./modules/discord');
 const handlePing = require('./commands/ping');
 const handleHelp = require('./commands/help');
 const handleRoll = require('./commands/roll');
 const handleSearch = require('./commands/search');
 const handleAudio = require('./commands/audio');
-const handleRollToHit = require('./commands/rolltohit');
 const handleAsk = require('./commands/ask');
 const { cacheFileNames } = require('./modules/cache');
 const { log } = require('./modules/logger');
 const { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC } = require('./modules/constants');
+const { replyHidden } = require('./modules/discord');
 
 // Corresponds to all those registered with deploy-slash-commands.js
 const commandMap = {
-  help: handleHelp,
-  ping: handlePing,
   roll: handleRoll,
   search: handleSearch,
   sound: (interaction) => handleAudio(interaction, AUDIO_TYPE_SOUND),
   music: (interaction) => handleAudio(interaction, AUDIO_TYPE_MUSIC),
-  rolltohit: handleRollToHit,
   ask: handleAsk,
+  help: handleHelp,
+  ping: handlePing,
 };
 
 /**
@@ -30,18 +29,14 @@ const commandMap = {
  * @returns {Function|AsyncFunction} Handler that returns reply text.
  */
 const onCommand = async (name, interaction) => {
-  if (!commandMap[name]) {
-    const err = 'I don\'t know that command, but I should';
-    log(err);
-    return interaction.reply(err);
-  }
-
   try {
+    if (!commandMap[name]) throw new Error('I don\'t know that command, but I should know it');
+
     return await commandMap[name](interaction);
   } catch (e) {
     const err = `⚠️ ${e.message}`;
     log(err);
-    return interaction.reply(err);
+    return replyHidden(interaction, err);
   }
 };
 
@@ -58,7 +53,10 @@ const onMessageCommand = (interaction) => {
   // Implement any message commands here
 
   // Else not sure
-  return interaction.reply(`Sorry ${username}, I don't know what you want. Try using \`/help\`.`);
+  return replyHidden(
+    interaction,
+    `Sorry ${username}, I don't know what you want. Try using \`/help\`.`,
+  );
 };
 
 /**
@@ -72,9 +70,7 @@ const onMessage = (interaction) => {
   const botId = getClient().user.id;
 
   // If mentioning me, and it wasn't me
-  const mentionedMe = mentions.users.get(botId);
-  const mentionedSelf = callerId === botId;
-  if (mentionedMe && !mentionedSelf) return onMessageCommand(interaction);
+  if (mentions.users.get(botId) && callerId !== botId) return onMessageCommand(interaction);
 
   // Some other chat going by
   return undefined;
@@ -84,19 +80,14 @@ const onMessage = (interaction) => {
  * The main function.
  */
 const main = async () => {
-  // Connect
-  log('Connecting to Discord...');
   await initClient({ onCommand, onMessage });
-  log('Connected');
+  log('Connected to Discord');
 
-  // Set status
-  const client = getClient();
-  client.user.setStatus('online');
-  log('Client is ready');
+  getClient().user.setStatus('online');
 
-  // Cache sound names
   await cacheFileNames();
-  log('File names cached');
+
+  log('Ready');
 };
 
 main();

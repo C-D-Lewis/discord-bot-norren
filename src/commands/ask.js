@@ -1,4 +1,5 @@
 const { getCsprngInt } = require('../modules/util');
+const { replyHidden } = require('../modules/discord');
 
 /** Positive answers */
 const POSITIVE = [
@@ -49,14 +50,13 @@ const getAnswer = () => {
  * Handle 'ask' command to find links to roll20.net
  *
  * @param {object} interaction - discord.js interaction object.
- * @returns {Promise}
+ * @returns {Promise<string>} Reply text.
  */
 module.exports = async (interaction) => {
-  const { user: { username }, options } = interaction;
+  const { options } = interaction;
   const question = options.getString('question');
 
-  const answer = getAnswer();
-  return interaction.reply(`_${username} asked "${question}":_
+  return replyHidden(interaction, `_You asked "${question}":_
   
-🔮 ${answer}`);
+🔮 ${getAnswer()}`);
 };

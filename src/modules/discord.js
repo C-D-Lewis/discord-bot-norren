@@ -60,7 +60,17 @@ const getClient = () => {
   return client;
 };
 
+/**
+ * Reply just to the caller.
+ *
+ * @param {object} interaction - Discord.js interaction object.
+ * @param {string} content - Message content.
+ * @returns {Promise}
+ */
+const replyHidden = (interaction, content) => interaction.reply({ content, ephemeral: true });
+
 module.exports = {
   initClient,
   getClient,
+  replyHidden,
 };

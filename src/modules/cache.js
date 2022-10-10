@@ -14,6 +14,7 @@ const musicNames = [];
 const cacheFileNames = () => {
   fs.readdirSync(soundsDir).forEach((file) => soundNames.push(file));
   fs.readdirSync(musicDir).forEach((file) => musicNames.push(file));
+  log(`Files cached: ${soundNames.length} sounds, ${musicNames.length} music`);
 };
 
 /**
@@ -21,7 +22,7 @@ const cacheFileNames = () => {
  *
  * @param {string} type - Audio type (sound|music).
  * @param {string} query - Query to use.
- * @returns {string|Array<string>} Name of the file(s) that matched query.
+ * @returns {Array<string>} Name of the file(s) that matched query.
  */
 const getClosestFileName = (type, query) => {
   const list = type === AUDIO_TYPE_SOUND ? soundNames : musicNames;
@@ -30,7 +31,7 @@ const getClosestFileName = (type, query) => {
   let found = list.find((p) => p === query);
   if (found) {
     log(`Exact match ${query} -> ${found}`);
-    return found;
+    return [found];
   }
 
   // Partial match
@@ -38,7 +39,7 @@ const getClosestFileName = (type, query) => {
   if (found.length === 1) {
     const [result] = found;
     log(`Partial single match ${query} -> ${result}`);
-    return result;
+    return [result];
   }
 
   // Multiple

@@ -10,8 +10,6 @@ let connection;
  * Stop and disconnect.
  */
 const stopAndDisconnect = async () => {
-  if (!connection) throw new Error('Was not connected to voice');
-
   try {
     await connection.disconnect();
     await connection.destroy();
@@ -39,7 +37,7 @@ const playSound = async (soundName) => {
 
   // Play selected sound
   player.on('stateChange', async (old, _new) => {
-    log(`Audio player transitioned from ${old.status} to ${_new.status}`);
+    log(`Audio: ${old.status} -> ${_new.status}`);
 
     // Finished
     if (_new.status === 'idle') await stopAndDisconnect();
@@ -71,10 +69,14 @@ const joinVoiceChannelAndPlay = async (voice, soundName) => {
     selfDeaf: false,
   });
   connection.on('stateChange', async (old, _new) => {
-    log(`Connection transitioned from ${old.status} to ${_new.status}`);
+    log(`Connection: ${old.status} -> ${_new.status}`);
 
     // When ready
     if (_new.status === 'ready' && _new.status !== old.status) playSound(soundName);
+  });
+  connection.on('error', async (error) => {
+    log('Connection error:', error.message);
+    await stopAndDisconnect();
   });
 };
 

@@ -36,12 +36,6 @@ const commands = [
       .setDescription('The music file name, or closest match')
       .setRequired(true)),
   new SlashCommandBuilder()
-    .setName('rolltohit')
-    .setDescription('See if you can land a hit')
-    .addNumberOption((option) => option.setName('result')
-      .setDescription('Roll to hit result')
-      .setRequired(true)),
-  new SlashCommandBuilder()
     .setName('ask')
     .setDescription('Ask me a yes/no for advice')
     .addStringOption((option) => option.setName('question')
