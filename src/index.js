@@ -7,7 +7,7 @@ const handleAudio = require('./commands/audio');
 const handleAsk = require('./commands/ask');
 const { cacheFileNames } = require('./modules/cache');
 const { log } = require('./modules/logger');
-const { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC, EMOJI_HAPPY_PETER } = require('./modules/constants');
+const { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC } = require('./modules/constants');
 const { replyHidden } = require('./modules/discord');
 const { reactions } = require('../config.json');
 
