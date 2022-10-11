@@ -26,24 +26,7 @@ const cacheFileNames = () => {
  */
 const getClosestFileName = (type, query) => {
   const list = type === AUDIO_TYPE_SOUND ? soundNames : musicNames;
-
-  // Exact match
-  let found = list.find((p) => p === query);
-  if (found) {
-    log(`Exact match ${query} -> ${found}`);
-    return [found];
-  }
-
-  // Partial match
-  found = list.filter((p) => p.includes(query));
-  if (found.length === 1) {
-    const [result] = found;
-    log(`Partial single match ${query} -> ${result}`);
-    return [result];
-  }
-
-  // Multiple
-  return found;
+  return list.filter((p) => p.includes(query));
 };
 
 /**

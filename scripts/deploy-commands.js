@@ -6,12 +6,6 @@ if (!SERVER_ID) throw new Error('Please specify SERVER_ID');
 
 const commands = [
   new SlashCommandBuilder()
-    .setName('help')
-    .setDescription('See all commands'),
-  new SlashCommandBuilder()
-    .setName('ping')
-    .setDescription('Ping the bot server'),
-  new SlashCommandBuilder()
     .setName('roll')
     .setDescription('Roll a d<n> die')
     .addNumberOption((option) => option.setName('d')
@@ -36,11 +30,23 @@ const commands = [
       .setDescription('The music file name, or closest match')
       .setRequired(true)),
   new SlashCommandBuilder()
+    .setName('join')
+    .setDescription('Join the user\'s voice channel'),
+  new SlashCommandBuilder()
+    .setName('leave')
+    .setDescription('Leave the current voice channel'),
+  new SlashCommandBuilder()
     .setName('ask')
     .setDescription('Ask me a yes/no for advice')
     .addStringOption((option) => option.setName('question')
       .setDescription('Question to ask')
       .setRequired(true)),
+  new SlashCommandBuilder()
+    .setName('help')
+    .setDescription('See all commands'),
+  new SlashCommandBuilder()
+    .setName('ping')
+    .setDescription('Ping the bot server'),
 ]
   .map((command) => command.toJSON());
 

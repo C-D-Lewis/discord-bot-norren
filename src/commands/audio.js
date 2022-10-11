@@ -2,7 +2,7 @@ const { getClosestFileName, buildFileList } = require('../modules/cache');
 const { log } = require('../modules/logger');
 const { getCsprngInt } = require('../modules/util');
 const { replyHidden } = require('../modules/discord');
-const { joinVoiceChannelAndPlay, stopAndDisconnect } = require('../modules/voice');
+const { getVoiceAgent } = require('../modules/voice');
 
 /**
  * Handle 'sound' or 'music' command.
@@ -18,13 +18,15 @@ module.exports = async (interaction, type) => {
   // Reply with list
   if (query === 'list') return replyHidden(interaction, buildFileList(type));
 
+  if (!voice.channel) throw new Error('I don\'t see you in a voice channel');
+
+  const voiceAgent = getVoiceAgent(voice);
+
   // Stop request
   if (query === 'stop') {
-    await stopAndDisconnect();
+    await voiceAgent.leave();
     return replyHidden(interaction, 'I have stopped playing that');
   }
-
-  if (!voice.channel) throw new Error('I don\'t see you in a voice channel');
 
   const results = getClosestFileName(type, query);
   log({ query, results });
@@ -33,13 +35,12 @@ module.exports = async (interaction, type) => {
   // Multiple results?
   let foundAudio = results[0];
   if (Array.isArray(results) && results.length > 1) {
-    const index = getCsprngInt(0, results.length - 1);
-    log(`Multiple matches: ${query} -> ${results[index]} ${index}/${results.length} (${results.join(', ')})`);
-    foundAudio = results[index];
+    foundAudio = results[getCsprngInt(0, results.length - 1)];
   }
 
   // If user in voice channel, join it
-  await joinVoiceChannelAndPlay(voice, foundAudio);
+  await voiceAgent.join(voice);
+  await voiceAgent.play(foundAudio);
 
   // Reply to client
   // const names = Array.isArray(results)

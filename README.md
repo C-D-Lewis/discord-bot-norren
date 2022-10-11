@@ -6,6 +6,7 @@ Discord bot for the Heroes of Mirren Discord server.
 * [Invite to server](#invite-to-server)
 * [Setup app](#setup-app)
 * [Scripts](#scripts)
+* [Adding new commands](#adding-new-commands)
 
 
 ## Setup bot
@@ -86,8 +87,7 @@ node scripts/deploy-commands.js $SERVER_ID
 If you need to update the slash commands, delete them and re-create them:
 
 ```
-node scripts/undeploy-commands.js $SERVER_ID
-node scripts/deploy-commands.js $SERVER_ID
+./scripts/update-commands.sh $SERVER_ID
 ```
 
 Make the bot say something:
@@ -101,3 +101,11 @@ Make the bot react to a message:
 ```
 node scripts/react.js $CHANNEL_ID $MESSAGE_ID $EMOJI
 ```
+
+
+## Adding new commands
+
+1. Add to `deploy-commands.js`
+2. Add handler file to `/src/commands`
+3. Add to map in `index.js`
+4. Add to help text in `src/commands/help.js`

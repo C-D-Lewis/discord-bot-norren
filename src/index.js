@@ -1,15 +1,17 @@
 const { initClient, getClient } = require('./modules/discord');
-const handlePing = require('./commands/ping');
-const handleHelp = require('./commands/help');
 const handleRoll = require('./commands/roll');
 const handleSearch = require('./commands/search');
 const handleAudio = require('./commands/audio');
 const handleAsk = require('./commands/ask');
+const handleJoin = require('./commands/join');
+const handleLeave = require('./commands/leave');
+const handleHelp = require('./commands/help');
+const handlePing = require('./commands/ping');
 const { cacheFileNames } = require('./modules/cache');
 const { log } = require('./modules/logger');
 const { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC } = require('./modules/constants');
 const { replyHidden } = require('./modules/discord');
-const { reactions } = require('../config.json');
+const { reactions = [] } = require('../config.json');
 
 // Corresponds to all those registered with deploy-slash-commands.js
 const commandMap = {
@@ -17,6 +19,8 @@ const commandMap = {
   search: handleSearch,
   sound: (interaction) => handleAudio(interaction, AUDIO_TYPE_SOUND),
   music: (interaction) => handleAudio(interaction, AUDIO_TYPE_MUSIC),
+  join: handleJoin,
+  leave: handleLeave,
   ask: handleAsk,
   help: handleHelp,
   ping: handlePing,
@@ -39,6 +43,22 @@ const onCommand = async (name, interaction) => {
     log(err);
     return replyHidden(interaction, err);
   }
+};
+
+/**
+ * Handle configured auto-reactions.
+ *
+ * @param {object} interaction - Discord.js interaction object.
+ * @param {string} content - Message content.
+ * @returns {Promise}
+ */
+const handleAutoReactions = (interaction, content) => {
+  const lower = content.toLowerCase();
+  const toReact = reactions.filter(({ trigger }) => lower.includes(trigger));
+  return Promise.all(toReact.map(async ({ emoji }) => {
+    await interaction.react(emoji);
+    log(`Reacted ${emoji}`);
+  }));
 };
 
 /**
@@ -71,9 +91,7 @@ const onMessage = async (interaction) => {
   const botId = getClient().user.id;
 
   // Auto reactions
-  const lower = content.toLowerCase();
-  const toReact = reactions.filter(({ trigger }) => lower.includes(trigger));
-  await Promise.all(toReact.map((p) => interaction.react(p.emoji)));
+  await handleAutoReactions(interaction, content);
 
   // If mentioning me, and it wasn't me
   if (mentions.users.get(botId) && callerId !== botId) return onMessageCommand(interaction);
@@ -87,10 +105,6 @@ const onMessage = async (interaction) => {
  */
 const main = async () => {
   await initClient({ onCommand, onMessage });
-  log('Connected to Discord');
-
-  getClient().user.setStatus('online');
-
   await cacheFileNames();
 
   log('Ready');
