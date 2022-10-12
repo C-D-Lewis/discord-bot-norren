@@ -59,7 +59,9 @@ npm ci
   "guildId": "<server id>",
   "reactions": [
     { "trigger": "hello", "emoji": "👋"}
-  ]
+  ],
+  "onJoinSound": "<sound>.opus",
+  "onLeaveSound": "<sound>.opus"
 }
 ```
 
@@ -67,7 +69,7 @@ npm ci
 
 > Audio files must be in the Opus sound format
 
-> Sets of files to be used randomly must have underscore, e.g: `guard_5.opus`.
+> Sets of files to be used randomly must have an underscore, e.g: `guard_5.opus`.
 
 4. Start the app:
 

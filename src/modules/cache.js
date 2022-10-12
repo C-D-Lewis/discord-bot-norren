@@ -9,11 +9,26 @@ const soundNames = [];
 const musicNames = [];
 
 /**
+ * Filter and warn on non-Opus files.
+ *
+ * @param {string} file - File name.
+ * @returns {boolean} true if the file is Opus.
+ */
+const isOpusFile = (file) => {
+  if (file.split('.')[1] !== 'opus') {
+    log(`WARN: ${file} is not an Opus audio file`);
+    return false;
+  }
+
+  return true;
+};
+
+/**
  * Read sounds in /sounds and music in /music and cache the names.
  */
 const cacheFileNames = () => {
-  fs.readdirSync(soundsDir).forEach((file) => soundNames.push(file));
-  fs.readdirSync(musicDir).forEach((file) => musicNames.push(file));
+  fs.readdirSync(soundsDir).filter(isOpusFile).forEach((file) => soundNames.push(file));
+  fs.readdirSync(musicDir).filter(isOpusFile).forEach((file) => musicNames.push(file));
   log(`Files cached: ${soundNames.length} sounds, ${musicNames.length} music`);
 };
 

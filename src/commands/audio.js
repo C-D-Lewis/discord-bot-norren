@@ -39,8 +39,8 @@ module.exports = async (interaction, type) => {
   }
 
   // If user in voice channel, join it
-  await voiceAgent.join(voice);
-  await voiceAgent.play(foundAudio);
+  await voiceAgent.join();
+  voiceAgent.play(foundAudio);
 
   // Reply to client
   // const names = Array.isArray(results)

@@ -1,26 +1,34 @@
 const {
-  joinVoiceChannel, createAudioPlayer, AudioPlayerStatus, entersState, NoSubscriberBehavior,
+  joinVoiceChannel,
+  createAudioPlayer,
+  NoSubscriberBehavior,
+  getVoiceConnection,
 } = require('@discordjs/voice');
 const { getAudioResource } = require('./cache');
 const { log } = require('./logger');
 
-let agent;
+const voiceAgents = {};
 
 /**
  * Abstract away all state and internals related to handling voice connection
  * and player status.
+ *
+ * @param {object} voice - discord.js voice object.
+ * @returns {object}
  */
-const VoiceAgent = () => {
-  let connection;
+const VoiceAgent = (voice) => {
+  const { id: guildId } = voice.guild;
   let player;
   let readyToPlay = false;
   let willStayConnected = false;
+  let playEndCb;
 
   /**
    * Stop and disconnect.
    */
   const leaveAndReset = async () => {
     try {
+      const connection = getVoiceConnection(guildId);
       await connection.disconnect();
       await connection.destroy();
       log('Stopped and disconnected');
@@ -28,7 +36,6 @@ const VoiceAgent = () => {
       log(`Error disconnecting: ${e.message}`);
     }
 
-    connection = null;
     readyToPlay = false;
     willStayConnected = false;
   };
@@ -38,7 +45,7 @@ const VoiceAgent = () => {
    */
   const preparePlayer = async () => {
     player = createAudioPlayer({ behaviors: { noSubscriber: NoSubscriberBehavior.Play } });
-    connection.subscribe(player);
+    getVoiceConnection(guildId).subscribe(player);
 
     // Play selected sound
     player.on('stateChange', async (old, _new) => {
@@ -46,7 +53,10 @@ const VoiceAgent = () => {
       log(`Audio: ${old.status} -> ${_new.status}`);
 
       // Finished
-      if (_new.status === 'idle' && !willStayConnected) await leaveAndReset();
+      if (_new.status === 'idle') {
+        if (playEndCb) playEndCb();
+        if (!willStayConnected) await leaveAndReset();
+      }
     });
     player.on('error', async (error) => {
       log('Player error:');
@@ -70,10 +80,9 @@ const VoiceAgent = () => {
   /**
    * Join a voice connection.
    *
-   * @param {object} voice - discord.js voice object.
    * @returns {Promise}
    */
-  const join = async (voice) => new Promise((resolve) => {
+  const join = async () => new Promise((resolve) => {
     // Already connected
     if (readyToPlay) {
       resolve();
@@ -81,7 +90,7 @@ const VoiceAgent = () => {
     }
 
     // Prepare connection
-    connection = joinVoiceChannel({
+    const connection = joinVoiceChannel({
       channelId: voice.channel.id,
       guildId: voice.guild.id,
       adapterCreator: voice.guild.voiceAdapterCreator,
@@ -109,10 +118,12 @@ const VoiceAgent = () => {
    * @param {string} soundName - Name of the sound file.
    * @returns {Promise}
    */
-  const play = async (soundName) => {
+  const play = async (soundName) => new Promise((resolve) => {
+    // Allow waiting for playback
+    playEndCb = resolve;
+
     player.play(getAudioResource(soundName));
-    await entersState(player, AudioPlayerStatus.Playing, 3000);
-  };
+  });
 
   return {
     join,
@@ -127,13 +138,15 @@ const VoiceAgent = () => {
  *
  * @returns {object} The VoiceAgent.
  */
-const getVoiceAgent = () => {
-  // First call
-  if (!agent) {
-    agent = VoiceAgent();
+const getVoiceAgent = (voice) => {
+  const { id: guildId } = voice.guild;
+
+  // One agent per guild
+  if (!voiceAgents[guildId]) {
+    voiceAgents[guildId] = VoiceAgent(voice);
   }
 
-  return agent;
+  return voiceAgents[guildId];
 };
 
 module.exports = {
