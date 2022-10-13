@@ -84,12 +84,12 @@ const buildFileList = (type) => {
 
   // Format
   const { singleItems, ...rest } = buckets;
-  let reply = `*Single:*
+  let reply = `*🔊 Single:*
 ${singleItems.map((p) => `\`${p}\``).join(', ')}
 `;
   if (Object.keys(rest).length > 0) {
-    reply += `*Sets:*
-${Object.entries(rest).map(([prefix, items]) => `\`${prefix}\` (🔀 ${items.length})`).join(', ')}`;
+    reply += `*🔀 Sets:*
+${Object.entries(rest).map(([prefix, items]) => `\`${prefix}\` (${items.length})`).join(', ')}`;
   }
   return reply;
 };
