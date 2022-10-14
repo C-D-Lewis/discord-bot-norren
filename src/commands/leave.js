@@ -3,7 +3,7 @@ const { getVoiceAgent } = require('../modules/voice');
 const { onLeaveSound } = require('../../config.json');
 
 /**
- * Handle 'leaev' command.
+ * Handle 'leave' command.
  *
  * @param {object} interaction - discord.js interaction object.
  * @returns {Promise}

@@ -13,7 +13,7 @@ let client;
  * @param {Function} opts.onMessage - Callback on message received.
  * @returns {Promise}
  */
-const initClient = async ({ onCommand, onMessage }) => new Promise((resolve) => {
+const setupClient = async ({ onCommand, onMessage }) => new Promise((resolve) => {
   // Create a new client instance
   const newClient = new Client({
     intents: [
@@ -37,14 +37,16 @@ const initClient = async ({ onCommand, onMessage }) => new Promise((resolve) => 
   newClient.on('interactionCreate', async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
-    const { commandName } = interaction;
-    log(`onCommand (${commandName})`);
+    const { commandName, user: { username }, options } = interaction;
+    // eslint-disable-next-line no-underscore-dangle
+    const optionsStr = options._hoistedOptions.map(({ name, value }) => `${name}:${value}`).join(', ');
+    log(`onCommand (${username}:${commandName}) ${optionsStr}`);
     await onCommand(commandName, interaction);
   });
 
   // Server general message
   newClient.on('messageCreate', async (interaction) => {
-    log(`onMessage (${interaction.author.username}) (${interaction.content})`);
+    log(`onMessage (${interaction.author.username}) ${interaction.content}`);
     await onMessage(interaction);
   });
 
@@ -73,7 +75,7 @@ const getClient = () => {
 const replyHidden = (interaction, content) => interaction.reply({ content, ephemeral: true });
 
 module.exports = {
-  initClient,
+  setupClient,
   getClient,
   replyHidden,
 };

@@ -14,7 +14,7 @@ const musicNames = [];
  * @param {string} file - File name.
  * @returns {boolean} true if the file is Opus.
  */
-const isOpusFile = (file) => {
+const isNewOpusFile = (file) => {
   if (file.split('.')[1] !== 'opus') {
     log(`WARN: ${file} is not an Opus audio file`);
     return false;
@@ -25,10 +25,30 @@ const isOpusFile = (file) => {
 
 /**
  * Read sounds in /sounds and music in /music and cache the names.
+ *
+ * @param {boolean} rescan - true if this is not the initial scan.
+ */
+const readAllFiles = (rescan) => {
+  fs.readdirSync(soundsDir).filter(isNewOpusFile).forEach((file) => {
+    if (soundNames.includes(file)) return;
+
+    if (rescan) log(`Read new file ${file}`);
+    soundNames.push(file);
+  });
+  fs.readdirSync(musicDir).filter(isNewOpusFile).forEach((file) => {
+    if (musicNames.includes(file)) return;
+
+    if (rescan) log(`Read new file ${file}`);
+    musicNames.push(file);
+  });
+};
+
+/**
+ * Read all files and schedule regular re-scans.
  */
 const cacheFileNames = () => {
-  fs.readdirSync(soundsDir).filter(isOpusFile).forEach((file) => soundNames.push(file));
-  fs.readdirSync(musicDir).filter(isOpusFile).forEach((file) => musicNames.push(file));
+  setInterval(() => readAllFiles(true), 30000);
+  readAllFiles();
   log(`Files cached: ${soundNames.length} sounds, ${musicNames.length} music`);
 };
 
@@ -88,7 +108,7 @@ const buildFileList = (type) => {
 ${singleItems.map((p) => `\`${p}\``).join(', ')}
 `;
   if (Object.keys(rest).length > 0) {
-    reply += `*🔀 Sets:*
+    reply += `*🔀 Random sets:*
 ${Object.entries(rest).map(([prefix, items]) => `\`${prefix}\` (${items.length})`).join(', ')}`;
   }
   return reply;

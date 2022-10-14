@@ -1,4 +1,4 @@
-const { initClient, getClient } = require('../src/modules/discord');
+const { setupClient, getClient } = require('../src/modules/discord');
 
 const [channelId, message] = process.argv.slice(2);
 
@@ -6,7 +6,7 @@ const [channelId, message] = process.argv.slice(2);
  * The main function.
  */
 const main = async () => {
-  await initClient({
+  await setupClient({
     onMessage: () => {
       console.log('Sent');
       process.exit(0);

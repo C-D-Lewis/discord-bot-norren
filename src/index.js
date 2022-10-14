@@ -1,4 +1,4 @@
-const { initClient, getClient } = require('./modules/discord');
+const { setupClient, getClient } = require('./modules/discord');
 const handleRoll = require('./commands/roll');
 const handleSearch = require('./commands/search');
 const handleAudio = require('./commands/audio');
@@ -73,7 +73,7 @@ const onMessageCommand = (interaction) => {
 
   // Implement any message commands here
 
-  // Else not sure
+  // Else not sure which command
   return replyHidden(
     interaction,
     `Sorry ${username}, I don't know what you want. Try using \`/help\`.`,
@@ -104,7 +104,7 @@ const onMessage = async (interaction) => {
  * The main function.
  */
 const main = async () => {
-  await initClient({ onCommand, onMessage });
+  await setupClient({ onCommand, onMessage });
   await cacheFileNames();
 
   log('Ready');
