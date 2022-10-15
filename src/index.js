@@ -1,30 +1,9 @@
 const { setupClient, getClient } = require('./modules/discord');
-const handleRoll = require('./commands/roll');
-const handleSearch = require('./commands/search');
-const handleAudio = require('./commands/audio');
-const handleAsk = require('./commands/ask');
-const handleJoin = require('./commands/join');
-const handleLeave = require('./commands/leave');
-const handleHelp = require('./commands/help');
-const handlePing = require('./commands/ping');
 const { cacheFileNames } = require('./modules/cache');
 const { log } = require('./modules/logger');
-const { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC } = require('./modules/constants');
 const { replyHidden } = require('./modules/discord');
-const { reactions = [] } = require('../config.json');
-
-// Corresponds to all those registered with deploy-slash-commands.js
-const commandMap = {
-  roll: handleRoll,
-  search: handleSearch,
-  sound: (interaction) => handleAudio(interaction, AUDIO_TYPE_SOUND),
-  music: (interaction) => handleAudio(interaction, AUDIO_TYPE_MUSIC),
-  join: handleJoin,
-  leave: handleLeave,
-  ask: handleAsk,
-  help: handleHelp,
-  ping: handlePing,
-};
+const { getCommand } = require('./modules/handlers');
+const { handleAutoReactions } = require('./modules/reactions');
 
 /**
  * When a command is received.
@@ -35,9 +14,8 @@ const commandMap = {
  */
 const onCommand = async (name, interaction) => {
   try {
-    if (!commandMap[name]) throw new Error('I don\'t know that command, but I should know it');
-
-    return await commandMap[name](interaction);
+    const command = getCommand(name);
+    return await command(interaction);
   } catch (e) {
     const err = `⚠️ ${e.message}`;
     log(err);
@@ -46,32 +24,19 @@ const onCommand = async (name, interaction) => {
 };
 
 /**
- * Handle configured auto-reactions.
- *
- * @param {object} interaction - Discord.js interaction object.
- * @param {string} content - Message content.
- * @returns {Promise}
- */
-const handleAutoReactions = (interaction, content) => {
-  const lower = content.toLowerCase();
-  const toReact = reactions.filter(({ trigger }) => lower.includes(trigger));
-  return Promise.all(toReact.map(async ({ emoji }) => {
-    await interaction.react(emoji);
-    log(`Reacted ${emoji}`);
-  }));
-};
-
-/**
  * On command via mention.
  *
  * @param {object} interaction - Message interaction object.
  */
-const onMessageCommand = (interaction) => {
+const handleMessageCommand = (interaction) => {
   const { author: { username }, content } = interaction;
   const [, keyword, ...args] = content.split(' ');
   log({ keyword, args });
 
   // Implement any message commands here
+  if (['hello', 'hey', 'hi'].includes(keyword)) {
+    return interaction.react('👋');
+  }
 
   // Else not sure which command
   return replyHidden(
@@ -94,7 +59,7 @@ const onMessage = async (interaction) => {
   await handleAutoReactions(interaction, content);
 
   // If mentioning me, and it wasn't me
-  if (mentions.users.get(botId) && callerId !== botId) return onMessageCommand(interaction);
+  if (mentions.users.get(botId) && callerId !== botId) return handleMessageCommand(interaction);
 
   // Some other chat going by
   return undefined;
