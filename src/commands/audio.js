@@ -18,11 +18,12 @@ module.exports = async (interaction, type) => {
   // Reply with list
   if (query === 'list') return replyHidden(interaction, buildFileList(type));
 
+  // Not in a voice channel
   if (!voice.channel) throw new Error('I don\'t see you in a voice channel');
 
   const voiceAgent = getVoiceAgent(voice);
 
-  // Stop request
+  // Stop sound in progress
   if (query === 'stop') {
     await voiceAgent.leave();
     return replyHidden(interaction, 'I have stopped playing that');
@@ -32,7 +33,7 @@ module.exports = async (interaction, type) => {
   log({ query, results });
   if (!results.length) throw new Error(`I don't know a ${type} for "${query}"`);
 
-  // Multiple results?
+  // Multiple results? Pick one at random
   let foundAudio = results[0];
   if (Array.isArray(results) && results.length > 1) {
     foundAudio = results[getCsprngInt(0, results.length - 1)];
@@ -43,11 +44,8 @@ module.exports = async (interaction, type) => {
   voiceAgent.play(foundAudio);
 
   // Reply to client
-  // const names = Array.isArray(results)
-  //   ? results.map((p) => p.split('.')[0]).map((p) => `\`${p}\``).join(', ')
-  //   : `\`${results.split('.')[0]}\``;
   return replyHidden(
     interaction,
-    `Playing \`${foundAudio.split('/').pop()}\` (query: "${query}", matches: ${results.length})`,
+    `Playing \`${foundAudio.split('/').pop()}\` (query: "${query}", ${results.length} matches)`,
   );
 };

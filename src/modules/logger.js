@@ -8,9 +8,9 @@ const log = (msg) => {
   const [time] = timeStr.split('.');
   const isObject = typeof msg === 'object';
   console.log(`[${date} ${time}] ${isObject ? '' : msg}`);
-  if (isObject) {
-    console.log(msg);
-  }
+
+  // Could be complex object
+  if (isObject) console.log(msg);
 };
 
 module.exports = { log };

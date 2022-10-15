@@ -14,7 +14,7 @@ module.exports = async (interaction) => {
 
   const voiceAgent = getVoiceAgent(voice);
 
-  // onJoinSound?
+  // onLeaveSound?
   if (onLeaveSound) {
     voiceAgent.play(onLeaveSound)
       .then(() => voiceAgent.leave());

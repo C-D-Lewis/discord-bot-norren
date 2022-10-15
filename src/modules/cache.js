@@ -14,7 +14,7 @@ const musicNames = [];
  * @param {string} file - File name.
  * @returns {boolean} true if the file is Opus.
  */
-const isNewOpusFile = (file) => {
+const isOpusFile = (file) => {
   if (file.split('.')[1] !== 'opus') {
     log(`WARN: ${file} is not an Opus audio file`);
     return false;
@@ -29,17 +29,17 @@ const isNewOpusFile = (file) => {
  * @param {boolean} rescan - true if this is not the initial scan.
  */
 const readAllFiles = (rescan) => {
-  fs.readdirSync(soundsDir).filter(isNewOpusFile).forEach((file) => {
+  fs.readdirSync(soundsDir).filter(isOpusFile).forEach((file) => {
     if (soundNames.includes(file)) return;
 
-    if (rescan) log(`Read new file ${file}`);
     soundNames.push(file);
+    if (rescan) log(`Read new file ${file}`);
   });
-  fs.readdirSync(musicDir).filter(isNewOpusFile).forEach((file) => {
+  fs.readdirSync(musicDir).filter(isOpusFile).forEach((file) => {
     if (musicNames.includes(file)) return;
 
-    if (rescan) log(`Read new file ${file}`);
     musicNames.push(file);
+    if (rescan) log(`Read new file ${file}`);
   });
 };
 

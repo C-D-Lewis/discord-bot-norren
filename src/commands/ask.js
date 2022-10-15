@@ -1,37 +1,6 @@
 const { getCsprngInt } = require('../modules/util');
 const { replyHidden } = require('../modules/discord');
-
-/** Positive answers */
-const POSITIVE = [
-  'It is certain',
-  'Without a doubt',
-  'You may rely on it',
-  'Yes definitely',
-  'It is decidedly so',
-  'As I see it, yes',
-  'Most likely',
-  'Yes',
-  'Outlook good',
-  'Signs point to yes',
-];
-
-/** Neutral answers */
-const NEUTRAL = [
-  'Reply hazy try again',
-  'Better not tell you now',
-  'Ask again later',
-  'Cannot predict now',
-  'Concentrate and ask again',
-];
-
-/** Negative answers */
-const NEGATIVE = [
-  'Don\'t count on it',
-  'Outlook not so good',
-  'My sources say no',
-  'Very doubtful',
-  'My reply is no',
-];
+const { POSITIVE_ANSWERS, NEGATIVE_ANSWERS, NEUTRAL_ANSWERS } = require('../modules/constants');
 
 /**
  * Get random answer from random sentiment.
@@ -41,9 +10,10 @@ const NEGATIVE = [
 const getAnswer = () => {
   const max = 100;
   const result = getCsprngInt(0, max);
-  if (result < max / 3) return POSITIVE[getCsprngInt(0, POSITIVE.length - 1)];
-  if (result < ((2 * max) / 3)) return NEUTRAL[getCsprngInt(0, NEUTRAL.length - 1)];
-  return NEGATIVE[getCsprngInt(0, NEGATIVE.length - 1)];
+
+  if (result < max / 3) return POSITIVE_ANSWERS[getCsprngInt(0, POSITIVE_ANSWERS.length - 1)];
+  if (result < ((2 * max) / 3)) return NEUTRAL_ANSWERS[getCsprngInt(0, NEUTRAL_ANSWERS.length - 1)];
+  return NEGATIVE_ANSWERS[getCsprngInt(0, NEGATIVE_ANSWERS.length - 1)];
 };
 
 /**

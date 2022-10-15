@@ -8,7 +8,7 @@ const { getCsprngInt } = require('../modules/util');
  */
 module.exports = (interaction) => {
   const param = interaction.options.getNumber('d');
+
   const max = parseInt(param, 10);
-  const result = getCsprngInt(1, max);
-  return interaction.reply(`🎲 I rolled a d${max} and got \`${result}\``);
+  return interaction.reply(`🎲 I rolled a d${max} and got \`${getCsprngInt(1, max)}\``);
 };
