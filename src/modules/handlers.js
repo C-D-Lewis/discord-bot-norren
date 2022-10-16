@@ -1,12 +1,13 @@
 const handleRoll = require('../commands/roll');
 const handleSearch = require('../commands/search');
 const handleAudio = require('../commands/audio');
-const handleAsk = require('../commands/ask');
 const handleJoin = require('../commands/join');
 const handleLeave = require('../commands/leave');
+const handlePin = require('../commands/pin');
+const handleAsk = require('../commands/ask');
 const handleHelp = require('../commands/help');
 const handlePing = require('../commands/ping');
-const { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC } = require('./constants');
+const { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC } = require('../constants');
 
 /**
  * Find the command handler function for the named command.
@@ -23,6 +24,7 @@ const getCommand = (name) => {
     music: (interaction) => handleAudio(interaction, AUDIO_TYPE_MUSIC),
     join: handleJoin,
     leave: handleLeave,
+    pin: handlePin,
     ask: handleAsk,
     help: handleHelp,
     ping: handlePing,

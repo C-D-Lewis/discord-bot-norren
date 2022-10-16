@@ -1,7 +1,7 @@
 const { createAudioResource, StreamType } = require('@discordjs/voice');
 const fs = require('fs');
 const { log } = require('./logger');
-const { AUDIO_TYPE_SOUND } = require('./constants');
+const { AUDIO_TYPE_SOUND } = require('../constants');
 
 const soundsDir = `${__dirname}/../../sounds`;
 const musicDir = `${__dirname}/../../music`;

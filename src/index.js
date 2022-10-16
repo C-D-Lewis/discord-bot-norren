@@ -53,7 +53,7 @@ const handleMessageCommand = (interaction) => {
  */
 const onMessage = async (interaction) => {
   const { author: { id: callerId }, mentions, content } = interaction;
-  const botId = getClient().user.id;
+  const { id: botId } = getClient().user;
 
   // Auto reactions
   await handleAutoReactions(interaction, content);

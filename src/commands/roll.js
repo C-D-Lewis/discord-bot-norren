@@ -1,4 +1,4 @@
-const { getCsprngInt } = require('../modules/util');
+const { getCsprngInt } = require('../util');
 
 /**
  * Handle 'roll' command.

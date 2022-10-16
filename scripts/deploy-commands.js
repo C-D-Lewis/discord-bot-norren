@@ -35,6 +35,12 @@ const commands = [
   new SlashCommandBuilder()
     .setName('leave')
     .setDescription('Leave the current voice channel'),
+  // new SlashCommandBuilder()
+  // .setName('pin')
+  // .setDescription('Pin/list pinned links or other text')
+  // .addStringOption((option) => option.setName('text')
+  //   .setDescription('Text to pin, or list existing pins')
+  //   .setRequired(true)),
   new SlashCommandBuilder()
     .setName('ask')
     .setDescription('Ask me a yes/no for advice')

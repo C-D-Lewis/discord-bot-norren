@@ -1,9 +1,9 @@
 const { hostname } = require('os');
 const {
   START_TIME, MINS_MULT, HOURS_MULT, DAYS_MULT,
-} = require('../modules/constants');
+} = require('../constants');
 const { getClient, replyHidden } = require('../modules/discord');
-const { getCommit } = require('../modules/util');
+const { getCommit } = require('../util');
 
 /**
  * Get readable uptime summary.

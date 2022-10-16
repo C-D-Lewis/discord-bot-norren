@@ -1,6 +1,6 @@
 const { getClosestFileName, buildFileList } = require('../modules/cache');
 const { log } = require('../modules/logger');
-const { getCsprngInt } = require('../modules/util');
+const { getCsprngInt } = require('../util');
 const { replyHidden } = require('../modules/discord');
 const { getVoiceAgent } = require('../modules/voice');
 

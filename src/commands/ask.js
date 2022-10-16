@@ -1,6 +1,6 @@
-const { getCsprngInt } = require('../modules/util');
+const { getCsprngInt } = require('../util');
 const { replyHidden } = require('../modules/discord');
-const { POSITIVE_ANSWERS, NEGATIVE_ANSWERS, NEUTRAL_ANSWERS } = require('../modules/constants');
+const { POSITIVE_ANSWERS, NEGATIVE_ANSWERS, NEUTRAL_ANSWERS } = require('../constants');
 
 /**
  * Get random answer from random sentiment.
