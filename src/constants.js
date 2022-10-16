@@ -40,4 +40,6 @@ module.exports = {
   DAYS_MULT: 1000 * 60 * 60 * 24,
   /** App start time */
   START_TIME: Date.now(),
+  /** DB key for pins - DO NOT CHANGE WITHOUT MIGRATION */
+  DB_KEY_PINS: 'guildPins',
 };

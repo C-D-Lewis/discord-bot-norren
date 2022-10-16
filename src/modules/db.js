@@ -2,7 +2,7 @@
 const fs = require('fs');
 
 /** Path to DB file */
-const DB_PATH = `${__dirname}/../db.json`;
+const DB_PATH = `${__dirname}/../../db.json`;
 
 let dbData;
 

@@ -13,6 +13,7 @@ module.exports = (interaction) => replyHidden(interaction, `
 🎶 \`/music <name>/list/stop\` - Play/stop/list music files
 🎙 \`/join\` - Join the user's voice channel
 ❌ \`/leave\` - Leave the voice channel
+📌 \`/pin add/list/delete\` - Pin links or other text
 🎱 \`/ask <question>\` - Ask me a yes/no question
 ⁉️ \`/help\` - Show this information
 🤖 \`/ping\` - Ping the bot server
