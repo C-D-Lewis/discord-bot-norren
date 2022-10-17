@@ -69,6 +69,7 @@ const onMessage = async (interaction) => {
  * The main function.
  */
 const main = async () => {
+  log('Connecting...');
   await setupClient({ onCommand, onMessage });
   await cacheFileNames();
 

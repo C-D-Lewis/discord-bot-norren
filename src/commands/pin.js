@@ -26,13 +26,17 @@ module.exports = async (interaction) => {
 
     guildPins.pins.push(text);
     db.set(DB_KEY_PINS, allPins);
-    return interaction.reply(`📌 Pinned "${text}"`);
+    return interaction.reply(`📌 Pinned:
+${text}`);
   }
 
   // List existing for this server
   if (subcommand === 'list') {
     const pinListStr = guildPins.pins.length > 0
-      ? guildPins.pins.map((text, i) => `📌\`${i}\`: <${text}>`).join('\n')
+      ? guildPins.pins.map((text, i) => {
+        const content = text.includes('http') ? `<${text}>` : text;
+        return `📌\`${i}\`: ${content}`;
+      }).join('\n')
       : 'No pins yet';
     const replyText = `_Pins in ${guildName}:_
 ${pinListStr}
