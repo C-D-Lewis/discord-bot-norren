@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Discord bot for the Heroes of Mirren",
   "scripts": {
-    "start": "nodemon src/index.js --ignore db.json"
+    "start": "nodemon -x 'node src/index.js || touch src/index.js' --ignore db.json"
   },
   "engines": {
     "node": ">=16"
