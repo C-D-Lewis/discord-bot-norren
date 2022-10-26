@@ -21,17 +21,35 @@ const commands = [
 
   new SlashCommandBuilder()
     .setName('sound')
-    .setDescription('Play a sound file')
-    .addStringOption((option) => option.setName('name')
-      .setDescription('The sound name, or closest match')
-      .setRequired(true)),
+    .setDescription('Play sound files')
+    .addSubcommand((subcommand) => subcommand
+      .setName('play')
+      .setDescription('Play a sound file')
+      .addStringOption((option) => option.setName('name')
+        .setDescription('The sound name, or closest match')
+        .setRequired(true)))
+    .addSubcommand((subcommand) => subcommand
+      .setName('list')
+      .setDescription('List all sounds available'))
+    .addSubcommand((subcommand) => subcommand
+      .setName('stop')
+      .setDescription('Stop currently playing sound')),
 
   new SlashCommandBuilder()
     .setName('music')
-    .setDescription('Play a music file')
-    .addStringOption((option) => option.setName('name')
-      .setDescription('The music file name, or closest match')
-      .setRequired(true)),
+    .setDescription('Play music files')
+    .addSubcommand((subcommand) => subcommand
+      .setName('play')
+      .setDescription('Play a music file')
+      .addStringOption((option) => option.setName('name')
+        .setDescription('The music file name, or closest match')
+        .setRequired(true)))
+    .addSubcommand((subcommand) => subcommand
+      .setName('list')
+      .setDescription('List all music available'))
+    .addSubcommand((subcommand) => subcommand
+      .setName('stop')
+      .setDescription('Stop currently playing music')),
 
   new SlashCommandBuilder()
     .setName('join')
