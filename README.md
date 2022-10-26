@@ -78,19 +78,16 @@ npm start
 ```
 
 
+## Options
+
+Update slash commands in all known guilds upon startup:
+
+```
+npm start -- --updateCommands
+```
+
+
 ## Scripts
-
-Register slash commands with Discord API:
-
-```
-node scripts/deploy-commands.js $SERVER_ID
-```
-
-If you need to update the slash commands, delete them and re-create them:
-
-```
-./scripts/update-commands.sh $SERVER_ID
-```
 
 Make the bot say something:
 

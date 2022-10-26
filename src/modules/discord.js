@@ -1,9 +1,29 @@
 // Require the necessary discord.js classes
 const { Client, GatewayIntentBits } = require('discord.js');
 const { token } = require('../../config.json');
+const { OPTION_UPDATE_COMMANDS } = require('../constants');
+const { registerSlashCommands } = require('./commands');
 const { log } = require('./logger');
 
 let client;
+
+/**
+ * Register slash commands in all known guilds.
+ */
+const registerCommandsInAllGuilds = async () => {
+  const { cache } = client.guilds;
+
+  console.log(`Updating slash commands in ${cache.size} servers:`);
+  await Promise.all(cache.map(async (guild) => {
+    try {
+      await registerSlashCommands(guild.id);
+      console.log(` - ${guild.name} ✔️`);
+    } catch (error) {
+      console.log(` - ${guild.name} ❌`);
+      console.trace(error);
+    }
+  }));
+};
 
 /**
  * Initialise discord.js client.
@@ -26,10 +46,19 @@ const setupClient = async ({ onCommand, onMessage }) => new Promise((resolve) =>
   });
 
   // When ready
-  newClient.once('ready', () => {
-    client = newClient;
-    client.user.setStatus('online');
+  newClient.once('ready', async () => {
     log('Connected to Discord');
+    client = newClient;
+
+    // Prepare slash commands?
+    if (process.argv.includes(OPTION_UPDATE_COMMANDS)) {
+      await registerCommandsInAllGuilds();
+    }
+
+    // Set status
+    client.user.setStatus('online');
+
+    // All done
     resolve();
   });
 
