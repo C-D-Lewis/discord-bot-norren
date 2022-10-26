@@ -17,9 +17,7 @@ module.exports = async (interaction) => {
   voiceAgent.setStayConnected(true);
 
   // onJoinSound?
-  if (onJoinSound) {
-    voiceAgent.play(onJoinSound);
-  }
+  if (onJoinSound) voiceAgent.play(onJoinSound);
 
   return replyHidden(interaction, 'Joined the voice channel');
 };
