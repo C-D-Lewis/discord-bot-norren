@@ -14,7 +14,7 @@ const voiceAgents = {};
  * and player status.
  *
  * @param {object} voice - discord.js voice object.
- * @returns {object}
+ * @returns {object} VoiceAgent object.
  */
 const VoiceAgent = (voice) => {
   const { id: guildId } = voice.guild;
@@ -80,7 +80,7 @@ const VoiceAgent = (voice) => {
   /**
    * Join a voice connection.
    *
-   * @returns {Promise}
+   * @returns {Promise} Promise
    */
   const join = async () => new Promise((resolve) => {
     // Already connected
@@ -116,7 +116,7 @@ const VoiceAgent = (voice) => {
    * Play a given sound.
    *
    * @param {string} soundName - Name of the sound file.
-   * @returns {Promise}
+   * @returns {Promise} Promise resolving when sound finishes playing.
    */
   const play = async (soundName) => new Promise((resolve) => {
     // Allow waiting for playback
@@ -136,6 +136,7 @@ const VoiceAgent = (voice) => {
 /**
  * Prepare the voice agent.
  *
+ * @param {object} voice - Discordjs voice object.
  * @returns {object} The VoiceAgent.
  */
 const getVoiceAgent = (voice) => {

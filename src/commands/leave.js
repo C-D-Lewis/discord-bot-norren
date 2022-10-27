@@ -6,7 +6,7 @@ const { onLeaveSound } = require('../../config.json');
  * Handle 'leave' command.
  *
  * @param {object} interaction - discord.js interaction object.
- * @returns {Promise}
+ * @returns {Promise} Reply result
  */
 module.exports = async (interaction) => {
   const { member: { voice } } = interaction;
@@ -22,5 +22,5 @@ module.exports = async (interaction) => {
     await voiceAgent.leave();
   }
 
-  return replyHidden(interaction, 'Leaving the voice channel');
+  return replyHidden(interaction, { content: 'Leaving the voice channel' });
 };

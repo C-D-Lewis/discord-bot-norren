@@ -32,7 +32,10 @@ const COMMANDS = [
       .setDescription('List all sounds available'))
     .addSubcommand((subcommand) => subcommand
       .setName('stop')
-      .setDescription('Stop currently playing sound')),
+      .setDescription('Stop currently playing sound'))
+    .addSubcommand((subcommand) => subcommand
+      .setName('recent')
+      .setDescription('See buttons for recently played sounds')),
 
   new SlashCommandBuilder()
     .setName('music')
@@ -97,7 +100,7 @@ const COMMANDS = [
  * Register all slash commands in a given guild.
  *
  * @param {string} guildId - The guild/server ID.
- * @returns {Promise}
+ * @returns {Promise} REST response.
  */
 const registerSlashCommands = (guildId) => rest.put(
   Routes.applicationGuildCommands(clientId, guildId),

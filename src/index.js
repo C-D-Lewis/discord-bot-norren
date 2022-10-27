@@ -4,13 +4,30 @@ const { log } = require('./modules/logger');
 const { replyHidden } = require('./modules/discord');
 const { getCommand } = require('./modules/handlers');
 const { handleAutoReactions } = require('./modules/reactions');
+const { getVoiceAgent } = require('./modules/voice');
+
+/**
+ * Handle when a recent sound button is pressed.
+ *
+ * @param {object} interaction - Message interaction object.
+ * @param {object} voice - Discordjs voice object.
+ * @param {string} customId - Sound name as custom ID.
+ * @returns {Promise} Reply result.
+ */
+const handleSoundButton = async (interaction, voice, customId) => {
+  const voiceAgent = getVoiceAgent(voice);
+  await voiceAgent.join();
+  voiceAgent.play(customId);
+
+  return replyHidden(interaction, { content: `Playing \`${customId}\`` });
+};
 
 /**
  * When a command is received.
  *
  * @param {string} name - Command name.
  * @param {object} interaction - Discord.js interaction object.
- * @returns {Function|AsyncFunction} Handler that returns reply text.
+ * @returns {Function} Handler that returns reply text.
  */
 const onCommand = async (name, interaction) => {
   try {
@@ -19,7 +36,7 @@ const onCommand = async (name, interaction) => {
   } catch (e) {
     const err = `⚠️ ${e.message}`;
     log(err);
-    return replyHidden(interaction, err);
+    return replyHidden(interaction, { content: err });
   }
 };
 
@@ -27,6 +44,7 @@ const onCommand = async (name, interaction) => {
  * On command via mention.
  *
  * @param {object} interaction - Message interaction object.
+ * @returns {object} Reply result.
  */
 const handleMessageCommand = (interaction) => {
   const { author: { username }, content } = interaction;
@@ -41,7 +59,7 @@ const handleMessageCommand = (interaction) => {
   // Else not sure which command
   return replyHidden(
     interaction,
-    `Sorry ${username}, I don't know what you want. Try using \`/help\`.`,
+    { content: `Sorry ${username}, I don't know what you want. Try using \`/help\`.` },
   );
 };
 
@@ -49,7 +67,7 @@ const handleMessageCommand = (interaction) => {
  * When someone posts a message.
  *
  * @param {object} interaction - Message interaction object.
- * @returns {Promise}
+ * @returns {Promise} Promise
  */
 const onMessage = async (interaction) => {
   const { author: { id: callerId }, mentions, content } = interaction;
@@ -66,11 +84,37 @@ const onMessage = async (interaction) => {
 };
 
 /**
+ * When a message's button is pressed.
+ *
+ * @param {object} interaction - Message interaction object.
+ * @param {object} opts - Function options.
+ * @param {string} opts.commandName - Full command name.
+ * @param {string} opts.customId - Button custom ID set at creation time.
+ * @param {string} opts.username - User who pressed the button.
+ * @returns {Promise} Promise
+ */
+const onMessageButton = async (interaction, { commandName, customId, username }) => {
+  const { member: { voice } } = interaction;
+  log(`onMessageButton (${username}:${commandName}:${customId})`);
+
+  try {
+    // Recent sound list button
+    if (commandName === 'sound recent') return handleSoundButton(interaction, voice, customId);
+
+    throw new Error('Unknown message button');
+  } catch (e) {
+    const err = `⚠️ ${e.message}`;
+    log(err);
+    return replyHidden(interaction, { content: err });
+  }
+};
+
+/**
  * The main function.
  */
 const main = async () => {
   log('Connecting...');
-  await setupClient({ onCommand, onMessage });
+  await setupClient({ onCommand, onMessage, onMessageButton });
   await cacheFileNames();
 
   log('Ready');

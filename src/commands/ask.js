@@ -26,7 +26,9 @@ module.exports = async (interaction) => {
   const { options } = interaction;
   const question = options.getString('question');
 
-  return replyHidden(interaction, `_You asked "${question}":_
+  return replyHidden(interaction, {
+    content: `_You asked "${question}":_
   
-🔮 ${getAnswer()}`);
+🔮 ${getAnswer()}`,
+  });
 };

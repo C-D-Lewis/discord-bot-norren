@@ -21,10 +21,14 @@
     "eslint": "^8.24.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsdoc": "^39.3.25",
     "nodemon": "^2.0.20"
   },
   "eslintConfig": {
-    "extends": "eslint-config-airbnb-base",
+    "extends": [
+      "eslint-config-airbnb-base",
+      "plugin:jsdoc/recommended"
+    ],
     "env": {
       "browser": true
     },

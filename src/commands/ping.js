@@ -7,8 +7,9 @@ const { getCommit } = require('../util');
 
 /**
  * Get readable uptime summary.
+ * TODO: fix this
  *
- * @returns {string}
+ * @returns {string} Readable updtime string.
  */
 const getReadableUptime = () => {
   const uptime = Date.now() - START_TIME;
@@ -24,12 +25,12 @@ const getReadableUptime = () => {
  * Handle 'ping' command.
  *
  * @param {object} interaction - discord.js interaction object.
- * @returns {Promise}
+ * @returns {Promise} Reply result
  */
 module.exports = (interaction) => {
   const uptimeStr = getReadableUptime();
   return replyHidden(
     interaction,
-    `ping: \`${getClient().ws.ping}ms\` | host: \`${hostname()}\` | uptime: \`${uptimeStr}\` | version: \`${getCommit()}\``,
+    { content: `ping: \`${getClient().ws.ping}ms\` | host: \`${hostname()}\` | uptime: \`${uptimeStr}\` | version: \`${getCommit()}\`` },
   );
 };

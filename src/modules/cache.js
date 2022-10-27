@@ -81,6 +81,7 @@ const getAudioResource = (name) => {
 /**
  * Build a readable list of sound or music options.
  *
+ * @param {string} type - Audio type, either sound or mustic.
  * @returns {string} Readable list of sounds.
  */
 const buildFileList = (type) => {

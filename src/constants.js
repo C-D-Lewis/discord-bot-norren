@@ -46,7 +46,12 @@ module.exports = {
 
   /** DB key for pins - DO NOT CHANGE WITHOUT MIGRATION */
   DB_KEY_PINS: 'guildPins',
+  /** DB key for recent sounds */
+  DB_KEY_RECENT_SOUNDS: 'recentSounds',
 
   /** Start option to update commands */
   OPTION_UPDATE_COMMANDS: '--updateCommands',
+
+  /** Max looping recent sounds */
+  MAX_RECENT_SOUNDS: 8,
 };

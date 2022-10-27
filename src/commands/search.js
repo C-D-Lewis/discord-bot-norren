@@ -5,7 +5,7 @@ const { replyHidden } = require('../modules/discord');
  * Handle 'search' command to find links to roll20.net
  *
  * @param {object} interaction - discord.js interaction object.
- * @returns {Promise}
+ * @returns {Promise} Reply result
  */
 module.exports = async (interaction) => {
   const { options } = interaction;
@@ -40,5 +40,5 @@ ${links.map(({ label, href }, i) => `${i + 1}: **${label}**\n<https://roll20.net
     replyText += `
 ⚠️ _There were more than ${max} results_`;
   }
-  return replyHidden(interaction, replyText);
+  return replyHidden(interaction, { content: replyText });
 };

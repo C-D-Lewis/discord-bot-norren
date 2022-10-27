@@ -6,7 +6,7 @@ const { onJoinSound } = require('../../config.json');
  * Handle 'join' command.
  *
  * @param {object} interaction - discord.js interaction object.
- * @returns {Promise}
+ * @returns {Promise} Reply result
  */
 module.exports = async (interaction) => {
   const { member: { voice } } = interaction;
@@ -19,5 +19,5 @@ module.exports = async (interaction) => {
   // onJoinSound?
   if (onJoinSound) voiceAgent.play(onJoinSound);
 
-  return replyHidden(interaction, 'Joined the voice channel');
+  return replyHidden(interaction, { content: 'Joined the voice channel' });
 };

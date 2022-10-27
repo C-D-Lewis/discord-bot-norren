@@ -8,6 +8,8 @@ let dbData;
 
 /**
  * Save the DB data to file.
+ *
+ * @returns {object} writeFileSync result
  */
 const saveDbData = () => fs.writeFileSync(DB_PATH, JSON.stringify(dbData, null, 2), 'utf8');
 

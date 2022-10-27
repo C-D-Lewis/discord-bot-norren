@@ -6,7 +6,7 @@ const { DB_KEY_PINS } = require('../constants');
  * Handle 'pin' command to remember and list pinned text or links.
  *
  * @param {object} interaction - discord.js interaction object.
- * @returns {Promise}
+ * @returns {Promise} Reply result.
  */
 module.exports = async (interaction) => {
   const { options, guild: { name: guildName, id: guildId } } = interaction;
@@ -41,7 +41,7 @@ ${text}`);
     const replyText = `_Pins in ${guildName}:_
 ${pinListStr}
 `;
-    return replyHidden(interaction, replyText);
+    return replyHidden(interaction, { content: replyText });
   }
 
   // Delete a pin

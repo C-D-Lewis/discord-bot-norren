@@ -17,9 +17,9 @@ const registerCommandsInAllGuilds = async () => {
   await Promise.all(cache.map(async (guild) => {
     try {
       await registerSlashCommands(guild.id);
-      console.log(` - ${guild.name} ✔️`);
+      console.log(`✔️ ${guild.name}`);
     } catch (error) {
-      console.log(` - ${guild.name} ❌`);
+      console.log(`❌ ${guild.name}`);
       console.trace(error);
     }
   }));
@@ -31,9 +31,10 @@ const registerCommandsInAllGuilds = async () => {
  * @param {object} opts - Function opts.
  * @param {Function} opts.onCommand - Callback on slash command received.
  * @param {Function} opts.onMessage - Callback on message received.
- * @returns {Promise}
+ * @param {Function} opts.onMessageButton - Callback when a message's button is pressed.
+ * @returns {Promise} Promise resolving when connection is established and client set up.
  */
-const setupClient = async ({ onCommand, onMessage }) => new Promise((resolve) => {
+const setupClient = async ({ onCommand, onMessage, onMessageButton }) => new Promise((resolve) => {
   // Create a new client instance
   const newClient = new Client({
     intents: [
@@ -64,13 +65,24 @@ const setupClient = async ({ onCommand, onMessage }) => new Promise((resolve) =>
 
   // When a command received
   newClient.on('interactionCreate', async (interaction) => {
-    if (!interaction.isChatInputCommand()) return;
+    // Chat command
+    if (interaction.isChatInputCommand()) {
+      const { commandName, user: { username }, options } = interaction;
+      // eslint-disable-next-line no-underscore-dangle
+      const optionsStr = options._hoistedOptions.map(({ name, value }) => `${name}:${value}`).join(', ');
+      log(`onCommand (${username}:${commandName}) ${optionsStr}`);
+      await onCommand(commandName, interaction);
+    }
 
-    const { commandName, user: { username }, options } = interaction;
-    // eslint-disable-next-line no-underscore-dangle
-    const optionsStr = options._hoistedOptions.map(({ name, value }) => `${name}:${value}`).join(', ');
-    log(`onCommand (${username}:${commandName}) ${optionsStr}`);
-    await onCommand(commandName, interaction);
+    // Button was pressed
+    if (interaction.isButton()) {
+      const {
+        customId,
+        message: { interaction: { commandName } },
+        user: { username },
+      } = interaction;
+      await onMessageButton(interaction, { customId, commandName, username });
+    }
   });
 
   // Server general message
@@ -98,10 +110,16 @@ const getClient = () => {
  * Reply just to the caller.
  *
  * @param {object} interaction - Discord.js interaction object.
- * @param {string} content - Message content.
- * @returns {Promise}
+ * @param {object} opts - Function options.
+ * @param {string} opts.content - Message content.
+ * @param {Array<object>} opts.components - Reply builder components.
+ * @returns {Promise} Reply result.
  */
-const replyHidden = (interaction, content) => interaction.reply({ content, ephemeral: true });
+const replyHidden = (interaction, { content, components }) => interaction.reply({
+  content,
+  components,
+  ephemeral: true,
+});
 
 module.exports = {
   setupClient,
