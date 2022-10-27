@@ -1,5 +1,7 @@
 # discord-bot-norren
 
+![](assets/norren.png)
+
 Discord bot for the Heroes of Mirren Discord server.
 
 * [Setup bot](#setup-bot)
