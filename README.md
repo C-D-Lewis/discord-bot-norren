@@ -1,4 +1,4 @@
-# discord-bot-hom
+# discord-bot-norren
 
 Discord bot for the Heroes of Mirren Discord server.
 
@@ -21,7 +21,7 @@ Ensure the bot has the "Message Content" Privileged Gateway Intents.
 Create an URL using the Discord portal, such as:
 
 ```
-https://discord.com/api/oauth2/authorize?client_id=1027938271025713163&permissions=3148800&scope=bot%20applications.commands
+https://discord.com/api/oauth2/authorize?client_id=$CLIENT_ID&permissions=3148800&scope=bot%20applications.commands
 ```
 
 Ensure the URL has the following scopes:
