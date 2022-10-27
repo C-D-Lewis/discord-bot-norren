@@ -107,7 +107,7 @@ const VoiceAgent = (voice) => {
       }
     });
     connection.on('error', (error) => {
-      log('Connection error:', error.message);
+      log(`Connection error: ${error.message}`);
       leaveAndReset();
     });
   });

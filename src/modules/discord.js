@@ -68,6 +68,7 @@ const setupClient = async ({ onCommand, onMessage, onMessageButton }) => new Pro
     // Chat command
     if (interaction.isChatInputCommand()) {
       const { commandName, user: { username }, options } = interaction;
+      // @ts-ignore
       // eslint-disable-next-line no-underscore-dangle
       const optionsStr = options._hoistedOptions.map(({ name, value }) => `${name}:${value}`).join(', ');
       log(`onCommand (${username}:${commandName}) ${optionsStr}`);
@@ -112,7 +113,7 @@ const getClient = () => {
  * @param {object} interaction - Discord.js interaction object.
  * @param {object} opts - Function options.
  * @param {string} opts.content - Message content.
- * @param {Array<object>} opts.components - Reply builder components.
+ * @param {Array<object>} [opts.components] - Reply builder components.
  * @returns {Promise} Reply result.
  */
 const replyHidden = (interaction, { content, components }) => interaction.reply({

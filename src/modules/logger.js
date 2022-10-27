@@ -1,7 +1,7 @@
 /**
  * Log a structured message.
  *
- * @param {string} msg - Message content.
+ * @param {string|object} msg - Message content.
  */
 const log = (msg) => {
   const [date, timeStr] = new Date().toISOString().split('T');

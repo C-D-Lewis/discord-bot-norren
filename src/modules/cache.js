@@ -26,7 +26,7 @@ const isOpusFile = (file) => {
 /**
  * Read sounds in /sounds and music in /music and cache the names.
  *
- * @param {boolean} rescan - true if this is not the initial scan.
+ * @param {boolean} [rescan] - true if this is not the initial scan.
  */
 const readAllFiles = (rescan) => {
   fs.readdirSync(soundsDir).filter(isOpusFile).forEach((file) => {

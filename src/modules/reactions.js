@@ -6,7 +6,7 @@ const { log } = require('./logger');
  *
  * @param {object} interaction - Discord.js interaction object.
  * @param {string} content - Message content.
- * @returns {Promise}
+ * @returns {Promise} Promise
  */
 const handleAutoReactions = (interaction, content) => {
   const lower = content.toLowerCase();

@@ -27,7 +27,7 @@ const handleSoundButton = async (interaction, voice, customId) => {
  *
  * @param {string} name - Command name.
  * @param {object} interaction - Discord.js interaction object.
- * @returns {Function} Handler that returns reply text.
+ * @returns {Promise} Handler that returns reply text.
  */
 const onCommand = async (name, interaction) => {
   try {

@@ -7,7 +7,7 @@ const commit = execSync('git rev-parse --short HEAD').toString();
  * Wait some time.
  *
  * @param {number} ms - Time to wait.
- * @returns {Promise}
+ * @returns {Promise} Promise resolving when wait elapses.
  */
 const waitAsync = (ms) => new Promise((resolve) => {
   setTimeout(resolve, ms);

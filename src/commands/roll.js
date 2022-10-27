@@ -4,7 +4,7 @@ const { getCsprngInt } = require('../util');
  * Handle 'roll' command.
  *
  * @param {object} interaction - discord.js interaction object.
- * @returns {Promise}
+ * @returns {Promise} Reply result.
  */
 module.exports = (interaction) => {
   const param = interaction.options.getNumber('d');
