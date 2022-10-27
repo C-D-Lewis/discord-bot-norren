@@ -106,6 +106,6 @@ node scripts/react.js $CHANNEL_ID $MESSAGE_ID $EMOJI
 
 ## Adding new commands
 
-1. Add to `deploy-commands.js`
+1. Add to `src/modules/commands.js`
 2. Add to map in `src/modules/handlers.js`
 3. Add to help text in `src/commands/help.js`
