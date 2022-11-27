@@ -4,3 +4,4 @@ config.json
 sounds
 music
 db.json
+*.txt
