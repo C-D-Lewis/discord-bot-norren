@@ -36,6 +36,7 @@ const onCommand = async (name, interaction) => {
   } catch (e) {
     const err = `⚠️ ${e.message}`;
     log(err);
+    console.log(e);
     return replyHidden(interaction, { content: err });
   }
 };
@@ -105,6 +106,7 @@ const onMessageButton = async (interaction, { commandName, customId, username })
   } catch (e) {
     const err = `⚠️ ${e.message}`;
     log(err);
+    console.log(e);
     return replyHidden(interaction, { content: err });
   }
 };

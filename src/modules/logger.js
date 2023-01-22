@@ -8,11 +8,11 @@ const FILE_PATH = 'discord-bot-norren.txt';
  *
  * @param {string} msg - Message to write.
  */
- const writeToFile = (msg) => {
+const writeToFile = (msg) => {
   let stream;
   if (!fs.existsSync(FILE_PATH)) {
     stream = fs.createWriteStream(FILE_PATH, { flags: 'w' });
-    stream.end(`New log file!\n`);
+    stream.end('New log file!\n');
   }
 
   stream = fs.createWriteStream(FILE_PATH, { flags: 'a' });
