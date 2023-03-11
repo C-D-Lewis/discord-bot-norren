@@ -97,7 +97,7 @@ const VoiceAgent = (voice) => {
       adapterCreator: voice.guild.voiceAdapterCreator,
       selfDeaf: false,
     });
-    connection.on('stateChange', (old, _new) => {
+    connection.on('stateChange', async (old, _new) => {
       if (old.status === _new.status) return;
       log(`Connection: ${old.status} -> ${_new.status}`);
 
@@ -105,7 +105,7 @@ const VoiceAgent = (voice) => {
       const { Ready, Connecting } = VoiceConnectionStatus;
       if (old.status === Ready && _new.status === Connecting) {
         log('Workaround used...');
-        connection.configureNetworking();
+        await connection.configureNetworking();
       }
 
       // When connected
