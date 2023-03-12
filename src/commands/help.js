@@ -19,6 +19,6 @@ module.exports = (interaction) => replyHidden(interaction, {
 ⁉️ \`/help\` - Show this information
 🤖 \`/ping\` - Ping the bot server
 
-📜 <https://github.com/C-D-Lewis/discord-bot-hom>
+📜 <https://github.com/C-D-Lewis/discord-bot-norren>
 `,
 });
