@@ -1,5 +1,5 @@
 {
-  "name": "discord-hom-bot",
+  "name": "discord-bot-norren",
   "version": "1.0.0",
   "description": "Discord bot for the Heroes of Mirren",
   "scripts": {
@@ -24,10 +24,6 @@
   "eslintConfig": {
     "extends": [
       "@chris-lewis/eslint-config"
-    ],
-    "globals": {
-      "fabricate": "readonly",
-      "Colors": "readonly"
-    }
+    ]
   }
 }
