@@ -1,7 +1,8 @@
 const fs = require('fs');
+const process = require('process');
 
 /** Log file name */
-const FILE_PATH = 'discord-bot-norren.txt';
+const FILE_PATH = 'log.txt';
 
 /**
  * Write a log line to file.
@@ -28,7 +29,7 @@ const log = (msg) => {
   const [date, timeStr] = new Date().toISOString().split('T');
   const [time] = timeStr.split('.');
   const isObject = typeof msg === 'object';
-  const logMsg = `[${date} ${time}] ${isObject ? '' : msg}`;
+  const logMsg = `[${process.pid} ${date} ${time}] ${isObject ? '' : msg}`;
   console.log(logMsg);
 
   // To file
