@@ -3,6 +3,7 @@ const handleSearch = require('../commands/search');
 const handleAudio = require('../commands/audio');
 const handleJoin = require('../commands/join');
 const handleLeave = require('../commands/leave');
+const handleSay = require('../commands/say');
 const handleAsk = require('../commands/ask');
 const handleHelp = require('../commands/help');
 const handlePing = require('../commands/ping');
@@ -35,11 +36,11 @@ const getCommand = (name) => {
     music: (interaction) => handleAudio(interaction, AUDIO_TYPE_MUSIC),
     join: handleJoin,
     leave: handleLeave,
+    say: handleSay,
     ask: handleAsk,
     help: handleHelp,
     ping: handlePing,
   };
-
   if (!map[name]) throw new Error('I don\'t know that command, but I should know it');
 
   return map[name];

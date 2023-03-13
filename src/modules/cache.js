@@ -71,7 +71,9 @@ const getClosestFileName = (type, query) => {
  * @returns {object} discord.js audio object.
  */
 const getAudioResource = (name) => {
-  const dir = soundNames.includes(name) ? soundsDir : musicDir;
+  // Order allows pickup of speech.opus
+  const dir = musicNames.includes(name) ? musicDir : soundsDir;
+
   return createAudioResource(
     fs.createReadStream(`${dir}/${name}`),
     { inputType: StreamType.OggOpus },

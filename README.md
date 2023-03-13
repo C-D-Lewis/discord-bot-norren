@@ -63,7 +63,9 @@ npm ci
     { "trigger": "hello", "emoji": "👋"}
   ],
   "onJoinSound": "<sound>.opus",
-  "onLeaveSound": "<sound>.opus"
+  "onLeaveSound": "<sound>.opus",
+  "elevenlabsApiKey": "<API key>",
+  "elevenlabsVoiceId": "<voice ID>"
 }
 ```
 

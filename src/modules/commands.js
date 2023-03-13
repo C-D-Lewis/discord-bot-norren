@@ -82,6 +82,13 @@ const COMMANDS = [
   //       .setRequired(true))),
 
   new SlashCommandBuilder()
+    .setName('say')
+    .setDescription('Use TTS to say something')
+    .addStringOption((option) => option.setName('message')
+      .setDescription('Message to speak')
+      .setRequired(true)),
+
+  new SlashCommandBuilder()
     .setName('ask')
     .setDescription('Ask me a yes/no for advice')
     .addStringOption((option) => option.setName('question')

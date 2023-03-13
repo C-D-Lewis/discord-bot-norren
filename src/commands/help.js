@@ -12,6 +12,7 @@ module.exports = (interaction) => replyHidden(interaction, {
 📖 \`/search\` - Search Roll20.net compendium
 🔊 \`/sound\` / \`/music\` - Play/stop/list sound/music files
 🎙 \`/join\` / \`/leave\` - Join/leave the user's voice channel
+🗣 \`say\` - Use TTS to say something
 🎱 \`/ask\` - Ask me a yes/no question
 ⁉️ \`/help\` - Show this information
 🤖 \`/ping\` - Ping the bot server
