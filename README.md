@@ -52,7 +52,7 @@ npm ci
 
 > Installing `sodium` may take several minutes.
 
-2. Add `config.json` with credentials:
+2. Add `config.json` with credentials and other options. For example:
 
 ```json
 {
@@ -69,9 +69,19 @@ npm ci
 
 3. Pre-load the `sounds` and `music` directories with files to be matched by the `query`.
 
-> Audio files must be in the Opus sound format
+> Audio files must be in the Opus sound format.
 
 > Sets of files to be used randomly must have an underscore, e.g: `guard_5.opus`.
+
+Optionally use `scripts/sync-s3.sh` to sync `sounds` and `music` from an S3
+bucket location containing a `sounds` and `music` directory:
+
+```
+# Uses a local AWS CLI install and credentials
+export AWS_PROFILE=...
+
+./scripts/sync-s3.sh s3://my-example-bucket/discord-bot-norren/
+```
 
 4. Start the app:
 
