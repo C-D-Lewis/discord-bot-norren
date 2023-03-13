@@ -10,11 +10,8 @@ module.exports = (interaction) => replyHidden(interaction, {
   content: `
 🎲 \`/roll\` - Roll a die (using CRNG)
 📖 \`/search\` - Search Roll20.net compendium
-🔊 \`/sound\` - Play/stop/list sound files or see recently played
-🎶 \`/music\` - Play/stop/list music files
-🎙 \`/join\` - Join the user's voice channel
-❌ \`/leave\` - Leave the voice channel
-📌 \`/pin\` - Pin links or other text
+🔊 \`/sound\` / \`/music\` - Play/stop/list sound/music files
+🎙 \`/join\` / \`/leave\` - Join/leave the user's voice channel
 🎱 \`/ask\` - Ask me a yes/no question
 ⁉️ \`/help\` - Show this information
 🤖 \`/ping\` - Ping the bot server

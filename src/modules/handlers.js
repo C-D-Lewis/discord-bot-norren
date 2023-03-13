@@ -3,7 +3,6 @@ const handleSearch = require('../commands/search');
 const handleAudio = require('../commands/audio');
 const handleJoin = require('../commands/join');
 const handleLeave = require('../commands/leave');
-const handlePin = require('../commands/pin');
 const handleAsk = require('../commands/ask');
 const handleHelp = require('../commands/help');
 const handlePing = require('../commands/ping');
@@ -20,11 +19,22 @@ const getCommand = (name) => {
   const map = {
     roll: handleRoll,
     search: handleSearch,
+    /**
+     * Getter for handler for 'sound' command.
+     *
+     * @param {object} interaction - Discord.js interaction object.
+     * @returns {Promise<object>} Reply
+     */
     sound: (interaction) => handleAudio(interaction, AUDIO_TYPE_SOUND),
+    /**
+     * Getter for handler for 'music' command.
+     *
+     * @param {object} interaction - Discord.js interaction object.
+     * @returns {Promise<object>} Reply
+     */
     music: (interaction) => handleAudio(interaction, AUDIO_TYPE_MUSIC),
     join: handleJoin,
     leave: handleLeave,
-    pin: handlePin,
     ask: handleAsk,
     help: handleHelp,
     ping: handlePing,

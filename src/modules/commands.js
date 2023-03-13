@@ -62,24 +62,24 @@ const COMMANDS = [
     .setName('leave')
     .setDescription('Leave the current voice channel'),
 
-  new SlashCommandBuilder()
-    .setName('pin')
-    .setDescription('Pin links or other text')
-    .addSubcommand((subcommand) => subcommand
-      .setName('add')
-      .setDescription('Add a pin')
-      .addStringOption((option) => option.setName('text')
-        .setDescription('Text to pin')
-        .setRequired(true)))
-    .addSubcommand((subcommand) => subcommand
-      .setName('list')
-      .setDescription('List existing pins'))
-    .addSubcommand((subcommand) => subcommand
-      .setName('delete')
-      .setDescription('Delete a pin by ID')
-      .addIntegerOption((option) => option.setName('id')
-        .setDescription('ID of pin to remove')
-        .setRequired(true))),
+  // new SlashCommandBuilder()
+  //   .setName('pin')
+  //   .setDescription('Pin links or other text')
+  //   .addSubcommand((subcommand) => subcommand
+  //     .setName('add')
+  //     .setDescription('Add a pin')
+  //     .addStringOption((option) => option.setName('text')
+  //       .setDescription('Text to pin')
+  //       .setRequired(true)))
+  //   .addSubcommand((subcommand) => subcommand
+  //     .setName('list')
+  //     .setDescription('List existing pins'))
+  //   .addSubcommand((subcommand) => subcommand
+  //     .setName('delete')
+  //     .setDescription('Delete a pin by ID')
+  //     .addIntegerOption((option) => option.setName('id')
+  //       .setDescription('ID of pin to remove')
+  //       .setRequired(true))),
 
   new SlashCommandBuilder()
     .setName('ask')
