@@ -27,7 +27,7 @@ module.exports = async (interaction) => {
   log('Cleared speech file');
 
   // Feedback to user
-  await replyHidden(interaction, { content: 'Generating...' });
+  await replyHidden(interaction, { content: `Say: _${message}_\n\nGenerating...` });
 
   try {
     // Request sound file
@@ -55,16 +55,16 @@ module.exports = async (interaction) => {
     log('Wrote speech file');
 
     // Convert to opus
-    await interaction.editReply('Converting...');
+    await interaction.editReply(`Say: _${message}_\n\nConverting...`);
     execSync(`ffmpeg -i ${FILE_NO_EXT}.mpg ${FILE_NO_EXT}.opus`);
     log('Converted speech file to opus');
 
     // Play it!
     const voiceAgent = getVoiceAgent(voice);
     await voiceAgent.join();
-    await interaction.editReply('Playing...');
+    await interaction.editReply(`Say: _${message}_\n\nPlaying...`);
     voiceAgent.play('speech.opus');
-    await interaction.editReply('Speech complete!');
+    await interaction.editReply(`Say: _${message}_\n\nSpeech complete!`);
   } catch (e) {
     await interaction.editReply(`Failed! ${e.message.slice(0, 1000)}`);
   }
