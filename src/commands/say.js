@@ -66,6 +66,7 @@ module.exports = async (interaction) => {
     voiceAgent.play('speech.opus');
     await interaction.editReply(`Say: _${message}_\n\nSpeech complete!`);
   } catch (e) {
+    console.log(e);
     await interaction.editReply(`Failed! ${e.message.slice(0, 1000)}`);
   }
 
