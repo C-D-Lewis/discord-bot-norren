@@ -8,6 +8,8 @@ const { log } = require('../modules/logger');
 
 /** Path to speech file without extension */
 const FILE_NO_EXT = `${__dirname}/../../sounds/speech`;
+/** Max message lenth */
+const MAX_MESSAGE_LENGTH = 128;
 
 /**
  * Handle 'say' command to say things with TTS.
@@ -18,6 +20,8 @@ const FILE_NO_EXT = `${__dirname}/../../sounds/speech`;
 module.exports = async (interaction) => {
   const { options, member: { voice } } = interaction;
   const message = options.getString('message');
+
+  if (message.length > MAX_MESSAGE_LENGTH) throw new Error('Message is too long');
 
   execSync(`rm -f ${FILE_NO_EXT}.*`);
   log('Cleared speech file');

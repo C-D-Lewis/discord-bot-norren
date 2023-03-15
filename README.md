@@ -60,7 +60,7 @@ npm ci
   "clientId": "<application id>",
   "guildId": "<server id>",
   "reactions": [
-    { "trigger": "hello", "emoji": "👋"}
+    { "trigger": "hello", "emoji": "👋" }
   ],
   "onJoinSound": "<sound>.opus",
   "onLeaveSound": "<sound>.opus",
