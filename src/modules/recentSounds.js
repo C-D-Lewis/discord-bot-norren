@@ -15,9 +15,10 @@ const getRecentSounds = (username) => {
     db.set(DB_KEY_RECENT_SOUNDS, recentSounds);
   }
 
-  const userSounds = recentSounds[username];
-  console.log({ username, userSounds });
-  return { recentSounds, userSounds };
+  return {
+    recentSounds,
+    userSounds: recentSounds[username],
+  };
 };
 
 /**
