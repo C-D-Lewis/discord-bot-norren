@@ -11,6 +11,8 @@ const FILE_NO_EXT = `${__dirname}/../../sounds/speech`;
 /** Max message lenth */
 const MAX_MESSAGE_LENGTH = 128;
 
+let inProgress = false;
+
 /**
  * Handle 'say' command to say things with TTS.
  *
@@ -21,13 +23,19 @@ module.exports = async (interaction) => {
   const { options, member: { voice } } = interaction;
   const message = options.getString('message');
 
-  if (message.length > MAX_MESSAGE_LENGTH) throw new Error('Message is too long');
+  if (message.length > MAX_MESSAGE_LENGTH) {
+    return replyHidden(interaction, {
+      content: `Message must be less than ${MAX_MESSAGE_LENGTH} characters (was ${message.length})`,
+    });
+  }
 
-  execSync(`rm -f ${FILE_NO_EXT}.*`);
-  log('Cleared speech file');
+  if (inProgress) return replyHidden(interaction, { content: 'Speech generation in progress, please wait!' });
 
   // Feedback to user
   await replyHidden(interaction, { content: `Say: _${message}_\n\nGenerating...` });
+  inProgress = true;
+
+  execSync(`rm -f ${FILE_NO_EXT}.*`);
 
   try {
     // Request sound file
@@ -47,8 +55,8 @@ module.exports = async (interaction) => {
         },
       }),
     });
-    if (res.status !== 200) throw new Error(res.text());
     log(`Response: ${res.status}`);
+    if (res.status !== 200) throw new Error(res.text());
 
     const buffer = await res.buffer();
     writeFileSync(`${FILE_NO_EXT}.mpg`, buffer);
@@ -71,5 +79,7 @@ module.exports = async (interaction) => {
   }
 
   execSync(`rm -f ${FILE_NO_EXT}.*`);
-  log('Cleared speech file');
+
+  inProgress = false;
+  return undefined;
 };

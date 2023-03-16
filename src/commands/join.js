@@ -10,7 +10,11 @@ const { onJoinSound } = require('../../config.json');
  */
 module.exports = async (interaction) => {
   const { member: { voice } } = interaction;
-  if (!voice.channel) throw new Error('I don\'t see you in a voice channel');
+
+  // Not in a channel
+  if (!voice.channel) {
+    return replyHidden(interaction, { content: "I don't see you in a voice channel" });
+  }
 
   const voiceAgent = getVoiceAgent(voice);
   await voiceAgent.join();

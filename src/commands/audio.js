@@ -29,7 +29,11 @@ module.exports = async (interaction, type) => {
   }
 
   // Not in a voice channel
-  if (!voice.channel) throw new Error('I don\'t see you in a voice channel');
+  if (!voice.channel) {
+    return replyHidden(interaction, {
+      content: 'I don\'t see you in a voice channel',
+    });
+  }
 
   const voiceAgent = getVoiceAgent(voice);
 
@@ -43,7 +47,11 @@ module.exports = async (interaction, type) => {
   if (subcommand === 'play') {
     const results = getClosestFileName(type, query);
     log({ query, results });
-    if (!results.length) throw new Error(`I don't know a ${type} for "${query}"`);
+    if (!results.length) {
+      return replyHidden(interaction, {
+        content: `I don't know ${type} for "${query}"`,
+      });
+    }
 
     // Multiple results? Pick one at random
     let foundAudio = results[0];

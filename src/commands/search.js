@@ -19,7 +19,9 @@ module.exports = async (interaction) => {
   const lines = html.slice(start, end).split('\n').filter((p) => p.includes('a href'));
 
   // No lines found
-  if (lines.length === 0) throw new Error(`No results found for ${query}`);
+  if (lines.length === 0) {
+    return replyHidden(interaction, { content: `No results found for ${query}` });
+  }
 
   // Extract links
   const max = 10;
