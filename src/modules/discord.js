@@ -56,10 +56,7 @@ const setupClient = async ({ onCommand, onMessage, onMessageButton }) => new Pro
       await registerCommandsInAllGuilds();
     }
 
-    // Set status
     client.user.setStatus('online');
-
-    // All done
     resolve();
   });
 
@@ -68,7 +65,6 @@ const setupClient = async ({ onCommand, onMessage, onMessageButton }) => new Pro
     // Chat command
     if (interaction.isChatInputCommand()) {
       const { commandName, user: { username }, options } = interaction;
-      // @ts-ignore
       // eslint-disable-next-line no-underscore-dangle
       const optionsStr = options._hoistedOptions.map(({ name, value }) => `${name}:${value}`).join(', ');
       log(`onCommand (${username}:${commandName}) ${optionsStr}`);

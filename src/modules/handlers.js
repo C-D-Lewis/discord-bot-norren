@@ -4,6 +4,7 @@ const handleAudio = require('../commands/audio');
 const handleJoin = require('../commands/join');
 const handleLeave = require('../commands/leave');
 const handleSay = require('../commands/say');
+const handleChatGpt = require('../commands/chatGpt');
 const handleAsk = require('../commands/ask');
 const handleHelp = require('../commands/help');
 const handlePing = require('../commands/ping');
@@ -37,6 +38,7 @@ const getCommand = (name) => {
     join: handleJoin,
     leave: handleLeave,
     say: handleSay,
+    chatgpt: handleChatGpt,
     ask: handleAsk,
     help: handleHelp,
     ping: handlePing,

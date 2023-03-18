@@ -65,7 +65,8 @@ npm ci
   "onJoinSound": "<sound>.opus",
   "onLeaveSound": "<sound>.opus",
   "elevenlabsApiKey": "<API key>",
-  "elevenlabsVoiceId": "<voice ID>"
+  "elevenlabsVoiceId": "<voice ID>",
+  "openAiApiKey": ""
 }
 ```
 

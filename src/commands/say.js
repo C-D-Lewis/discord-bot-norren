@@ -29,6 +29,7 @@ module.exports = async (interaction) => {
     });
   }
 
+  // Only one at a time
   if (inProgress) return replyHidden(interaction, { content: 'Speech generation in progress, please wait!' });
 
   // Feedback to user
@@ -72,7 +73,7 @@ module.exports = async (interaction) => {
     await voiceAgent.join();
     await interaction.editReply(`Say: _${message}_\n\nPlaying...`);
     voiceAgent.play('speech.opus');
-    await interaction.editReply(`Say: _${message}_\n\nSpeech complete!`);
+    await interaction.editReply(`Say: _${message}_`);
   } catch (e) {
     console.log(e);
     await interaction.editReply(`Failed! ${e.message.slice(0, 1000)}`);

@@ -89,6 +89,13 @@ const COMMANDS = [
       .setRequired(true)),
 
   new SlashCommandBuilder()
+    .setName('chatgpt')
+    .setDescription('Use ChatGPT')
+    .addStringOption((option) => option.setName('prompt')
+      .setDescription('Prompt content')
+      .setRequired(true)),
+
+  new SlashCommandBuilder()
     .setName('ask')
     .setDescription('Ask me a yes/no for advice')
     .addStringOption((option) => option.setName('question')

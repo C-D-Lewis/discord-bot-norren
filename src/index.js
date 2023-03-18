@@ -47,21 +47,28 @@ const onCommand = async (name, interaction) => {
  * @param {object} interaction - Message interaction object.
  * @returns {object} Reply result.
  */
-const handleMessageCommand = (interaction) => {
+const handleMessageCommand = async (interaction) => {
   const { author: { username }, content } = interaction;
   const [, keyword, ...args] = content.split(' ');
   log({ keyword, args });
 
-  // Implement any message commands here
-  if (['hello', 'hey', 'hi'].includes(keyword)) {
-    return interaction.react('👋');
-  }
+  try {
+    // React to greetings
+    if (['hello', 'hey', 'hi'].includes(keyword)) return interaction.react('👋');
 
-  // Else not sure which command
-  return replyHidden(
-    interaction,
-    { content: `Sorry ${username}, I don't know what you want. Try using \`/help\`.` },
-  );
+    // Implement any other message commands here
+
+    // Else not sure which command
+    return replyHidden(
+      interaction,
+      { content: `Sorry ${username}, I don't know what you want. Try using \`/help\`.` },
+    );
+  } catch (e) {
+    const err = `⚠️ ${e.message}`;
+    log(err);
+    console.log(e);
+    return replyHidden(interaction, { content: err });
+  }
 };
 
 /**

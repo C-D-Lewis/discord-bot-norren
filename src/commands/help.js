@@ -13,6 +13,7 @@ module.exports = (interaction) => replyHidden(interaction, {
 🔊 \`/sound\` / \`/music\` - Play/stop/list sound/music files
 🎙 \`/join\` / \`/leave\` - Join/leave the user's voice channel
 🗣 \`say\` - Use TTS to say something
+ICON \`/chatgpt\` - Use ChatGPT
 🎱 \`/ask\` - Ask me a yes/no question
 ⁉️ \`/help\` - Show this information
 🤖 \`/ping\` - Ping the bot server
