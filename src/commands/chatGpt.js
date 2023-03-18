@@ -31,6 +31,7 @@ module.exports = async (interaction) => {
     body: JSON.stringify({
       model: 'gpt-3.5-turbo',
       messages: [
+        { role: 'system', content: 'You are Norren, a friendly Druid from the town of Kernwall. Stay in character' },
         { role: 'user', content: prompt },
       ],
     }),
