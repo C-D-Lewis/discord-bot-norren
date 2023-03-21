@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const { writeFileSync } = require('fs');
 const { execSync } = require('child_process');
+const { getVoiceAgent } = require('./voice');
 const { elevenlabsApiKey, elevenlabsVoiceId } = require('../../config.json');
 const { log } = require('./logger');
 
@@ -14,6 +15,8 @@ const FILE_NO_EXT = `${__dirname}/../../sounds/speech`;
  * @returns {Promise<void>}
  */
 const generateSpeech = async (message) => {
+  execSync(`rm -f ${FILE_NO_EXT}.*`);
+
   log(`Requesting speech: ${message}`);
   const url = `https://api.elevenlabs.io/v1/text-to-speech/${elevenlabsVoiceId}`;
   const res = await fetch(url, {
@@ -46,7 +49,20 @@ const convertSpeech = () => {
   log('Converted speech file to opus');
 };
 
+/**
+ * Play stored speech.
+ *
+ * @param {object} voice - discord.js voice object.
+ * @returns {Promise<void>}
+ */
+const playSpeech = async (voice) => {
+  const voiceAgent = getVoiceAgent(voice);
+  await voiceAgent.join();
+  voiceAgent.play('speech.opus');
+};
+
 module.exports = {
   generateSpeech,
   convertSpeech,
+  playSpeech,
 };

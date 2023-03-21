@@ -1,10 +1,6 @@
-const { execSync } = require('child_process');
 const { replyHidden } = require('../modules/discord');
-const { getVoiceAgent } = require('../modules/voice');
-const { generateSpeech, convertSpeech } = require('../modules/tts');
+const { generateSpeech, convertSpeech, playSpeech } = require('../modules/tts');
 
-/** Path to speech file without extension */
-const FILE_NO_EXT = `${__dirname}/../../sounds/speech`;
 /** Max message lenth */
 const MAX_MESSAGE_LENGTH = 128;
 
@@ -35,7 +31,6 @@ module.exports = async (interaction) => {
 
   try {
     // Request sound file
-    execSync(`rm -f ${FILE_NO_EXT}.*`);
     await generateSpeech(message);
 
     // Convert to opus
@@ -43,17 +38,14 @@ module.exports = async (interaction) => {
     await convertSpeech();
 
     // Play it!
-    const voiceAgent = getVoiceAgent(voice);
-    await voiceAgent.join();
     await interaction.editReply(`Say: _${message}_\n\nPlaying...`);
-    voiceAgent.play('speech.opus');
+    await playSpeech(voice);
     await interaction.editReply(`Say: _${message}_`);
   } catch (e) {
     console.log(e);
     await interaction.editReply(`Failed! ${e.message.slice(0, 1000)}`);
   }
 
-  execSync(`rm -f ${FILE_NO_EXT}.*`);
   inProgress = false;
   return undefined;
 };
