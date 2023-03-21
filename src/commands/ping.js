@@ -31,6 +31,6 @@ module.exports = (interaction) => {
   const uptimeStr = getReadableUptime();
   return replyHidden(
     interaction,
-    { content: `ping: \`${getClient().ws.ping}ms\` | host: \`${hostname()}\` | uptime: \`${uptimeStr}\` | version: \`${getCommit()}\`` },
+    { content: `ping: \`${getClient().ws.ping}ms\` / host: \`${hostname()}\` / uptime: \`${uptimeStr}\` / version: \`${getCommit()}\`` },
   );
 };
