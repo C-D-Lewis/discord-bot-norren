@@ -2,7 +2,7 @@ const { replyHidden } = require('../modules/discord');
 const { generateSpeech, convertSpeech, playSpeech } = require('../modules/tts');
 
 /** Max message lenth */
-const MAX_MESSAGE_LENGTH = 128;
+const MAX_MESSAGE_LENGTH = 256;
 
 let inProgress = false;
 
