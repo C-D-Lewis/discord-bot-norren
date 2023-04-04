@@ -59,6 +59,8 @@ const playSpeech = async (voice) => {
   const voiceAgent = getVoiceAgent(voice);
   await voiceAgent.join();
   voiceAgent.play('speech.opus');
+
+  setTimeout(() => execSync(`rm -f ${FILE_NO_EXT}.*`), 10000);
 };
 
 module.exports = {
