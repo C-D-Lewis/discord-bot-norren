@@ -24,6 +24,8 @@ module.exports = async (interaction) => {
   // Update response
   const content = await askChatGpt(prompt);
   inProgress = false;
+  if (!content) return interaction.editReply(`${username} asked: _${prompt}_\n\n ⚠️ Something went wrong!`);
+
   await interaction.editReply(`${username} asked: _${prompt}_\n\n**${content.trim()}**`);
 
   const subcommand = options.getSubcommand();

@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const { openAiApiKey } = require('../../config.json');
+const { log } = require('./logger');
 
 /** Context framing the user's query */
 const CONTEXT = 'You are Norren, a friendly Druid from the town of Kernwall. Respond in three sentences or less.';
@@ -27,6 +28,12 @@ const askChatGpt = async (prompt) => {
   });
 
   const json = await res.json();
+  if (!json.choices) {
+    log('Invalid ChatGPT response');
+    console.log(json);
+    return undefined;
+  }
+
   const { content } = json.choices[0].message;
   console.log({ prompt, content });
   return content;
