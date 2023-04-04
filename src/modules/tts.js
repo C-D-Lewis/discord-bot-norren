@@ -5,6 +5,9 @@ const { getVoiceAgent } = require('./voice');
 const { elevenlabsApiKey, elevenlabsVoiceId } = require('../../config.json');
 const { log } = require('./logger');
 
+/** Speech saved dir */
+const SAVED_DIR = `${__dirname}/../../saved`;
+
 /** Path to speech file without extension */
 const FILE_NO_EXT = `${__dirname}/../../sounds/speech`;
 
@@ -39,6 +42,10 @@ const generateSpeech = async (message) => {
   const buffer = await res.buffer();
   writeFileSync(`${FILE_NO_EXT}.mpg`, buffer);
   log('Wrote speech file');
+
+  // Copy in case it's good
+  execSync(`mkdir -p ${SAVED_DIR}`);
+  execSync(`cp ${FILE_NO_EXT}.mpg ${SAVED_DIR}/${message.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.mp3`);
 };
 
 /**
