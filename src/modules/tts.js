@@ -12,16 +12,41 @@ const SAVED_DIR = `${__dirname}/../../saved`;
 const FILE_NO_EXT = `${__dirname}/../../sounds/speech`;
 
 /**
+ * Get voice names available.
+ *
+ * @returns {Promise<Array<{ name, id }>>} List of voice names and IDs.
+ */
+const getVoices = async () => {
+  const { voices } = await fetch('https://api.elevenlabs.io/v1/voices', {
+    headers: {
+      accept: 'application/json',
+      'xi-api-key': elevenlabsApiKey,
+    },
+  }).then((r) => r.json());
+
+  return voices
+    .filter(({ category }) => category !== 'premade')
+    // eslint-disable-next-line camelcase
+    .map(({ name, voice_id }) => ({ name, id: voice_id }));
+};
+
+/**
  * Generate and store speech as a file.
  *
+ * @param {string} voiceName - ID of the voice to use.
  * @param {string} message - Message to generate as speech.
  * @returns {Promise<void>}
  */
-const generateSpeech = async (message) => {
+const generateSpeech = async (voiceName, message) => {
+  // Get voice ID from name
+  const voices = await getVoices();
+  const found = voices.find(({ name }) => name === voiceName);
+  if (!found) throw new Error(`Unknown voice name: ${voiceName}`);
+
   execSync(`rm -f ${FILE_NO_EXT}.*`);
 
-  log(`Requesting speech: ${message}`);
-  const url = `https://api.elevenlabs.io/v1/text-to-speech/${elevenlabsVoiceId}`;
+  log(`Requesting speech: (voice ${found.name}) ${message}`);
+  const url = `https://api.elevenlabs.io/v1/text-to-speech/${found.id}`;
   const res = await fetch(url, {
     method: 'POST',
     headers: {
@@ -74,4 +99,5 @@ module.exports = {
   generateSpeech,
   convertSpeech,
   playSpeech,
+  getVoices,
 };

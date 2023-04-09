@@ -13,6 +13,7 @@ let inProgress = false;
 module.exports = async (interaction) => {
   const { options, user: { username }, member: { voice } } = interaction;
   const prompt = options.getString('prompt');
+  // const voiceName = options.getString('voiceName');
 
   // Only one at a time
   if (inProgress) return replyHidden(interaction, { content: 'Generation already in progress, please wait!' });
@@ -33,7 +34,7 @@ module.exports = async (interaction) => {
     await interaction.editReply(`${username} asked: _${prompt}_ (Generating audio...)\n\n**${content.trim()}**`);
 
     await generateSpeech(content);
-    await convertSpeech();
+    convertSpeech();
     await playSpeech(voice);
     await interaction.editReply(`${username} asked: _${prompt}_\n\n**${content.trim()}**`);
   }

@@ -82,27 +82,39 @@ const COMMANDS = [
   //       .setRequired(true))),
 
   new SlashCommandBuilder()
-    .setName('say')
+    .setName('tts')
     .setDescription('Use TTS to say something')
-    .addStringOption((option) => option.setName('message')
-      .setDescription('Message to speak')
-      .setRequired(true)),
-
-  new SlashCommandBuilder()
-    .setName('ask')
-    .setDescription('Ask a question (answered by ChatGPT as Norren)')
     .addSubcommand((subcommand) => subcommand
-      .setName('text')
-      .setDescription('Respond in the original message')
-      .addStringOption((option) => option.setName('prompt')
-        .setDescription('Prompt content')
+      .setName('say')
+      .setDescription('Generate some voice audio from text')
+      .addStringOption((option) => option.setName('voice')
+        .setDescription('Voice name')
+        .setRequired(true))
+      .addStringOption((option) => option.setName('message')
+        .setDescription('Message to speak')
         .setRequired(true)))
     .addSubcommand((subcommand) => subcommand
-      .setName('voice')
-      .setDescription('Respond with voice if in a voice channel')
-      .addStringOption((option) => option.setName('prompt')
-        .setDescription('Prompt content')
-        .setRequired(true))),
+      .setName('voices')
+      .setDescription('List all avaialble voice names')),
+
+  // new SlashCommandBuilder()
+  //   .setName('ask')
+  //   .setDescription('Ask a question (answered by ChatGPT as Norren)')
+  //   .addSubcommand((subcommand) => subcommand
+  //     .setName('text')
+  //     .setDescription('Respond in the original message')
+  //     .addStringOption((option) => option.setName('prompt')
+  //       .setDescription('Prompt content')
+  //       .setRequired(true)))
+  //   .addSubcommand((subcommand) => subcommand
+  //     .setName('voice')
+  //     .setDescription('Respond with voice if in a voice channel')
+  //     .addStringOption((option) => option.setName('voiceName')
+  //       .setDescription('Voice name from "/say voices"')
+  //       .setRequired(true))
+  //     .addStringOption((option) => option.setName('prompt')
+  //       .setDescription('Prompt content')
+  //       .setRequired(true))),
 
   new SlashCommandBuilder()
     .setName('help')
