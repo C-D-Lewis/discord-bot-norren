@@ -5,6 +5,8 @@ const {
 
 /** Max message lenth */
 const MAX_MESSAGE_LENGTH = 256;
+/** Default stability score */
+const DEFAULT_STABILITY = 0.9;
 
 let inProgress = false;
 
@@ -20,13 +22,14 @@ module.exports = async (interaction) => {
 
   if (subcommand === 'voices') {
     const voices = await getVoices();
-    await replyHidden(interaction, { content: voices.map(({ name }) => `"${name}"`).join(', ') });
+    await replyHidden(interaction, { content: `Voice available:\n\n${voices.map(({ name }) => `"${name}"`).join(', ')}` });
     return undefined;
   }
 
   if (subcommand === 'say') {
     const voiceName = options.getString('voice');
     const message = options.getString('message');
+    const stability = options.getNumber('stability') || DEFAULT_STABILITY;
 
     if (message.length > MAX_MESSAGE_LENGTH) {
       return replyHidden(interaction, {
@@ -35,7 +38,7 @@ module.exports = async (interaction) => {
     }
 
     // Only one at a time
-    if (inProgress) return replyHidden(interaction, { content: 'Speech generation in progress, please wait!' });
+    if (inProgress) return replyHidden(interaction, { content: 'Speech generation already in progress, please try again shortly!' });
 
     // Feedback to user
     await replyHidden(interaction, { content: `Say: _${message}_\n\nGenerating...` });
@@ -43,7 +46,7 @@ module.exports = async (interaction) => {
 
     try {
       // Request sound file
-      await generateSpeech(voiceName, message);
+      await generateSpeech(voiceName, message, stability);
 
       // Convert to opus
       await interaction.editReply(`Say: _${message}_\n\nConverting...`);

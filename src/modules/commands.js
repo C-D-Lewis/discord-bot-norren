@@ -92,7 +92,10 @@ const COMMANDS = [
         .setRequired(true))
       .addStringOption((option) => option.setName('message')
         .setDescription('Message to speak')
-        .setRequired(true)))
+        .setRequired(true))
+      .addNumberOption((option) => option.setName('stability')
+        .setDescription('Stability score, 0.0 to 1.0')
+        .setRequired(false)))
     .addSubcommand((subcommand) => subcommand
       .setName('voices')
       .setDescription('List all avaialble voice names')),

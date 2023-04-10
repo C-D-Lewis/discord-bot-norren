@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const { writeFileSync } = require('fs');
 const { execSync } = require('child_process');
 const { getVoiceAgent } = require('./voice');
-const { elevenlabsApiKey, elevenlabsVoiceId } = require('../../config.json');
+const { elevenlabsApiKey } = require('../../config.json');
 const { log } = require('./logger');
 
 /** Speech saved dir */
@@ -35,9 +35,10 @@ const getVoices = async () => {
  *
  * @param {string} voiceName - ID of the voice to use.
  * @param {string} message - Message to generate as speech.
+ * @param {number} stability - Stability score.
  * @returns {Promise<void>}
  */
-const generateSpeech = async (voiceName, message) => {
+const generateSpeech = async (voiceName, message, stability) => {
   // Get voice ID from name
   const voices = await getVoices();
   const found = voices.find(({ name }) => name === voiceName);
@@ -56,8 +57,8 @@ const generateSpeech = async (voiceName, message) => {
     body: JSON.stringify({
       text: message,
       voice_settings: {
-        stability: 1.0,
-        similarity_boost: 1.0,
+        stability,
+        similarity_boost: 0.9,
       },
     }),
   });
@@ -92,7 +93,7 @@ const playSpeech = async (voice) => {
   await voiceAgent.join();
   voiceAgent.play('speech.opus');
 
-  setTimeout(() => execSync(`rm -f ${FILE_NO_EXT}.*`), 10000);
+  setTimeout(() => execSync(`rm -f ${FILE_NO_EXT}.*`), 5000);
 };
 
 module.exports = {
