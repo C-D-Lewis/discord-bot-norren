@@ -1,0 +1,19 @@
+{
+  "include": ["src/**/*"],
+  "exclude": [
+    "src/types.ts",
+    "unused/**/*"
+  ],
+  "compilerOptions": {
+    "target": "ES2016",
+    "module": "ES2015",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "moduleResolution": "nodenext",
+    "resolveJsonModule": true
+  }
+}

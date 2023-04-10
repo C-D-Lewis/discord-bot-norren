@@ -10,7 +10,7 @@ let inProgress = false;
  * @param {object} interaction - discord.js interaction object.
  * @returns {Promise<object|undefined>} Reply result or nothing.
  */
-module.exports = async (interaction) => {
+export default async function (interaction) {
   const { options, user: { username }, member: { voice } } = interaction;
   const prompt = options.getString('prompt');
   // const voiceName = options.getString('voiceName');
@@ -38,6 +38,4 @@ module.exports = async (interaction) => {
     await playSpeech(voice);
     await interaction.editReply(`${username} asked: _${prompt}_\n\n**${content.trim()}**`);
   }
-
-  return undefined;
 };

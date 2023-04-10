@@ -1,5 +1,4 @@
-const fs = require('fs');
-const process = require('process');
+import { existsSync, createWriteStream } from 'node:fs';
 
 /** Log file name */
 const FILE_PATH = 'log.txt';
@@ -9,14 +8,14 @@ const FILE_PATH = 'log.txt';
  *
  * @param {string} msg - Message to write.
  */
-const writeToFile = (msg) => {
+const writeToFile = (msg: string) => {
   let stream;
-  if (!fs.existsSync(FILE_PATH)) {
-    stream = fs.createWriteStream(FILE_PATH, { flags: 'w' });
+  if (!existsSync(FILE_PATH)) {
+    stream = createWriteStream(FILE_PATH, { flags: 'w' });
     stream.end('New log file!\n');
   }
 
-  stream = fs.createWriteStream(FILE_PATH, { flags: 'a' });
+  stream = createWriteStream(FILE_PATH, { flags: 'a' });
   stream.end(`${msg}\n`);
 };
 
@@ -25,7 +24,7 @@ const writeToFile = (msg) => {
  *
  * @param {string|object} msg - Message content.
  */
-const log = (msg) => {
+export const log = (msg: string | object) => {
   const [date, timeStr] = new Date().toISOString().split('T');
   const [time] = timeStr.split('.');
   const isObject = typeof msg === 'object';
@@ -38,5 +37,3 @@ const log = (msg) => {
   // Could be complex object
   if (isObject) console.log(msg);
 };
-
-module.exports = { log };

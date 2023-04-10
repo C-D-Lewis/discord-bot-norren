@@ -1,9 +1,11 @@
-const fetch = require('node-fetch');
-const { writeFileSync } = require('fs');
-const { execSync } = require('child_process');
-const { getVoiceAgent } = require('./voice');
-const { elevenlabsApiKey } = require('../../config.json');
-const { log } = require('./logger');
+import fetch from 'node-fetch';
+import { writeFileSync } from 'node:fs';
+import { execSync } from 'node:child_process';
+import { getVoiceAgent } from './voice';
+import { elevenlabsApiKey } from '../../config.json';
+import { log } from './logger';
+import { ElevenLabsVoicesResponse } from '../types';
+import { VoiceState } from 'discord.js';
 
 /** Speech saved dir */
 const SAVED_DIR = `${__dirname}/../../saved`;
@@ -16,13 +18,13 @@ const FILE_NO_EXT = `${__dirname}/../../sounds/speech`;
  *
  * @returns {Promise<Array<{ name, id }>>} List of voice names and IDs.
  */
-const getVoices = async () => {
+export const getVoices = async () => {
   const { voices } = await fetch('https://api.elevenlabs.io/v1/voices', {
     headers: {
       accept: 'application/json',
       'xi-api-key': elevenlabsApiKey,
     },
-  }).then((r) => r.json());
+  }).then((r) => r.json()) as ElevenLabsVoicesResponse;
 
   return voices
     .filter(({ category }) => category !== 'premade')
@@ -38,7 +40,7 @@ const getVoices = async () => {
  * @param {number} stability - Stability score.
  * @returns {Promise<void>}
  */
-const generateSpeech = async (voiceName, message, stability) => {
+export const generateSpeech = async (voiceName: string, message: string, stability: number) => {
   // Get voice ID from name
   const voices = await getVoices();
   const found = voices.find(({ name }) => name === voiceName);
@@ -63,7 +65,7 @@ const generateSpeech = async (voiceName, message, stability) => {
     }),
   });
   log(`Response: ${res.status}`);
-  if (res.status !== 200) throw new Error(res.text());
+  if (res.status !== 200) throw new Error(await res.text());
 
   const buffer = await res.buffer();
   writeFileSync(`${FILE_NO_EXT}.mpg`, buffer);
@@ -71,13 +73,14 @@ const generateSpeech = async (voiceName, message, stability) => {
 
   // Copy in case it's good
   execSync(`mkdir -p ${SAVED_DIR}`);
-  execSync(`cp ${FILE_NO_EXT}.mpg ${SAVED_DIR}/${message.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.mp3`);
+  const filename = `${message.replace(/[^a-z0-9]/gi, '_').toLowerCase()}-${Date.now()}`;
+  execSync(`cp ${FILE_NO_EXT}.mpg ${SAVED_DIR}/${filename}.mp3`);
 };
 
 /**
  * Convert local speech file.
  */
-const convertSpeech = () => {
+export const convertSpeech = () => {
   execSync(`ffmpeg -i ${FILE_NO_EXT}.mpg ${FILE_NO_EXT}.opus`);
   log('Converted speech file to opus');
 };
@@ -88,17 +91,10 @@ const convertSpeech = () => {
  * @param {object} voice - discord.js voice object.
  * @returns {Promise<void>}
  */
-const playSpeech = async (voice) => {
+export const playSpeech = async (voice: VoiceState) => {
   const voiceAgent = getVoiceAgent(voice);
   await voiceAgent.join();
   voiceAgent.play('speech.opus');
 
   setTimeout(() => execSync(`rm -f ${FILE_NO_EXT}.*`), 5000);
-};
-
-module.exports = {
-  generateSpeech,
-  convertSpeech,
-  playSpeech,
-  getVoices,
 };

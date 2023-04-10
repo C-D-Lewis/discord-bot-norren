@@ -1,10 +1,10 @@
-const { setupClient, getClient } = require('./modules/discord');
-const { cacheFileNames } = require('./modules/cache');
-const { log } = require('./modules/logger');
-const { replyHidden } = require('./modules/discord');
-const { getCommand } = require('./modules/handlers');
-const { handleAutoReactions } = require('./modules/reactions');
-const { getVoiceAgent } = require('./modules/voice');
+import { setupClient, getClient, replyHidden } from './modules/discord';
+import { cacheFileNames } from './modules/cache';
+import { log } from './modules/logger';
+import { CommandMapType, getCommand } from './modules/handlers';
+import { handleAutoReactions } from './modules/reactions';
+import { getVoiceAgent } from './modules/voice';
+import { ButtonInteraction, CommandInteraction, Message, MessageInteraction, VoiceState } from 'discord.js';
 
 /**
  * Handle when a recent sound button is pressed.
@@ -14,7 +14,7 @@ const { getVoiceAgent } = require('./modules/voice');
  * @param {string} customId - Sound name as custom ID.
  * @returns {Promise} Reply result.
  */
-const handleSoundButton = async (interaction, voice, customId) => {
+const handleSoundButton = async (interaction: ButtonInteraction, voice: VoiceState, customId: string) => {
   const voiceAgent = getVoiceAgent(voice);
   await voiceAgent.join();
   voiceAgent.play(customId);
@@ -29,7 +29,7 @@ const handleSoundButton = async (interaction, voice, customId) => {
  * @param {object} interaction - Discord.js interaction object.
  * @returns {Promise} Handler that returns reply text.
  */
-const onCommand = async (name, interaction) => {
+const onCommand = async (name: keyof CommandMapType, interaction: CommandInteraction) => {
   try {
     const command = getCommand(name);
     return await command(interaction);
@@ -47,7 +47,7 @@ const onCommand = async (name, interaction) => {
  * @param {object} interaction - Message interaction object.
  * @returns {object} Reply result.
  */
-const handleMessageCommand = async (interaction) => {
+const handleMessageCommand = async (interaction: Message) => {
   const { author: { username }, content } = interaction;
   const [, keyword, ...args] = content.split(' ');
   log({ keyword, args });
@@ -63,7 +63,7 @@ const handleMessageCommand = async (interaction) => {
       interaction,
       { content: `Sorry ${username}, I don't know what you want. Try using \`/help\`.` },
     );
-  } catch (e) {
+  } catch (e: any) {
     const err = `⚠️ ${e.message}`;
     log(err);
     console.log(e);
@@ -74,18 +74,18 @@ const handleMessageCommand = async (interaction) => {
 /**
  * When someone posts a message.
  *
- * @param {object} interaction - Message interaction object.
+ * @param {Message} message - Message message object.
  * @returns {Promise} Promise
  */
-const onMessage = async (interaction) => {
-  const { author: { id: callerId }, mentions, content } = interaction;
+const onMessage = async (message: Message) => {
+  const { author: { id: callerId }, mentions, content } = message;
   const { id: botId } = getClient().user;
 
   // Auto reactions
-  await handleAutoReactions(interaction, content);
+  await handleAutoReactions(message, content);
 
   // If mentioning me, and it wasn't me
-  if (mentions.users.get(botId) && callerId !== botId) return handleMessageCommand(interaction);
+  if (mentions.users.get(botId) && callerId !== botId) return handleMessageCommand(message);
 
   // Some other chat going by
   return undefined;

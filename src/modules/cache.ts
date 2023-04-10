@@ -1,12 +1,13 @@
-const { createAudioResource, StreamType } = require('@discordjs/voice');
-const fs = require('fs');
-const { log } = require('./logger');
-const { AUDIO_TYPE_SOUND } = require('../constants');
+import { createAudioResource, StreamType } from '@discordjs/voice';
+import { readdirSync, createReadStream } from 'node:fs';
+import { log } from './logger';
+import { AUDIO_TYPE_SOUND } from '../constants';
+import { AudioType } from '../types';
 
 const soundsDir = `${__dirname}/../../sounds`;
 const musicDir = `${__dirname}/../../music`;
-const soundNames = [];
-const musicNames = [];
+const soundNames: string[] = [];
+const musicNames: string[] = [];
 
 /**
  * Filter and warn on non-Opus files.
@@ -14,7 +15,7 @@ const musicNames = [];
  * @param {string} file - File name.
  * @returns {boolean} true if the file is Opus.
  */
-const isOpusFile = (file) => {
+const isOpusFile = (file: string) => {
   if (file.split('.')[1] !== 'opus') {
     log(`WARN: ${file} is not an Opus audio file`);
     return false;
@@ -28,14 +29,14 @@ const isOpusFile = (file) => {
  *
  * @param {boolean} [rescan] - true if this is not the initial scan.
  */
-const readAllFiles = (rescan) => {
-  fs.readdirSync(soundsDir).filter(isOpusFile).forEach((file) => {
+const readAllFiles = (rescan?: boolean) => {
+  readdirSync(soundsDir).filter(isOpusFile).forEach((file) => {
     if (soundNames.includes(file)) return;
 
     soundNames.push(file);
     if (rescan) log(`Read new file ${file}`);
   });
-  fs.readdirSync(musicDir).filter(isOpusFile).forEach((file) => {
+  readdirSync(musicDir).filter(isOpusFile).forEach((file) => {
     if (musicNames.includes(file)) return;
 
     musicNames.push(file);
@@ -46,7 +47,7 @@ const readAllFiles = (rescan) => {
 /**
  * Read all files and schedule regular re-scans.
  */
-const cacheFileNames = () => {
+export const cacheFileNames = () => {
   setInterval(() => readAllFiles(true), 30000);
   readAllFiles();
   log(`Files cached: ${soundNames.length} sounds, ${musicNames.length} music`);
@@ -55,11 +56,11 @@ const cacheFileNames = () => {
 /**
  * Use the user query to find the closest sound.
  *
- * @param {string} type - Audio type (sound|music).
+ * @param {AudioType} type - Audio type.
  * @param {string} query - Query to use.
  * @returns {Array<string>} Name of the file(s) that matched query.
  */
-const getClosestFileName = (type, query) => {
+export const getClosestFileName = (type: AudioType, query: string) => {
   const list = type === AUDIO_TYPE_SOUND ? soundNames : musicNames;
   return list.filter((p) => p.includes(query));
 };
@@ -70,12 +71,12 @@ const getClosestFileName = (type, query) => {
  * @param {string} name - Audio to get.
  * @returns {object} discord.js audio object.
  */
-const getAudioResource = (name) => {
+export const getAudioResource = (name: string) => {
   // Order allows pickup of speech.opus
   const dir = musicNames.includes(name) ? musicDir : soundsDir;
 
   return createAudioResource(
-    fs.createReadStream(`${dir}/${name}`),
+    createReadStream(`${dir}/${name}`),
     { inputType: StreamType.OggOpus },
   );
 };
@@ -83,15 +84,21 @@ const getAudioResource = (name) => {
 /**
  * Build a readable list of sound or music options.
  *
- * @param {string} type - Audio type, either sound or mustic.
+ * @param {AudioType} type - Audio type, either sound or mustic.
  * @returns {string} Readable list of sounds.
  */
-const buildFileList = (type) => {
+export const buildFileList = (type: AudioType) => {
   let list = type === AUDIO_TYPE_SOUND ? soundNames : musicNames;
   list = list.map((p) => p.split('.')[0]);
 
   // Bucket if many variants
-  const buckets = { singleItems: [] };
+  const buckets: {
+    singleItems: string[];
+
+    [key: string]: any;
+  } = {
+    singleItems: [],
+  };
   list.forEach((p) => {
     // Single
     if (!p.includes('_')) {
@@ -115,11 +122,4 @@ ${singleItems.map((p) => `\`${p}\``).join(', ')}
 ${Object.entries(rest).map(([prefix, items]) => `\`${prefix}\` (${items.length})`).join(', ')}`;
   }
   return reply;
-};
-
-module.exports = {
-  cacheFileNames,
-  getClosestFileName,
-  buildFileList,
-  getAudioResource,
 };

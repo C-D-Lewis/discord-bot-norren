@@ -1,6 +1,7 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { MAX_RECENT_SOUNDS, DB_KEY_RECENT_SOUNDS } = require('../constants');
-const db = require('./db');
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { MAX_RECENT_SOUNDS, DB_KEY_RECENT_SOUNDS } from '../constants';
+import * as db from './db';
+import { RecentSounds } from '../types';
 
 /**
  * Get recent sounds for this user.
@@ -8,8 +9,8 @@ const db = require('./db');
  * @param {string} username - User name.
  * @returns {object} Recent sounds and user recent sounds.
  */
-const getRecentSounds = (username) => {
-  const recentSounds = db.get(DB_KEY_RECENT_SOUNDS) || {};
+const getRecentSounds = (username: string) => {
+  const recentSounds = db.get(DB_KEY_RECENT_SOUNDS) as RecentSounds || [];
   if (!recentSounds[username]) {
     recentSounds[username] = [];
     db.set(DB_KEY_RECENT_SOUNDS, recentSounds);
@@ -28,7 +29,7 @@ const getRecentSounds = (username) => {
  * @param {string} soundName - Sound name.
  * @returns {undefined}
  */
-const addUserRecentSound = (username, soundName) => {
+export const addUserRecentSound = (username: string, soundName: string) => {
   // Add
   const { userSounds, recentSounds } = getRecentSounds(username);
   if (userSounds.includes(soundName)) return;
@@ -46,7 +47,7 @@ const addUserRecentSound = (username, soundName) => {
  * @param {string} username - User who asked for their recent sounds.
  * @returns {Array<object>} List of rows of components.
  */
-const buildRecentSounds = (username) => {
+export const buildRecentSounds = (username: string) => {
   const { userSounds } = getRecentSounds(username);
   if (!userSounds.length) throw new Error('No recent sounds for you yet');
 
@@ -68,9 +69,4 @@ const buildRecentSounds = (username) => {
   }
 
   return actionRows;
-};
-
-module.exports = {
-  addUserRecentSound,
-  buildRecentSounds,
 };

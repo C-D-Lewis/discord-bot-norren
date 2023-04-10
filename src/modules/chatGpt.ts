@@ -1,6 +1,7 @@
-const fetch = require('node-fetch');
-const { openAiApiKey } = require('../../config.json');
-const { log } = require('./logger');
+import fetch from 'node-fetch';
+import { ChatGptResponse } from '../types';
+import { openAiApiKey } from '../../config.json';
+import { log } from './logger';
 
 /** Context framing the user's query */
 const CONTEXT = 'You are Norren, a friendly Druid from the town of Kernwall. Respond in three sentences or less.';
@@ -11,7 +12,7 @@ const CONTEXT = 'You are Norren, a friendly Druid from the town of Kernwall. Res
  * @param {string} prompt - User's prompt.
  * @returns {string} ChatGPT response.
  */
-const askChatGpt = async (prompt) => {
+export const askChatGpt = async (prompt: string) => {
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -27,7 +28,7 @@ const askChatGpt = async (prompt) => {
     }),
   });
 
-  const json = await res.json();
+  const json: ChatGptResponse = await res.json() as ChatGptResponse;
   if (!json.choices) {
     log('Invalid ChatGPT response');
     console.log(json);
@@ -37,8 +38,4 @@ const askChatGpt = async (prompt) => {
   const { content } = json.choices[0].message;
   console.log({ prompt, content });
   return content;
-};
-
-module.exports = {
-  askChatGpt,
 };
