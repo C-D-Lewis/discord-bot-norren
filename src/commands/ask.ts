@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, GuildMember } from "discord.js";
+import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
 import { replyHidden } from '../modules/discord';
 import { askChatGpt } from '../modules/chatGpt';
 import { generateSpeech, convertSpeech, playSpeech } from '../modules/tts';
@@ -11,7 +11,7 @@ let inProgress = false;
  * @param {ChatInputCommandInteraction} interaction - discord.js interaction object.
  * @returns {Promise<object|undefined>} Reply result or nothing.
  */
-export default async function (interaction: ChatInputCommandInteraction) {
+export default async function handleAsk(interaction: ChatInputCommandInteraction) {
   const { options, user: { username } } = interaction;
   const prompt = options.getString('prompt')!;
   const voiceName = options.getString('voiceName')!;
@@ -42,4 +42,6 @@ export default async function (interaction: ChatInputCommandInteraction) {
     await playSpeech(voice);
     await interaction.editReply(`${username} asked: _${prompt}_\n\n**${content.trim()}**`);
   }
-};
+
+  return undefined;
+}

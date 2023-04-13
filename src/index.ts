@@ -1,10 +1,17 @@
+import {
+  ButtonInteraction,
+  ChatInputCommandInteraction,
+  ClientUser,
+  GuildMember,
+  Message,
+  VoiceState,
+} from 'discord.js';
 import { setupClient, getClient, replyHidden } from './modules/discord';
 import { cacheFileNames } from './modules/cache';
 import { log } from './modules/logger';
 import { CommandMapType, getCommand } from './modules/handlers';
 import { handleAutoReactions } from './modules/reactions';
 import { getVoiceAgent } from './modules/voice';
-import { ButtonInteraction, ChatInputCommandInteraction, ClientUser, CommandInteraction, GuildMember, Message, MessageInteraction, VoiceState } from 'discord.js';
 import { MessageButtonData } from './types';
 
 /**
@@ -15,7 +22,11 @@ import { MessageButtonData } from './types';
  * @param {string} customId - Sound name as custom ID.
  * @returns {Promise} Reply result.
  */
-const handleSoundButton = async (interaction: ButtonInteraction, voice: VoiceState, customId: string) => {
+const handleSoundButton = async (
+  interaction: ButtonInteraction,
+  voice: VoiceState,
+  customId: string,
+) => {
   const voiceAgent = getVoiceAgent(voice);
   await voiceAgent.join();
   voiceAgent.play(customId);
@@ -34,10 +45,11 @@ const onCommand = async (name: keyof CommandMapType, interaction: ChatInputComma
   try {
     const command = getCommand(name);
     return await command(interaction);
-  } catch (e: any) {
-    const err = `⚠️ ${e.message}`;
+  } catch (e) {
+    const error = e as Error;
+    const err = `⚠️ ${error.message}`;
     log(err);
-    console.log(e);
+    console.log(error);
     return replyHidden(interaction, { content: err });
   }
 };
@@ -64,8 +76,9 @@ const handleMessageCommand = async (interaction: Message) => {
       interaction,
       { content: `Sorry ${username}, I don't know what you want. Try using \`/help\`.` },
     );
-  } catch (e: any) {
-    const err = `⚠️ ${e.message}`;
+  } catch (e) {
+    const error = e as Error;
+    const err = `⚠️ ${error.message}`;
     log(err);
     console.log(e);
     return replyHidden(interaction, { content: err });
@@ -101,7 +114,7 @@ const onMessage = async (message: Message) => {
  */
 const onMessageButton = async (
   interaction: ButtonInteraction,
-  { commandName, customId, username }: MessageButtonData
+  { commandName, customId, username }: MessageButtonData,
 ) => {
   const { voice } = interaction.member as GuildMember;
   log(`onMessageButton (${username}:${commandName}:${customId})`);
@@ -111,8 +124,9 @@ const onMessageButton = async (
     if (commandName === 'sound recent') return handleSoundButton(interaction, voice, customId);
 
     throw new Error('Unknown message button');
-  } catch (e: any) {
-    const err = `⚠️ ${e.message}`;
+  } catch (e) {
+    const error = e as Error;
+    const err = `⚠️ ${error.message}`;
     log(err);
     console.log(e);
     return replyHidden(interaction, { content: err });

@@ -1,7 +1,7 @@
+import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
 import { replyHidden } from '../modules/discord';
 import { getVoiceAgent } from '../modules/voice';
 import { onJoinSound } from '../../config.json';
-import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
 
 /**
  * Handle 'join' command.
@@ -9,7 +9,7 @@ import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
  * @param {ChatInputCommandInteraction} interaction - discord.js interaction object.
  * @returns {Promise} Reply result
  */
-export default async function (interaction: ChatInputCommandInteraction) {
+export default async function handleJoin(interaction: ChatInputCommandInteraction) {
   const { voice } = interaction.member as GuildMember;
 
   // Not in a channel
@@ -25,4 +25,4 @@ export default async function (interaction: ChatInputCommandInteraction) {
   if (onJoinSound) voiceAgent.play(onJoinSound);
 
   return replyHidden(interaction, { content: 'Joined the voice channel' });
-};
+}

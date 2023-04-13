@@ -1,3 +1,4 @@
+import { ChatInputCommandInteraction } from 'discord.js';
 import handleRoll from '../commands/roll';
 import handleSearch from '../commands/search';
 import handleAudio from '../commands/audio';
@@ -8,7 +9,6 @@ import handleAsk from '../commands/ask';
 import handleHelp from '../commands/help';
 import handlePing from '../commands/ping';
 import { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC } from '../constants';
-import { ChatInputCommandInteraction } from 'discord.js';
 
 /** Map of all command handlers. */
 const COMMAND_MAP = {
@@ -43,7 +43,7 @@ export type CommandMapType = typeof COMMAND_MAP;
  * Find the command handler function for the named command.
  * Corresponds to all those registered with deploy-slash-commands.js
  *
- * @param {CommandName} name - Command name.
+ * @param {CommandMapType} name - Command name.
  * @returns {Function} handler function.
  */
 export const getCommand = (name: keyof CommandMapType) => {

@@ -1,11 +1,11 @@
 import fetch from 'node-fetch';
 import { writeFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
+import { VoiceState } from 'discord.js';
 import { getVoiceAgent } from './voice';
 import { elevenlabsApiKey } from '../../config.json';
 import { log } from './logger';
 import { ElevenLabsVoicesResponse } from '../types';
-import { VoiceState } from 'discord.js';
 
 /** Speech saved dir */
 const SAVED_DIR = `${__dirname}/../../saved`;

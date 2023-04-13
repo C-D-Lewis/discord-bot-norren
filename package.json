@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Discord bot for the Heroes of Mirren",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/bundle.js",
-    "start:dev": "nodemon -x 'node src/index.js' --ignore db.json"
+    "lint": "eslint . --ext .ts --fix",
+    "build": "npm run lint && tsc",
+    "start": "npm run build && node dist/src/index.js"
   },
   "engines": {
     "node": ">=16"
@@ -23,6 +23,8 @@
     "@types/node-fetch": "^2.6.3",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
     "nodemon": "^2.0.20",
     "typescript": "^5.0.4"
   },
@@ -32,7 +34,23 @@
       "@typescript-eslint"
     ],
     "extends": [
-      "@chris-lewis/eslint-config"
-    ]
+      "@chris-lewis/eslint-config",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+      "import/extensions": 0,
+      "@typescript-eslint/no-non-null-assertion": 0,
+      "import/prefer-default-export": 0,
+      "@typescript-eslint/ban-ts-comment": 1
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [".ts"],
+          "moduleDirectory": ["node_modules", "src/"]
+        }
+      }
+    }
   }
 }

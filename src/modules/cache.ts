@@ -95,7 +95,7 @@ export const buildFileList = (type: AudioType) => {
   const buckets: {
     singleItems: string[];
 
-    [key: string]: any;
+    [key: string]: string[];
   } = {
     singleItems: [],
   };

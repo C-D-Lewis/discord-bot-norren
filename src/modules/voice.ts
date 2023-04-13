@@ -1,16 +1,16 @@
-import { AudioPlayer } from "@discordjs/voice";
-import { VoiceState } from "discord.js";
-import { StateStatus, VoiceAgentType } from "../types";
-
-const {
+import {
+  AudioPlayer,
   joinVoiceChannel,
   createAudioPlayer,
   NoSubscriberBehavior,
   getVoiceConnection,
   VoiceConnectionStatus,
-} = require('@discordjs/voice');
-const { getAudioResource } = require('./cache');
-const { log } = require('./logger');
+} from '@discordjs/voice';
+import { VoiceState } from 'discord.js';
+import { StateStatus, VoiceAgentType } from '../types';
+
+import { getAudioResource } from './cache';
+import { log } from './logger';
 
 const voiceAgents: {
   [key: string]: VoiceAgentType;
@@ -28,19 +28,19 @@ const VoiceAgent = (voice: VoiceState) => {
   let player: AudioPlayer;
   let readyToPlay = false;
   let willStayConnected = false;
-  let playEndCb: Function;
+  let playEndCb: (value?: PromiseLike<undefined> | undefined) => void;
 
   /**
    * Stop and disconnect.
    */
   const leaveAndReset = async () => {
     try {
-      const connection = getVoiceConnection(guildId);
+      const connection = getVoiceConnection(guildId)!;
       await connection.disconnect();
       await connection.destroy();
       log('Stopped and disconnected');
-    } catch (e: any) {
-      log(`Error disconnecting: ${e.message}`);
+    } catch (e) {
+      log(`Error disconnecting: ${(e as Error).message}`);
     }
 
     readyToPlay = false;
@@ -54,7 +54,7 @@ const VoiceAgent = (voice: VoiceState) => {
    */
   const preparePlayer = async () => {
     player = createAudioPlayer({ behaviors: { noSubscriber: NoSubscriberBehavior.Play } });
-    getVoiceConnection(guildId).subscribe(player);
+    getVoiceConnection(guildId)!.subscribe(player);
 
     // Play selected sound
     player.on('stateChange', async (old, _new) => {
@@ -126,8 +126,6 @@ const VoiceAgent = (voice: VoiceState) => {
       log(`Connection error: ${error.message}`);
       leaveAndReset();
     });
-
-    return undefined;
   });
 
   /**

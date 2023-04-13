@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
-import { replyHidden } from '../modules/discord';
 import { ChatInputCommandInteraction } from 'discord.js';
+import { replyHidden } from '../modules/discord';
 import { Roll20ParsedLink } from '../types';
 
 /**
@@ -9,7 +9,7 @@ import { Roll20ParsedLink } from '../types';
  * @param {ChatInputCommandInteraction} interaction - discord.js interaction object.
  * @returns {Promise} Reply result
  */
-export default async function (interaction: ChatInputCommandInteraction) {
+export default async function handleSearch(interaction: ChatInputCommandInteraction) {
   const { options } = interaction;
   const query = options.getString('query')!;
   const url = `https://roll20.net/compendium/compendium/whichone/dnd5e/${query}`;
@@ -45,4 +45,4 @@ ${links.map(({ label, href }, i) => `${i + 1}: **${label}**\n<https://roll20.net
 ⚠️ _There were more than ${max} results_`;
   }
   return replyHidden(interaction, { content: replyText });
-};
+}

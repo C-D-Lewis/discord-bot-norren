@@ -1,4 +1,3 @@
-
 /** Sounds */
 export const AUDIO_TYPE_SOUND = 'sound';
 /** Music */

@@ -1,7 +1,7 @@
+import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
 import { replyHidden } from '../modules/discord';
 import { getVoiceAgent } from '../modules/voice';
 import { onLeaveSound } from '../../config.json';
-import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
 
 /**
  * Handle 'leave' command.
@@ -9,7 +9,7 @@ import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
  * @param {ChatInputCommandInteraction} interaction - discord.js interaction object.
  * @returns {Promise} Reply result
  */
-export default async function (interaction: ChatInputCommandInteraction) {
+export default async function handleLeave(interaction: ChatInputCommandInteraction) {
   const { voice } = interaction.member as GuildMember;
 
   if (!voice.channel) {
@@ -27,4 +27,4 @@ export default async function (interaction: ChatInputCommandInteraction) {
   }
 
   return replyHidden(interaction, { content: 'Leaving the voice channel' });
-};
+}

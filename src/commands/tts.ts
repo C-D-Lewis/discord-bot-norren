@@ -17,7 +17,7 @@ let inProgress = false;
  * @param {ChatInputCommandInteraction} interaction - discord.js interaction object.
  * @returns {Promise|undefined} Result
  */
-export default async function (interaction: ChatInputCommandInteraction) {
+export default async function handleTts(interaction: ChatInputCommandInteraction) {
   const { options } = interaction;
   const { voice } = interaction.member as GuildMember;
   const subcommand = options.getSubcommand();
@@ -58,9 +58,10 @@ export default async function (interaction: ChatInputCommandInteraction) {
       await interaction.editReply(`Say: _${message}_\n\nPlaying...`);
       await playSpeech(voice);
       await interaction.editReply(`Say: _${message}_`);
-    } catch (e: any) {
-      console.log(e);
-      await interaction.editReply(`Failed! ${e.message.slice(0, 1000)}`);
+    } catch (e) {
+      const error = e as Error;
+      console.log(error);
+      await interaction.editReply(`Failed! ${error.message.slice(0, 1000)}`);
     }
 
     inProgress = false;
@@ -68,4 +69,4 @@ export default async function (interaction: ChatInputCommandInteraction) {
   }
 
   throw new Error(`Unexpected subcommand ${subcommand}`);
-};
+}

@@ -1,10 +1,10 @@
+import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
 import { getClosestFileName, buildFileList } from '../modules/cache';
 import { log } from '../modules/logger';
 import { getCsprngInt } from '../util';
 import { replyHidden } from '../modules/discord';
 import { getVoiceAgent } from '../modules/voice';
 import { buildRecentSounds, addUserRecentSound } from '../modules/recentSounds';
-import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
 import { AudioType } from '../types';
 
 /**
@@ -14,7 +14,10 @@ import { AudioType } from '../types';
  * @param {string} type - Audio type (sound|music).
  * @returns {Promise} Reply result.
  */
-export default async function (interaction: ChatInputCommandInteraction, type: AudioType) {
+export default async function handleAudio(
+  interaction: ChatInputCommandInteraction,
+  type: AudioType,
+) {
   const { user: { username }, options } = interaction;
   const { voice } = interaction.member as GuildMember;
   const query = options.getString('name')!;
@@ -73,4 +76,4 @@ export default async function (interaction: ChatInputCommandInteraction, type: A
   }
 
   throw new Error('Unknown subcommand');
-};
+}

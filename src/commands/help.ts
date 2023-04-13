@@ -7,7 +7,7 @@ import { replyHidden } from '../modules/discord';
  * @param {ChatInputCommandInteraction} interaction - discord.js interaction object.
  * @returns {Promise} Reply result.
  */
-export default function (interaction: ChatInputCommandInteraction) {
+export default function handleHelp(interaction: ChatInputCommandInteraction) {
   return replyHidden(interaction, {
     content: `
   🎲 \`/roll\` - Roll a die (using CRNG)

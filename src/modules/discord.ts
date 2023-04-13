@@ -1,5 +1,7 @@
-// Require the necessary discord.js classes
-import { ButtonInteraction, Client, CommandInteraction, GatewayIntentBits, Interaction, Message } from 'discord.js';
+/* eslint-disable no-underscore-dangle */
+import {
+  ButtonInteraction, ChatInputCommandInteraction, Client, GatewayIntentBits, Interaction, Message,
+} from 'discord.js';
 import { token } from '../../config.json';
 import { OPTION_UPDATE_COMMANDS } from '../constants';
 import { registerSlashCommands } from './commands';
@@ -71,7 +73,6 @@ export const setupClient = async ({
     // Chat command
     if (interaction.isChatInputCommand()) {
       const { commandName, user: { username }, options } = interaction;
-      // eslint-disable-next-line no-underscore-dangle
       // @ts-ignore Use of secret property
       const optionsStr = options._hoistedOptions.map(({ name, value }) => `${name}:${value}`).join(', ');
       log(`onCommand (${username}:${commandName}) ${optionsStr}`);
@@ -122,9 +123,9 @@ export const getClient = () => {
  * @returns {Promise} Reply result.
  */
 export const replyHidden = (
-  interaction: CommandInteraction | ButtonInteraction | Message,
+  interaction: ChatInputCommandInteraction | ButtonInteraction | Message,
   { content, components }: ReplyHiddenOptions,
-  // @ts-ignore FIXME: Why bad type?
+// @ts-ignore Why bad type?
 ) => interaction.reply({
   content,
   components,

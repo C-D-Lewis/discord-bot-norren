@@ -1,5 +1,5 @@
-import { ButtonInteraction, ChatInputCommandInteraction, Message } from "discord.js";
-import { CommandMapType } from "./modules/handlers";
+import { ButtonInteraction, ChatInputCommandInteraction, Message } from 'discord.js';
+import { CommandMapType } from './modules/handlers';
 
 /** Audio types. */
 export type AudioType = 'music' | 'sound';
@@ -54,7 +54,7 @@ export type SetupClientOptions = {
 /** Reply hidden options */
 export type ReplyHiddenOptions = {
   content: string;
-  components?: any[];
+  components?: unknown[];
 };
 
 /** EleventLabs voices response */
