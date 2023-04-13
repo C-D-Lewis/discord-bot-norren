@@ -8,7 +8,7 @@ import handleAsk from '../commands/ask';
 import handleHelp from '../commands/help';
 import handlePing from '../commands/ping';
 import { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC } from '../constants';
-import { Interaction } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 
 /** Map of all command handlers. */
 const COMMAND_MAP = {
@@ -17,17 +17,17 @@ const COMMAND_MAP = {
   /**
    * Getter for handler for 'sound' command.
    *
-   * @param {Interaction} interaction - Discord.js interaction object.
+   * @param {ChatInputCommandInteraction} interaction - Discord.js interaction object.
    * @returns {Promise<object>} Reply
    */
-  sound: (interaction: Interaction) => handleAudio(interaction, AUDIO_TYPE_SOUND),
+  sound: (interaction: ChatInputCommandInteraction) => handleAudio(interaction, AUDIO_TYPE_SOUND),
   /**
    * Getter for handler for 'music' command.
    *
-   * @param {Interaction} interaction - Discord.js interaction object.
+   * @param {ChatInputCommandInteraction} interaction - Discord.js interaction object.
    * @returns {Promise<object>} Reply
    */
-  music: (interaction: Interaction) => handleAudio(interaction, AUDIO_TYPE_MUSIC),
+  music: (interaction: ChatInputCommandInteraction) => handleAudio(interaction, AUDIO_TYPE_MUSIC),
   join: handleJoin,
   leave: handleLeave,
   tts: handleTts,

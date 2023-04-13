@@ -1,15 +1,16 @@
-const { replyHidden } = require('../modules/discord');
-const { getVoiceAgent } = require('../modules/voice');
-const { onJoinSound } = require('../../config.json');
+import { replyHidden } from '../modules/discord';
+import { getVoiceAgent } from '../modules/voice';
+import { onJoinSound } from '../../config.json';
+import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
 
 /**
  * Handle 'join' command.
  *
- * @param {object} interaction - discord.js interaction object.
+ * @param {ChatInputCommandInteraction} interaction - discord.js interaction object.
  * @returns {Promise} Reply result
  */
-module.exports = async (interaction) => {
-  const { member: { voice } } = interaction;
+export default async function (interaction: ChatInputCommandInteraction) {
+  const { voice } = interaction.member as GuildMember;
 
   // Not in a channel
   if (!voice.channel) {

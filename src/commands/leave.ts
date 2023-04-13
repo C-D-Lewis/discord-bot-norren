@@ -1,15 +1,17 @@
-const { replyHidden } = require('../modules/discord');
-const { getVoiceAgent } = require('../modules/voice');
-const { onLeaveSound } = require('../../config.json');
+import { replyHidden } from '../modules/discord';
+import { getVoiceAgent } from '../modules/voice';
+import { onLeaveSound } from '../../config.json';
+import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
 
 /**
  * Handle 'leave' command.
  *
- * @param {object} interaction - discord.js interaction object.
+ * @param {ChatInputCommandInteraction} interaction - discord.js interaction object.
  * @returns {Promise} Reply result
  */
-module.exports = async (interaction) => {
-  const { member: { voice } } = interaction;
+export default async function (interaction: ChatInputCommandInteraction) {
+  const { voice } = interaction.member as GuildMember;
+
   if (!voice.channel) {
     return replyHidden(interaction, { content: "I don't see you in a voice channel" });
   }

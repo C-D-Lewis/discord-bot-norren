@@ -1,4 +1,4 @@
-import { Interaction } from "discord.js";
+import { ButtonInteraction, ChatInputCommandInteraction, Message } from "discord.js";
 import { CommandMapType } from "./modules/handlers";
 
 /** Audio types. */
@@ -31,15 +31,24 @@ export type AppDbData = {
   recentSounds: RecentSounds,
 };
 
+/** Message button data. */
+export type MessageButtonData = {
+  customId: string;
+  commandName: string;
+  username: string;
+};
+
 /** Options for setupClient funtion. */
 export type SetupClientOptions = {
-  onCommand: (commandName: keyof CommandMapType, interaction: Interaction) => Promise<void>;
-  onMessage: (interaction: Interaction) => Promise<void>;
-  onMessageButton: (interaction: Interaction, data: {
-    customId: string;
-    commandName: string;
-    username: string;
-  }) => Promise<void>;
+  onCommand: (
+    commandName: keyof CommandMapType,
+    interaction: ChatInputCommandInteraction,
+  ) => Promise<void>;
+  onMessage: (message: Message) => Promise<void>;
+  onMessageButton: (
+    interaction: ButtonInteraction,
+    data: MessageButtonData,
+  ) => Promise<void>;
 };
 
 /** Reply hidden options */
@@ -67,3 +76,9 @@ export type VoiceAgentType = {
 
 /** Player type status */
 export type StateStatus = { status: string };
+
+/** Parsed Roll20.net result. */
+export type Roll20ParsedLink = {
+  label: string;
+  href: string;
+};

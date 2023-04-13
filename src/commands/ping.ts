@@ -1,9 +1,10 @@
-const { hostname } = require('os');
-const {
+import { hostname } from 'os';
+import {
   START_TIME, MINS_MULT, HOURS_MULT, DAYS_MULT,
-} = require('../constants');
-const { getClient, replyHidden } = require('../modules/discord');
-const { getCommit } = require('../util');
+} from '../constants';
+import { getClient, replyHidden } from '../modules/discord';
+import { getCommit } from '../util';
+import { ChatInputCommandInteraction } from 'discord.js';
 
 /**
  * Get readable uptime summary.
@@ -13,9 +14,9 @@ const { getCommit } = require('../util');
  */
 const getReadableUptime = () => {
   const uptime = Date.now() - START_TIME;
-  if (uptime > MINS_MULT) return `${Math.round(uptime / (MINS_MULT))} mins`;
-  if (uptime > HOURS_MULT) return `${Math.round(uptime / (HOURS_MULT))} hours`;
   if (uptime > DAYS_MULT) return `${Math.round(uptime / (DAYS_MULT))} days`;
+  if (uptime > HOURS_MULT) return `${Math.round(uptime / (HOURS_MULT))} hours`;
+  if (uptime > MINS_MULT) return `${Math.round(uptime / (MINS_MULT))} mins`;
 
   // Seconds
   return `${Math.round(uptime / 1000)}s`;
@@ -24,11 +25,12 @@ const getReadableUptime = () => {
 /**
  * Handle 'ping' command.
  *
- * @param {object} interaction - discord.js interaction object.
+ * @param {ChatInputCommandInteraction} interaction - discord.js interaction object.
  * @returns {Promise} Reply result
  */
-module.exports = (interaction) => {
+export default function (interaction: ChatInputCommandInteraction) {
   const uptimeStr = getReadableUptime();
+
   return replyHidden(
     interaction,
     { content: `ping: \`${getClient().ws.ping}ms\` / host: \`${hostname()}\` / uptime: \`${uptimeStr}\` / version: \`${getCommit()}\`` },

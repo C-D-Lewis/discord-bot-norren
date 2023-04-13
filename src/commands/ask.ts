@@ -1,19 +1,23 @@
-const { replyHidden } = require('../modules/discord');
-const { askChatGpt } = require('../modules/chatGpt');
-const { generateSpeech, convertSpeech, playSpeech } = require('../modules/tts');
+import { ChatInputCommandInteraction, GuildMember } from "discord.js";
+import { replyHidden } from '../modules/discord';
+import { askChatGpt } from '../modules/chatGpt';
+import { generateSpeech, convertSpeech, playSpeech } from '../modules/tts';
 
 let inProgress = false;
 
 /**
  * Handle 'ask' command to reply with ChatGPT
  *
- * @param {object} interaction - discord.js interaction object.
+ * @param {ChatInputCommandInteraction} interaction - discord.js interaction object.
  * @returns {Promise<object|undefined>} Reply result or nothing.
  */
-export default async function (interaction) {
-  const { options, user: { username }, member: { voice } } = interaction;
-  const prompt = options.getString('prompt');
-  // const voiceName = options.getString('voiceName');
+export default async function (interaction: ChatInputCommandInteraction) {
+  const { options, user: { username } } = interaction;
+  const prompt = options.getString('prompt')!;
+  const voiceName = options.getString('voiceName')!;
+
+  // TypeScript denies knowledge unless this form is used
+  const { voice } = interaction.member as GuildMember;
 
   // Only one at a time
   if (inProgress) return replyHidden(interaction, { content: 'Generation already in progress, please wait!' });
@@ -33,7 +37,7 @@ export default async function (interaction) {
   if (subcommand === 'voice') {
     await interaction.editReply(`${username} asked: _${prompt}_ (Generating audio...)\n\n**${content.trim()}**`);
 
-    await generateSpeech(content);
+    await generateSpeech(voiceName, content);
     convertSpeech();
     await playSpeech(voice);
     await interaction.editReply(`${username} asked: _${prompt}_\n\n**${content.trim()}**`);

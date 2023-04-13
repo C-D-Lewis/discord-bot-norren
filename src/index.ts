@@ -4,13 +4,14 @@ import { log } from './modules/logger';
 import { CommandMapType, getCommand } from './modules/handlers';
 import { handleAutoReactions } from './modules/reactions';
 import { getVoiceAgent } from './modules/voice';
-import { ButtonInteraction, CommandInteraction, Message, MessageInteraction, VoiceState } from 'discord.js';
+import { ButtonInteraction, ChatInputCommandInteraction, ClientUser, CommandInteraction, GuildMember, Message, MessageInteraction, VoiceState } from 'discord.js';
+import { MessageButtonData } from './types';
 
 /**
  * Handle when a recent sound button is pressed.
  *
- * @param {object} interaction - Message interaction object.
- * @param {object} voice - Discordjs voice object.
+ * @param {ButtonInteraction} interaction - Message interaction object.
+ * @param {VoiceState} voice - Discordjs voice object.
  * @param {string} customId - Sound name as custom ID.
  * @returns {Promise} Reply result.
  */
@@ -29,11 +30,11 @@ const handleSoundButton = async (interaction: ButtonInteraction, voice: VoiceSta
  * @param {object} interaction - Discord.js interaction object.
  * @returns {Promise} Handler that returns reply text.
  */
-const onCommand = async (name: keyof CommandMapType, interaction: CommandInteraction) => {
+const onCommand = async (name: keyof CommandMapType, interaction: ChatInputCommandInteraction) => {
   try {
     const command = getCommand(name);
     return await command(interaction);
-  } catch (e) {
+  } catch (e: any) {
     const err = `⚠️ ${e.message}`;
     log(err);
     console.log(e);
@@ -79,7 +80,7 @@ const handleMessageCommand = async (interaction: Message) => {
  */
 const onMessage = async (message: Message) => {
   const { author: { id: callerId }, mentions, content } = message;
-  const { id: botId } = getClient().user;
+  const { id: botId } = getClient().user as ClientUser;
 
   // Auto reactions
   await handleAutoReactions(message, content);
@@ -94,15 +95,15 @@ const onMessage = async (message: Message) => {
 /**
  * When a message's button is pressed.
  *
- * @param {object} interaction - Message interaction object.
- * @param {object} opts - Function options.
- * @param {string} opts.commandName - Full command name.
- * @param {string} opts.customId - Button custom ID set at creation time.
- * @param {string} opts.username - User who pressed the button.
+ * @param {ButtonInteraction} interaction - Message interaction object.
+ * @param {MessageButtonData} opts - Function options.
  * @returns {Promise} Promise
  */
-const onMessageButton = async (interaction, { commandName, customId, username }) => {
-  const { member: { voice } } = interaction;
+const onMessageButton = async (
+  interaction: ButtonInteraction,
+  { commandName, customId, username }: MessageButtonData
+) => {
+  const { voice } = interaction.member as GuildMember;
   log(`onMessageButton (${username}:${commandName}:${customId})`);
 
   try {
@@ -110,7 +111,7 @@ const onMessageButton = async (interaction, { commandName, customId, username })
     if (commandName === 'sound recent') return handleSoundButton(interaction, voice, customId);
 
     throw new Error('Unknown message button');
-  } catch (e) {
+  } catch (e: any) {
     const err = `⚠️ ${e.message}`;
     log(err);
     console.log(e);

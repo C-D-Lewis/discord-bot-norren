@@ -1,20 +1,23 @@
-const { getClosestFileName, buildFileList } = require('../modules/cache');
-const { log } = require('../modules/logger');
-const { getCsprngInt } = require('../util');
-const { replyHidden } = require('../modules/discord');
-const { getVoiceAgent } = require('../modules/voice');
-const { buildRecentSounds, addUserRecentSound } = require('../modules/recentSounds');
+import { getClosestFileName, buildFileList } from '../modules/cache';
+import { log } from '../modules/logger';
+import { getCsprngInt } from '../util';
+import { replyHidden } from '../modules/discord';
+import { getVoiceAgent } from '../modules/voice';
+import { buildRecentSounds, addUserRecentSound } from '../modules/recentSounds';
+import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
+import { AudioType } from '../types';
 
 /**
  * Handle 'sound' or 'music' command.
  *
- * @param {object} interaction - discord.js interaction object.
+ * @param {ChatInputCommandInteraction} interaction - discord.js interaction object.
  * @param {string} type - Audio type (sound|music).
  * @returns {Promise} Reply result.
  */
-module.exports = async (interaction, type) => {
-  const { user: { username }, options, member: { voice } } = interaction;
-  const query = options.getString('name');
+export default async function (interaction: ChatInputCommandInteraction, type: AudioType) {
+  const { user: { username }, options } = interaction;
+  const { voice } = interaction.member as GuildMember;
+  const query = options.getString('name')!;
   const subcommand = options.getSubcommand();
 
   // Reply with list
@@ -30,9 +33,7 @@ module.exports = async (interaction, type) => {
 
   // Not in a voice channel
   if (!voice.channel) {
-    return replyHidden(interaction, {
-      content: 'I don\'t see you in a voice channel',
-    });
+    return replyHidden(interaction, { content: 'I don\'t see you in a voice channel' });
   }
 
   const voiceAgent = getVoiceAgent(voice);
@@ -48,9 +49,7 @@ module.exports = async (interaction, type) => {
     const results = getClosestFileName(type, query);
     log({ query, results });
     if (!results.length) {
-      return replyHidden(interaction, {
-        content: `I don't know ${type} for "${query}"`,
-      });
+      return replyHidden(interaction, { content: `I don't know ${type} for "${query}"` });
     }
 
     // Multiple results? Pick one at random

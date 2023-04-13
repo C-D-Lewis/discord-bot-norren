@@ -1,15 +1,17 @@
-const fetch = require('node-fetch');
-const { replyHidden } = require('../modules/discord');
+import fetch from 'node-fetch';
+import { replyHidden } from '../modules/discord';
+import { ChatInputCommandInteraction } from 'discord.js';
+import { Roll20ParsedLink } from '../types';
 
 /**
  * Handle 'search' command to find links to roll20.net
  *
- * @param {object} interaction - discord.js interaction object.
+ * @param {ChatInputCommandInteraction} interaction - discord.js interaction object.
  * @returns {Promise} Reply result
  */
-module.exports = async (interaction) => {
+export default async function (interaction: ChatInputCommandInteraction) {
   const { options } = interaction;
-  const query = options.getString('query');
+  const query = options.getString('query')!;
   const url = `https://roll20.net/compendium/compendium/whichone/dnd5e/${query}`;
 
   // Get results section
@@ -25,7 +27,7 @@ module.exports = async (interaction) => {
 
   // Extract links
   const max = 10;
-  const links = [];
+  const links: Roll20ParsedLink[] = [];
   lines
     .slice(0, max)
     .forEach((l) => {

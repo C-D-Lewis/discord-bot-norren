@@ -40,7 +40,7 @@ export const getVoices = async () => {
  * @param {number} stability - Stability score.
  * @returns {Promise<void>}
  */
-export const generateSpeech = async (voiceName: string, message: string, stability: number) => {
+export const generateSpeech = async (voiceName: string, message: string, stability?: number) => {
   // Get voice ID from name
   const voices = await getVoices();
   const found = voices.find(({ name }) => name === voiceName);

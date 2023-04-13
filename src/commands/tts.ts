@@ -1,7 +1,8 @@
-const { replyHidden } = require('../modules/discord');
-const {
+import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
+import { replyHidden } from '../modules/discord';
+import {
   generateSpeech, convertSpeech, playSpeech, getVoices,
-} = require('../modules/tts');
+} from '../modules/tts';
 
 /** Max message lenth */
 const MAX_MESSAGE_LENGTH = 256;
@@ -13,11 +14,12 @@ let inProgress = false;
 /**
  * Handle 'say' command to say things with TTS.
  *
- * @param {object} interaction - discord.js interaction object.
+ * @param {ChatInputCommandInteraction} interaction - discord.js interaction object.
  * @returns {Promise|undefined} Result
  */
-module.exports = async (interaction) => {
-  const { options, member: { voice } } = interaction;
+export default async function (interaction: ChatInputCommandInteraction) {
+  const { options } = interaction;
+  const { voice } = interaction.member as GuildMember;
   const subcommand = options.getSubcommand();
 
   if (subcommand === 'voices') {
@@ -27,8 +29,8 @@ module.exports = async (interaction) => {
   }
 
   if (subcommand === 'say') {
-    const voiceName = options.getString('voice');
-    const message = options.getString('message');
+    const voiceName = options.getString('voice')!;
+    const message = options.getString('message')!;
     const stability = options.getNumber('stability') || DEFAULT_STABILITY;
 
     if (message.length > MAX_MESSAGE_LENGTH) {
@@ -56,7 +58,7 @@ module.exports = async (interaction) => {
       await interaction.editReply(`Say: _${message}_\n\nPlaying...`);
       await playSpeech(voice);
       await interaction.editReply(`Say: _${message}_`);
-    } catch (e) {
+    } catch (e: any) {
       console.log(e);
       await interaction.editReply(`Failed! ${e.message.slice(0, 1000)}`);
     }
