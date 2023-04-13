@@ -2,8 +2,9 @@
 import { existsSync, writeFileSync } from 'node:fs';
 import { AppDbData } from '../types';
 
+/** Adjusted for Typescript dist/ structure */
 /** Path to DB file */
-const DB_PATH = `${__dirname}/../../db.json`;
+const DB_PATH = `${__dirname}/../../../db.json`;
 
 let dbData: AppDbData;
 

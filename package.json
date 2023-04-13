@@ -47,8 +47,13 @@
     "settings": {
       "import/resolver": {
         "node": {
-          "extensions": [".ts"],
-          "moduleDirectory": ["node_modules", "src/"]
+          "extensions": [
+            ".ts"
+          ],
+          "moduleDirectory": [
+            "node_modules",
+            "src/"
+          ]
         }
       }
     }

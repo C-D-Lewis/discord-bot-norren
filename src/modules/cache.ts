@@ -4,8 +4,9 @@ import { log } from './logger';
 import { AUDIO_TYPE_SOUND } from '../constants';
 import { AudioType } from '../types';
 
-const soundsDir = `${__dirname}/../../sounds`;
-const musicDir = `${__dirname}/../../music`;
+/** Adjusted for Typescript dist/ structure */
+const soundsDir = `${__dirname}/../../../sounds`;
+const musicDir = `${__dirname}/../../../music`;
 const soundNames: string[] = [];
 const musicNames: string[] = [];
 

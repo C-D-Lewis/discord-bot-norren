@@ -7,11 +7,11 @@ import { elevenlabsApiKey } from '../../config.json';
 import { log } from './logger';
 import { ElevenLabsVoicesResponse } from '../types';
 
+/** Adjusted for Typescript dist/ structure */
 /** Speech saved dir */
-const SAVED_DIR = `${__dirname}/../../saved`;
-
+const SAVED_DIR = `${__dirname}/../../../saved`;
 /** Path to speech file without extension */
-const FILE_NO_EXT = `${__dirname}/../../sounds/speech`;
+const FILE_NO_EXT = `${__dirname}/../../../sounds/speech`;
 
 /**
  * Get voice names available.
