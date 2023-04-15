@@ -112,8 +112,8 @@ const COMMANDS = [
   //   .addSubcommand((subcommand) => subcommand
   //     .setName('voice')
   //     .setDescription('Respond with voice if in a voice channel')
-  //     .addStringOption((option) => option.setName('voiceName')
-  //       .setDescription('Voice name from "/say voices"')
+  //     .addStringOption((option) => option.setName('voice')
+  //       .setDescription('Voice name')
   //       .setRequired(true))
   //     .addStringOption((option) => option.setName('prompt')
   //       .setDescription('Prompt content')

@@ -12,7 +12,6 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": true,
-    "skipLibCheck": true,
     "moduleResolution": "nodenext",
     "resolveJsonModule": true
   }

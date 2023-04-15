@@ -92,9 +92,8 @@ export const setupClient = async ({
   });
 
   // Server general message
-  newClient.on('messageCreate', async (message) => {
+  newClient.on('messageCreate', async (message: Message) => {
     log(`onMessage (${message.author.username}) ${message.content}`);
-    // @ts-ignore FIXME: Why bad type?
     await onMessage(message);
   });
 
