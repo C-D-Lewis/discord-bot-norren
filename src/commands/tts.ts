@@ -3,11 +3,10 @@ import { replyHidden } from '../modules/discord';
 import {
   generateSpeech, convertSpeech, playSpeech, getVoices,
 } from '../modules/tts';
+import { DEFAULT_STABILITY } from '../constants';
 
 /** Max message lenth */
 const MAX_MESSAGE_LENGTH = 256;
-/** Default stability score */
-const DEFAULT_STABILITY = 0.9;
 
 let inProgress = false;
 

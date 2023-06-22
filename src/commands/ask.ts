@@ -2,6 +2,7 @@ import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
 import { replyHidden } from '../modules/discord';
 import { askChatGpt } from '../modules/chatGpt';
 import { generateSpeech, convertSpeech, playSpeech } from '../modules/tts';
+import { DEFAULT_STABILITY } from '../constants';
 
 let inProgress = false;
 
@@ -14,7 +15,8 @@ let inProgress = false;
 export default async function handleAsk(interaction: ChatInputCommandInteraction) {
   const { options, user: { username } } = interaction;
   const prompt = options.getString('prompt')!;
-  const voiceName = options.getString('voiceName')!;
+  const voiceName = options.getString('voice')!;
+  const stability = options.getNumber('stability') || DEFAULT_STABILITY;
 
   // TypeScript denies knowledge unless this form is used
   const { voice } = interaction.member as GuildMember;
@@ -37,7 +39,7 @@ export default async function handleAsk(interaction: ChatInputCommandInteraction
   if (subcommand === 'voice') {
     await interaction.editReply(`${username} asked: _${prompt}_ (Generating audio...)\n\n**${content.trim()}**`);
 
-    await generateSpeech(voiceName, content);
+    await generateSpeech(voiceName, content, stability);
     convertSpeech();
     await playSpeech(voice);
     await interaction.editReply(`${username} asked: _${prompt}_\n\n**${content.trim()}**`);

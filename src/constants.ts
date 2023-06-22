@@ -53,3 +53,6 @@ export const OPTION_UPDATE_COMMANDS = '--updateCommands';
 
 /** Max looping recent sounds */
 export const MAX_RECENT_SOUNDS = 8;
+
+/** Default stability score */
+export const DEFAULT_STABILITY = 0.9;

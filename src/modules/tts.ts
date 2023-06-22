@@ -73,7 +73,7 @@ export const generateSpeech = async (voiceName: string, message: string, stabili
 
   // Copy in case it's good
   execSync(`mkdir -p ${SAVED_DIR}`);
-  const filename = `${message.replace(/[^a-z0-9]/gi, '_').toLowerCase()}-${Date.now()}`;
+  const filename = `${message.replace(/[^a-z0-9]/gi, '_').toLowerCase()}-${Date.now()}`.slice(0, 128);
   execSync(`cp ${FILE_NO_EXT}.mpg ${SAVED_DIR}/${filename}.mp3`);
 };
 

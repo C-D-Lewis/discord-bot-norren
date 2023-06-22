@@ -100,24 +100,28 @@ const COMMANDS = [
       .setName('voices')
       .setDescription('List all avaialble voice names')),
 
-  // new SlashCommandBuilder()
-  //   .setName('ask')
-  //   .setDescription('Ask a question (answered by ChatGPT as Norren)')
-  //   .addSubcommand((subcommand) => subcommand
-  //     .setName('text')
-  //     .setDescription('Respond in the original message')
-  //     .addStringOption((option) => option.setName('prompt')
-  //       .setDescription('Prompt content')
-  //       .setRequired(true)))
-  //   .addSubcommand((subcommand) => subcommand
-  //     .setName('voice')
-  //     .setDescription('Respond with voice if in a voice channel')
-  //     .addStringOption((option) => option.setName('voice')
-  //       .setDescription('Voice name')
-  //       .setRequired(true))
-  //     .addStringOption((option) => option.setName('prompt')
-  //       .setDescription('Prompt content')
-  //       .setRequired(true))),
+  // Voices using API as choices
+  new SlashCommandBuilder()
+    .setName('ask')
+    .setDescription('Ask a question (answered by ChatGPT as Norren)')
+    .addSubcommand((subcommand) => subcommand
+      .setName('text')
+      .setDescription('Respond in the original message')
+      .addStringOption((option) => option.setName('prompt')
+        .setDescription('Prompt content')
+        .setRequired(true)))
+    .addSubcommand((subcommand) => subcommand
+      .setName('voice')
+      .setDescription('Respond with voice if in a voice channel')
+      .addStringOption((option) => option.setName('voice')
+        .setDescription('Voice name')
+        .setRequired(true))
+      .addStringOption((option) => option.setName('prompt')
+        .setDescription('Prompt content')
+        .setRequired(true))
+      .addNumberOption((option) => option.setName('stability')
+        .setDescription('Stability score, 0.0 to 1.0')
+        .setRequired(false))),
 
   new SlashCommandBuilder()
     .setName('help')
