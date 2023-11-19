@@ -1,9 +1,12 @@
 import { ChatInputCommandInteraction, GuildMember } from 'discord.js';
+import { readdirSync } from 'fs';
+import { execSync } from 'node:child_process';
 import { replyHidden } from '../modules/discord';
 import {
-  generateSpeech, convertSpeech, playSpeech, getVoices,
+  generateSpeech, convertSpeech, playSpeech, getVoices, SAVED_DIR, FILE_NO_EXT,
 } from '../modules/tts';
 import { DEFAULT_STABILITY } from '../constants';
+import { log } from '../modules/logger';
 
 /** Max message lenth */
 const MAX_MESSAGE_LENGTH = 256;
@@ -93,6 +96,30 @@ export default async function handleTts(interaction: ChatInputCommandInteraction
 
     // GLaDOS voice shall remain in the EleventLabs account with this name
     return generateAndPlaySpeech(interaction, voice, 'GLaDOS', finalMessage, 0.01);
+  }
+
+  if (subcommand === 'replay') {
+    const query = options.getString('query')!.toLowerCase();
+
+    // Get filenames - up from 'dist'
+    const files = readdirSync(SAVED_DIR);
+
+    // Apply query
+    const found = files.find((p) => p.includes(query));
+    if (!found) {
+      return replyHidden(interaction, { content: 'No previous sound file found' });
+    }
+    log(`Query: ${query} Found ${found}`);
+
+    // Convert to speech.opus
+    await replyHidden(interaction, { content: `Replay: _${query}_\n\nConverting...` });
+    execSync(`ffmpeg -i ${SAVED_DIR}/${found} ${FILE_NO_EXT}.opus`);
+
+    // Play it!
+    await interaction.editReply(`Replay: _${query}_\n\nPlaying...`);
+    await playSpeech(voice);
+    await interaction.editReply(`Replay: _${query}_`);
+    return undefined;
   }
 
   throw new Error(`Unexpected subcommand ${subcommand}`);

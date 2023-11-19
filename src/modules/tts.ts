@@ -9,9 +9,9 @@ import { ElevenLabsVoicesResponse } from '../types';
 
 /** Adjusted for Typescript dist/ structure */
 /** Speech saved dir */
-const SAVED_DIR = `${__dirname}/../../../saved`;
+export const SAVED_DIR = `${__dirname}/../../../saved`;
 /** Path to speech file without extension */
-const FILE_NO_EXT = `${__dirname}/../../../sounds/speech`;
+export const FILE_NO_EXT = `${__dirname}/../../../sounds/speech`;
 
 /**
  * Get voice names available.

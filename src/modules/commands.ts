@@ -92,6 +92,12 @@ const COMMANDS = [
       .setDescription('Generate some voice audio as Cursed GLaDOS')
       .addStringOption((option) => option.setName('message')
         .setDescription('Message to speak')
+        .setRequired(true)))
+    .addSubcommand((subcommand) => subcommand
+      .setName('replay')
+      .setDescription('Replay a speech sound file previously generated')
+      .addStringOption((option) => option.setName('query')
+        .setDescription('Search query in recently saved speech filenames')
         .setRequired(true))),
 
   // Voices using ChatGPT and ElevenLabs
