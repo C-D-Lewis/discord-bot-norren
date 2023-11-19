@@ -5,6 +5,7 @@ const rest = new REST({ version: '10' }).setToken(token);
 
 /* All bot slash commands */
 const COMMANDS = [
+  // Roll a die
   new SlashCommandBuilder()
     .setName('roll')
     .setDescription('Roll a d<n> die')
@@ -12,6 +13,7 @@ const COMMANDS = [
       .setDescription('The die maximum value, such as d20')
       .setRequired(true)),
 
+  // Search roll20.net
   new SlashCommandBuilder()
     .setName('search')
     .setDescription('Search roll20.net DnD compendium')
@@ -19,6 +21,7 @@ const COMMANDS = [
       .setDescription('Search query')
       .setRequired(true)),
 
+  // Play pre-stored sounds
   new SlashCommandBuilder()
     .setName('sound')
     .setDescription('Play sound files')
@@ -38,6 +41,7 @@ const COMMANDS = [
       .setName('recent')
       .setDescription('See buttons for recently played sounds')),
 
+  // Play pre-stored music
   new SlashCommandBuilder()
     .setName('music')
     .setDescription('Play music files')
@@ -54,36 +58,20 @@ const COMMANDS = [
       .setName('stop')
       .setDescription('Stop currently playing music')),
 
+  // Join the user's voice call
   new SlashCommandBuilder()
     .setName('join')
     .setDescription('Join the user\'s voice channel'),
 
+  // Leave the user's voice call
   new SlashCommandBuilder()
     .setName('leave')
     .setDescription('Leave the current voice channel'),
 
-  // new SlashCommandBuilder()
-  //   .setName('pin')
-  //   .setDescription('Pin links or other text')
-  //   .addSubcommand((subcommand) => subcommand
-  //     .setName('add')
-  //     .setDescription('Add a pin')
-  //     .addStringOption((option) => option.setName('text')
-  //       .setDescription('Text to pin')
-  //       .setRequired(true)))
-  //   .addSubcommand((subcommand) => subcommand
-  //     .setName('list')
-  //     .setDescription('List existing pins'))
-  //   .addSubcommand((subcommand) => subcommand
-  //     .setName('delete')
-  //     .setDescription('Delete a pin by ID')
-  //     .addIntegerOption((option) => option.setName('id')
-  //       .setDescription('ID of pin to remove')
-  //       .setRequired(true))),
-
+  // Use ElevenLabs TTS features
   new SlashCommandBuilder()
     .setName('tts')
-    .setDescription('Use TTS to say something')
+    .setDescription('Use ElevenLabs TTS to say something')
     .addSubcommand((subcommand) => subcommand
       .setName('say')
       .setDescription('Generate some voice audio from text')
@@ -106,7 +94,7 @@ const COMMANDS = [
         .setDescription('Message to speak')
         .setRequired(true))),
 
-  // Voices using API as choices
+  // Voices using ChatGPT and ElevenLabs
   new SlashCommandBuilder()
     .setName('ask')
     .setDescription('Ask a question (answered by ChatGPT as Norren)')
@@ -129,13 +117,20 @@ const COMMANDS = [
         .setDescription('Stability score, 0.0 to 1.0')
         .setRequired(false))),
 
+  // Help
   new SlashCommandBuilder()
     .setName('help')
     .setDescription('See all available commands'),
 
+  // Ping server
   new SlashCommandBuilder()
     .setName('ping')
     .setDescription('Ping the bot server'),
+
+  // Reboot server
+  new SlashCommandBuilder()
+    .setName('reboot')
+    .setDescription('Reboot the bot server'),
 ];
 
 /**

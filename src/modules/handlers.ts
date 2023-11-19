@@ -8,6 +8,7 @@ import handleTts from '../commands/tts';
 import handleAsk from '../commands/ask';
 import handleHelp from '../commands/help';
 import handlePing from '../commands/ping';
+import handleReboot from '../commands/reboot';
 import { AUDIO_TYPE_SOUND, AUDIO_TYPE_MUSIC } from '../constants';
 
 /** Map of all command handlers. */
@@ -34,6 +35,7 @@ const COMMAND_MAP = {
   ask: handleAsk,
   help: handleHelp,
   ping: handlePing,
+  reboot: handleReboot,
 };
 
 /** Special command map type. */

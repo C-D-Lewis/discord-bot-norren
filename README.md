@@ -66,7 +66,8 @@ npm ci
   "onLeaveSound": "<sound>.opus",
   "elevenlabsApiKey": "<API key>",
   "elevenlabsVoiceId": "<voice ID>",
-  "openAiApiKey": ""
+  "openAiApiKey": "<OpenAI API key>",
+  "adminUsername": "<Admin Discord username>"
 }
 ```
 
