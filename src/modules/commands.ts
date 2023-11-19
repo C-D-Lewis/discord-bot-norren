@@ -98,7 +98,13 @@ const COMMANDS = [
         .setRequired(false)))
     .addSubcommand((subcommand) => subcommand
       .setName('voices')
-      .setDescription('List all avaialble voice names')),
+      .setDescription('List all avaialble voice names'))
+    .addSubcommand((subcommand) => subcommand
+      .setName('cursedglados')
+      .setDescription('Generate some voice audio as Cursed GLaDOS')
+      .addStringOption((option) => option.setName('message')
+        .setDescription('Message to speak')
+        .setRequired(true))),
 
   // Voices using API as choices
   new SlashCommandBuilder()
