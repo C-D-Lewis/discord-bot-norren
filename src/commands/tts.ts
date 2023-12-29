@@ -92,7 +92,7 @@ export default async function handleTts(interaction: ChatInputCommandInteraction
 
   if (subcommand === 'cursedglados') {
     const message = options.getString('message')!;
-    const finalMessage = `This is Cursed GLaDOS here. ${message} !!!!!!!HA HA HAA!!!!!!!`;
+    const finalMessage = `This is Cursed GLaDOS here. ${message} !!!!!HAHA!!!!!`;
 
     // GLaDOS voice shall remain in the EleventLabs account with this name
     return generateAndPlaySpeech(interaction, voice, 'GLaDOS', finalMessage, 0.01);
