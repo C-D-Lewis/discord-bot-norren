@@ -14,7 +14,8 @@ export default function handleHelp(interaction: ChatInputCommandInteraction) {
   📖 \`/search\` - Search Roll20.net compendium
   🔊 \`/sound\` / \`/music\` - Play/stop/list sound/music files
   🎙 \`/join\` / \`/leave\` - Join/leave the user's voice channel
-  🗣 \`tts\` - Use TTS to say something
+  ❓ \`/ask\` - Ask a question (answered by ChatGPT)
+  🗣 \`/tts\` - Use TTS to say something
   ⁉️ \`/help\` - Show this information
   🤖 \`/ping\` - Ping the bot server
 
@@ -22,5 +23,3 @@ export default function handleHelp(interaction: ChatInputCommandInteraction) {
   `,
   });
 }
-
-// ❓ \`/ask\` - Ask a question (answered by ChatGPT as Norren)

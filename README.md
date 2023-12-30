@@ -67,7 +67,7 @@ npm ci
   "elevenlabsApiKey": "<API key>",
   "elevenlabsVoiceId": "<voice ID>",
   "openAiApiKey": "<OpenAI API key>",
-  "adminUsername": "<Admin Discord username>"
+  "adminUsernames": ["<Discord username>"]
 }
 ```
 

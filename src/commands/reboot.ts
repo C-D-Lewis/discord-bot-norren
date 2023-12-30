@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { execSync } from 'child_process';
 import { replyHidden } from '../modules/discord';
-import { adminUsername } from '../../config.json';
+import { adminUsernames } from '../../config.json';
 import { log } from '../modules/logger';
 
 /**
@@ -14,7 +14,7 @@ export default async function handlePing(interaction: ChatInputCommandInteractio
   const { user: { username } } = interaction;
   log(`${username} tried to request reboot`);
 
-  if (username !== adminUsername) {
+  if (!adminUsernames.includes(username)) {
     log('Reboot was denied');
     return replyHidden(
       interaction,
