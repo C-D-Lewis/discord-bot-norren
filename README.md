@@ -40,6 +40,12 @@ And the following permissions:
 
 ## Setup app
 
+0. Add git safe directory:
+
+```
+git config --global --add safe.directory /home/pi/code/discord-bot-norren
+```
+
 1. Install dependencies:
 
 ```
