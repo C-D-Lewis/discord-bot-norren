@@ -57,6 +57,7 @@ export const generateSpeech = async (voiceName: string, message: string, stabili
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
+      model_id: 'eleven_multilingual_v2',
       text: message,
       voice_settings: {
         stability,

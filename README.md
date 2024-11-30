@@ -49,7 +49,7 @@ git config --global --add safe.directory /home/pi/code/discord-bot-norren
 1. Install dependencies:
 
 ```
-sudo apt-get install libtool autoconf automake
+sudo apt-get install libtool autoconf automake ffmpeg
 ```
 
 ```
