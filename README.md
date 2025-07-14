@@ -90,8 +90,10 @@ bucket location containing a `sounds` and `music` directory:
 # Uses a local AWS CLI install and credentials
 export AWS_PROFILE=...
 
-./scripts/sync-s3.sh s3://my-example-bucket/discord-bot-norren/
+./scripts/sync-s3.sh s3://my-example-bucket/discord-bot-norren
 ```
+
+> No trailing slash on path to the bucket directory.
 
 4. Start the app:
 
