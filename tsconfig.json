@@ -5,7 +5,7 @@
     "unused/**/*"
   ],
   "compilerOptions": {
-    "target": "ES2016",
+    "target": "ES2022",
     "module": "NodeNext",
     "outDir": "./dist",
     "esModuleInterop": true,
@@ -13,6 +13,7 @@
     "strict": true,
     "noImplicitAny": true,
     "moduleResolution": "nodenext",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "lib": ["ES2022", "DOM", "esnext.disposable"]
   }
 }
