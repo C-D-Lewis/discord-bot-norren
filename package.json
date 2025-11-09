@@ -8,7 +8,7 @@
     "start": "npm run build && node dist/src/index.js"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=22"
   },
   "author": "Chris Lewis",
   "dependencies": {
